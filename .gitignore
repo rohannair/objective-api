@@ -63,4 +63,4 @@ Session.vim
 
 ### Repo Specific
 .happypack
-app/dist/*
+dist/*
