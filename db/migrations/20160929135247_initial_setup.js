@@ -45,7 +45,7 @@ exports.up = function(knex, Promise) {
       t.text('email').notNull().unique();
       t.text('first_name');
       t.text('last_name');
-      t.string('password');
+      t.string('digest');
       t.enu('role', ['user', 'admin', 'superuser'])
         .notNull()
         .default('user');

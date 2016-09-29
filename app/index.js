@@ -3,6 +3,11 @@ const Koa = require('koa');
 const router = require('koa-router');
 const co = require('co');
 const debug = require('debug')('app:debug');
+const knex = require('knex');
+const { Model } = require('objection');
+
+const db = knex(require('../knexfile'));
+Model.knex(db);
 
 ///////////// Configs /////////////
 const ENV = process.env.NODE_ENV || 'development';

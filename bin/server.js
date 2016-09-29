@@ -20,12 +20,12 @@ function start(id) {
   app.listen(PORT, HOST, function(err) {
     if (err) return error(err);
 
-    log(`⚡ Worker ${id} running at ${chalk.white.bold(`http://${HOST}:${PORT}`)}`);
+    log(`⚡  Worker ${id} running at ${chalk.white.bold(`http://${HOST}:${PORT}`)}`);
   });
 }
 
 function startMaster() {
-  log(`⚡ Master running at ${chalk.white.bold(`http://${HOST}:${PORT}`)}`);
+  log(`⚡  Master running at ${chalk.white.bold(`http://${HOST}:${PORT}`)}`);
 }
 
 throng({
