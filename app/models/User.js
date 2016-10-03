@@ -1,7 +1,9 @@
 const { Model } = require('objection');
+
+const BaseModel = require('./Base');
 const Company = require('./Company');
 
-class User extends Model {
+class User extends BaseModel {
   static get tableName() {
     return 'users';
   }

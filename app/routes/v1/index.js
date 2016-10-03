@@ -1,6 +1,6 @@
 const router = require('koa-router');
 const User = require('../../models/User');
-const Mission = require('../../models/Mission');
+const { Mission, getMission } = require('../../models/Mission');
 
 const {
   encryptPassword,
@@ -67,10 +67,7 @@ module.exports = router()
   .get('/missions/:id', async ctx => {
     const { id } = ctx.params;
 
-    const mission = await Mission
-      .query()
-      .where({id})
-      .first();
+    const mission = await getMission(id);
 
     ctx.body = {
       mission

@@ -13,6 +13,7 @@
     "db:create:migration": "knex migrate:make $NAME",
     "db:create:seed": "knex seed:make $NAME",
     "db:recreate": "npm run db:destroy && npm run db:migrate",
+    "db:seed": "knex seed:run",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "betterScripts": {
@@ -51,9 +52,11 @@
     "koa-bodyparser": "~3.2.0",
     "koa-convert": "~1.2.0",
     "koa-router": "~7.0.1",
+    "lodash": "~4.16.2",
     "node-uuid": "~1.4.7",
     "objection": "~0.5.5",
     "pg": "~6.1.0",
+    "pm2": "~2.0.18",
     "throng": "~4.0.0",
     "winston": "~2.2.0"
   },

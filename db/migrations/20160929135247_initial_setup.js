@@ -49,29 +49,57 @@ exports.up = function(knex, Promise) {
       t.enu('role', ['user', 'admin', 'superuser'])
         .notNull()
         .default('user');
-      t.uuid('company_id').references('id').inTable('companies').onDelete('cascade');
+      t.uuid('company_id')
+        .references('id')
+        .inTable('companies')
+        .onDelete('cascade')
+        .index();
       t.timestamp('created_at').notNull().defaultTo(knex.raw('now()'));
       t.timestamp('updated_at').defaultTo(knex.raw('now()'));
     })
     .createTable('missions_users', t => {
       t.increments('id').primary();
-      t.uuid('user_id').references('id').inTable('users');
-      t.uuid('mission_id').references('id').inTable('missions');
+      t.uuid('user_id')
+        .references('id')
+        .inTable('users')
+        .index();
+      t.uuid('mission_id')
+        .references('id')
+        .inTable('missions')
+        .index();
     })
     .createTable('missions_resources', t => {
       t.increments('id').primary();
-      t.uuid('mission_id').references('id').inTable('missions');
-      t.uuid('resource_id').references('id').inTable('resources');
+      t.uuid('mission_id')
+        .references('id')
+        .inTable('missions')
+        .index();
+      t.uuid('resource_id')
+        .references('id')
+        .inTable('resources')
+        .index();
     })
     .createTable('missions_objectives', t => {
       t.increments('id').primary();
-      t.uuid('mission_id').references('id').inTable('missions');
-      t.uuid('objective_id').references('id').inTable('objectives');
+      t.uuid('mission_id')
+        .references('id')
+        .inTable('missions')
+        .index();
+      t.uuid('objective_id')
+        .references('id')
+        .inTable('objectives')
+        .index();
     })
     .createTable('missions_targets', t => {
       t.increments('id').primary();
-      t.uuid('mission_id').references('id').inTable('missions');
-      t.uuid('target_id').references('id').inTable('targets');
+      t.uuid('mission_id')
+        .references('id')
+        .inTable('missions')
+        .index();
+      t.uuid('target_id')
+        .references('id')
+        .inTable('targets')
+        .index();
     })
 };
 
