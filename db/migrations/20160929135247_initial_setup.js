@@ -5,14 +5,14 @@ exports.up = function(knex, Promise) {
   return knex.schema
     .createTable('objectives', t => {
       t.uuid('id').primary();
-      t.string('name').notNull();
+      t.string('name');
       t.bool('completed').default(false);
       t.timestamp('created_at').notNull().defaultTo(knex.raw('now()'));
       t.timestamp('updated_at').defaultTo(knex.raw('now()'));
     })
     .createTable('targets', t => {
       t.uuid('id').primary();
-      t.text('objective').notNull();
+      t.text('objective');
       t.specificType('key_results', 'text[]');
       t.timestamp('created_at').notNull().defaultTo(knex.raw('now()'));
       t.timestamp('updated_at').defaultTo(knex.raw('now()'));

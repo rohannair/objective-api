@@ -3,7 +3,7 @@ const { addId } = require('../utils');
 
 const BaseModel = require('./Base');
 const Objective = require('./Objective');
-const Resource = require('./Resource');
+const {Resource} = require('./Resource');
 const Target = require('./Target');
 const User = require('./User');
 
@@ -78,11 +78,21 @@ class Mission extends BaseModel {
   }
 }
 
-const getAllMissions = () =>
+const getAllMissions = (limit = 10, offset = 0) =>
   Mission
     .query()
-    .where({ id })
-    .eager('[resources, objectives, targets]')
+    .select('id', 'name', 'description', 'duration', 'status')
+    .limit(limit)
+    .offset(offset)
+    .eager('[resources, objectives, targets, users]')
+    .filterEager('resources', b =>
+      b.select('resources.id', 'resources.name'))
+    .filterEager('targets', b =>
+      b.select('targets.id', 'targets.objective', 'targets.key_results'))
+    .filterEager('objectives', b =>
+      b.select('objectives.id', 'objectives.name', 'objectives.completed'))
+    .filterEager('users', b =>
+      b.select('users.id', 'email', 'first_name', 'last_name'))
     .orderBy('missions.updated_at');
 
 const getMission = id =>
@@ -116,5 +126,6 @@ const putMission = mission =>
 
 module.exports = {
   Mission,
-  getMission
+  getMission,
+  getAllMissions
 };

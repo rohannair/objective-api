@@ -7,4 +7,4 @@ class Resource extends BaseModel {
   }
 }
 
-module.exports = Resource;
+module.exports = { Resource };
