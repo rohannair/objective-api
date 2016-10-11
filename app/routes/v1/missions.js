@@ -34,13 +34,14 @@ const missionControllers = Mission => ({
 
   updateMission: async ctx => {
     const { id } = ctx.params;
+    const { field } = ctx.query;
     const mission = await Mission
       .query()
       .update({ ...ctx.request.body })
       .where({ id })
-      .returning('*');
+      .returning(field);
 
-    ctx.body = { mission }
+    ctx.body = { updated: mission }
   },
 
   addResource: async ctx => {

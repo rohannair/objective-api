@@ -140,7 +140,7 @@ exports.seed = function(knex, Promise) {
           target_id: '39aede9c-5185-4e87-82fb-3b4948f6f09a'
         },
         {
-          mission_id: missionId,
+          mission_id: missionId2,
           target_id: 'bb82018b-0b86-4d5b-a7e2-d92a2b6d7ce4'
         },
         {

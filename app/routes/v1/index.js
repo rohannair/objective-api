@@ -16,7 +16,8 @@ const {
   addResource,
   addObjective,
   addTarget,
-  newMission
+  newMission,
+  updateMission
 } = require('./missions');
 
 const { updateResource } = require('./resources');
@@ -36,6 +37,7 @@ module.exports = router()
   .get('/missions', getMissions)
   .get('/missions/new', newMission)
   .get('/missions/:id', getOneMission)
+  .post('/missions/:id', updateMission)
 
   .get('/missions/:id/resources/add', addResource)
   .post('/missions/:id/resources/:resourceId', updateResource)
