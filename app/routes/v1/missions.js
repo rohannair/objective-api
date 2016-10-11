@@ -84,7 +84,7 @@ const missionControllers = Mission => ({
 
   addTarget: async ctx => {
     const { id } = ctx.params;
-    const target = addId({ name: '', keyResults: [] });
+    const target = addId({ objective: '', keyResults: [] });
     const newTarget = await Target
       .query()
       .insert(target)

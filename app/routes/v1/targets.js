@@ -9,7 +9,7 @@ const targetsController = Target => ({
         ...ctx.request.body
       })
       .where({ id: targetId })
-      .returning(['id', 'name', 'keyResults', 'updated_at'])
+      .returning(['id', 'objective', 'key_results', 'updated_at'])
       .first();
 
     ctx.body = { updated };
