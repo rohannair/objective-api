@@ -3,7 +3,7 @@ const { encryptPassword } = require('../../app/utils/encryption');
 
 exports.seed = function(knex, Promise) {
   let companyId = uuid.v4();
-  let userId = uuid.v4();
+  let userId = 'e8e49354-a078-4832-8596-8fdc70ee6278';
   let userId2 = '87eb4549-07c9-418c-8417-38af1c7a5805';
   let userId3 = '9f392a5b-8fc7-48af-9e27-f9831e50aed7';
   let missionId = 'c2defaf1-e79c-4745-8796-f034f20561c4';
