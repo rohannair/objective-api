@@ -3,3 +3,4 @@ VACUUM;
 CREATE SCHEMA public;
 GRANT USAGE ON SCHEMA public TO public;
 GRANT CREATE ON SCHEMA public TO public;
+VACUUM;
