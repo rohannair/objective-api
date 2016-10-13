@@ -17,7 +17,7 @@ const userControllers = User => ({
 
     let user = await User
       .query()
-      .select('id', 'email', 'digest', 'role', 'company_id')
+      .select('id', 'email', 'digest', 'role', 'company_id', 'img')
       .where({
         email: username
       })

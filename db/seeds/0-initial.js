@@ -23,7 +23,8 @@ exports.seed = function(knex, Promise) {
             last_name: 'Nair',
             digest: password,
             role: 'superuser',
-            company_id: companyId
+            company_id: companyId,
+            img: 'https://avatars.io/instagram/therealrohannair'
           },
           {
             id: userId2,
@@ -32,7 +33,8 @@ exports.seed = function(knex, Promise) {
             last_name: 'Kanani',
             digest: password,
             role: 'admin',
-            company_id: companyId
+            company_id: companyId,
+            img: 'https://avatars.io/twitter/raykanani'
           },
           {
             id: userId3,
@@ -41,15 +43,16 @@ exports.seed = function(knex, Promise) {
             last_name: 'Peters',
             digest: password,
             role: 'admin',
-            company_id: companyId
+            company_id: companyId,
+            img: 'https://avatars.io/facebook/stu.peters.3'
           },
         ])
       ),
 
       knex('missions').insert([{
         id: missionId,
-        name: 'Marketing Design Tour',
-        description: 'Support the Marketing Team\'s creative initiatives while developing a style guide and a design system for the full company',
+        name: 'Help Marketing build a website',
+        description: 'Support the Marketing Team\'s initiatives technically, including building out best practices for SEO',
         duration: '12 months'
       },
       {
@@ -85,9 +88,10 @@ exports.seed = function(knex, Promise) {
         },
         {
           id: 'bb82018b-0b86-4d5b-a7e2-d92a2b6d7ce4',
-          objective: 'Props organization and storage of design assets',
+          objective: 'Build Marketing Website with SEO optimization',
           key_results: [
-            'Get 80% of source files properly organized into Google Drive'
+            'Get a PageSpeed score of atleast 90/100',
+            'Achieve a MozRanking of 3 for atleast 10 landing pages',
           ]
         },
         {
@@ -102,17 +106,18 @@ exports.seed = function(knex, Promise) {
 
       knex('resources').insert([
         {
-          id: '879a88b0-0530-4835-a23f-dcfc3552b5c0',
-          name: 'Head of Design @raykanani'
-        },
-        {
           id: '6938586c-951d-44f4-918f-733a759858fe',
-          name: 'Head of Marketing @raykananisalterego'
+          name: 'Head of Engineering @rohannair'
         },
         {
           id: '57306734-52dd-4372-a4a6-4abf0006c9b5',
-          name: 'Quartermaster usability lab'
+          name: 'Quartermaster\'s Moz.com account'
+        },
+        {
+          id: '879a88b0-0530-4835-a23f-dcfc3552b5c0',
+          name: 'Head of Marketing @raykanani'
         }
+
       ]),
 
       knex('missions_resources').insert([
@@ -140,7 +145,7 @@ exports.seed = function(knex, Promise) {
           target_id: '39aede9c-5185-4e87-82fb-3b4948f6f09a'
         },
         {
-          mission_id: missionId2,
+          mission_id: missionId,
           target_id: 'bb82018b-0b86-4d5b-a7e2-d92a2b6d7ce4'
         },
         {
