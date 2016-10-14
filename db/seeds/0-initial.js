@@ -49,18 +49,20 @@ exports.seed = function(knex, Promise) {
         ])
       ),
 
-      knex('missions').insert([{
-        id: missionId,
-        name: 'Help Marketing build a website',
-        description: 'Support the Marketing Team\'s initiatives technically, including building out best practices for SEO',
-        duration: '12 months'
-      },
-      {
-        id: missionId2,
-        name: 'Grow the beta cohort',
-        description: 'Get new customers signed on for the next beta cohort',
-        duration: '3 months'
-      }]),
+      knex('missions').insert([
+        {
+          id: missionId,
+          name: 'Help Marketing build a website',
+          description: 'Support the Marketing Team\'s initiatives technically, including building out best practices for SEO',
+          duration: '12 months'
+        },
+        {
+          id: missionId2,
+          name: 'Grow the beta cohort',
+          description: 'Get new customers signed on for the next beta cohort',
+          duration: '3 months'
+        }
+      ]),
 
       knex('objectives').insert([
         {
@@ -118,8 +120,9 @@ exports.seed = function(knex, Promise) {
           name: 'Head of Marketing @raykanani'
         }
 
-      ]),
-
+      ])
+    ]))
+    .then(() => Promise.all([
       knex('missions_resources').insert([
         {
           mission_id: missionId,
@@ -168,6 +171,5 @@ exports.seed = function(knex, Promise) {
           mission_id: missionId2
         }
       ]),
-    ])
-  )
+    ]))
 }
