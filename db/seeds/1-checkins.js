@@ -17,19 +17,22 @@ exports.seed = function(knex, Promise) {
         name: 'September 30th Progress Update',
         body: 'Researched CMSs and have decided on WordPress as it has best tools for SEO and lets the Marketing team put up their own content without Engineering assistance',
         'user_id': userIdStu,
-        'mission_id': missionIdStu
+        'mission_id': missionIdStu,
+        'created_at': new Date('September 30 2016')
       },
       {
         name: 'October 7th Progress Update',
         body: 'Finished setting up WordPress for Marketing site, and have started on theming. Not quite at the point to measure SEO impact.',
         'user_id': userIdStu,
-        'mission_id': missionIdStu
+        'mission_id': missionIdStu,
+        'created_at': new Date('October 7 2016')
       },
       {
         name: 'October 7th Progress',
         body: 'Signed 2 new customers this week for the betas. Met with 3 CEOs.',
         'user_id': userIdRay,
-        'mission_id': missionIdRay
+        'mission_id': missionIdRay,
+        'created_at': new Date('October 7 2016')
       }
     ])
   ])

@@ -13,6 +13,7 @@ const MissionObjective = require('../../models/MissionObjective');
 const MissionTarget = require('../../models/MissionTarget');
 
 const { addId } = require('../../utils');
+const snakeCase = require('lodash/snakeCase');
 
 const missionControllers = Mission => ({
   getMissions: async ctx => {
@@ -35,11 +36,12 @@ const missionControllers = Mission => ({
   updateMission: async ctx => {
     const { id } = ctx.params;
     const { field } = ctx.query;
+    console.log('RETURN', snakeCase(field));
     const mission = await Mission
       .query()
       .update({ ...ctx.request.body })
       .where({ id })
-      .returning(field);
+      .returning(snakeCase(field));
 
     ctx.body = { updated: mission }
   },

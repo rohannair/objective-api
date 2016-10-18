@@ -3,8 +3,8 @@ const { addId } = require('../utils');
 
 const BaseModel = require('./Base');
 const Objective = require('./Objective');
-const {Resource} = require('./Resource');
-const {CheckIn} = require('./CheckIn');
+const { Resource } = require('./Resource');
+const { CheckIn } = require('./CheckIn');
 const Target = require('./Target');
 const User = require('./User');
 
@@ -91,7 +91,7 @@ class Mission extends BaseModel {
 const getAllMissions = (limit = 10, offset = 0) =>
   Mission
     .query()
-    .select('id', 'name', 'description', 'duration', 'status')
+    .select('id', 'name', 'description', 'duration', 'status', 'end_at')
     .limit(limit)
     .offset(offset)
     .eager('[resources, objectives, targets, users, checkIns]')
@@ -103,12 +103,15 @@ const getAllMissions = (limit = 10, offset = 0) =>
       b.select('objectives.id', 'objectives.name', 'objectives.completed'))
     .filterEager('users', b =>
       b.select('users.id', 'email', 'first_name', 'last_name', 'role', 'img'))
+    .filterEager('checkIns', b =>
+        b.orderBy('created_at').limit(5)
+      )
     .orderBy('missions.updated_at');
 
 const getMission = id =>
   Mission
     .query()
-    .select('id', 'name', 'description', 'duration', 'status')
+    .select('id', 'name', 'description', 'duration', 'status', 'end_at')
     .where({ id })
     .eager('[resources, objectives, targets, users]')
     .filterEager('resources', b =>
