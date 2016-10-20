@@ -23,7 +23,7 @@
     - **Prod:** `npm start`
 
 ## ToDo
-[ ] Heroku setup
-[ ] Heroku deploy instructions
-[ ] New customer creation
-[ ] Microservices
+- [ ] Heroku setup
+- [ ] Heroku deploy instructions
+- [ ] New customer creation
+- [ ] Microservices
