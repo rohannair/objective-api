@@ -7,7 +7,7 @@ module.exports = async (ctx, next) => {
     await next();
   } catch (err) {
     ctx.status = err.status || UNKNOWN_ERROR_CODE;
-    ctx.body = err.message || '';
+    ctx.body = { message: err.message || 'An error occurred' };
 
     winston.error(`${ctx.status} response: ${ctx.body}`);
     if (ctx.status === UNKNOWN_ERROR_CODE) {

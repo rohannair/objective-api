@@ -4,6 +4,7 @@ const router = require('koa-router');
 // Controllers
 const {
   login,
+  logout,
   searchUsers,
   getUsers,
   getOneUser,
@@ -33,6 +34,7 @@ module.exports = router()
   .get('/user/:id', getOneUser)
   .post('/user/:id', updateUser)
   .post('/login', login)
+  .post('/logout', logout)
 
   .get('/missions', getMissions)
   .get('/missions/new', newMission)

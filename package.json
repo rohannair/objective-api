@@ -22,7 +22,7 @@
       "command": "nodemon --exec babel-node ./bin/server ",
       "env": {
         "NODE_ENV": "development",
-        "DEBUG": "koa:*,app:*,knex:query,koa-router:*",
+        "DEBUG": "koa:*,app:*,koa-router:*",
         "NODE_PATH": "./app"
       }
     },
@@ -35,7 +35,7 @@
     }
   },
   "engines": {
-    "node": "6.7.0"
+    "node": "6.9.0"
   },
   "author": "Rohan Nair <rohan@qrtrmstr.com>",
   "dependencies": {
@@ -51,7 +51,11 @@
     "knex": "~0.12.2",
     "koa": "~2.0.0",
     "koa-bodyparser": "~3.2.0",
-    "koa-convert": "~1.2.0",
+    "koa-convert": "^1.2.0",
+    "koa-cors": "^0.0.16",
+    "koa-generic-session": "^1.11.3",
+    "koa-helmet": "^2.0.0",
+    "koa-redis": "^2.1.2",
     "koa-router": "~7.0.1",
     "lodash": "~4.16.2",
     "node-uuid": "~1.4.7",

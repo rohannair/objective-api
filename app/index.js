@@ -5,6 +5,14 @@ const co = require('co');
 const debug = require('debug')('app:debug');
 const knex = require('knex');
 const { Model } = require('objection');
+const convert = require('koa-convert');
+const helmet = require('koa-helmet');
+const cors = require('koa-cors');
+
+const session = require('koa-generic-session');
+const redisStore = require('koa-redis');
+
+const keys = ['ineed', 'better', 'keys'];
 
 const db = knex(require('../knexfile'));
 Model.knex(db);
@@ -17,7 +25,7 @@ const bodyparser = require('koa-bodyparser');
 const errorResponder = require('./middleware/error-responder');
 
 ///////////// Routes /////////////
-const healthCheckRouter = require('./routes/health-check/health-check.routes')
+const healthCheckRouter = require('./routes/health-check/health-check.routes');
 const v1Router = require('./routes/v1');
 
 ///////////// App /////////////
@@ -25,9 +33,17 @@ const app = module.exports = new Koa();
 const api = router();
 
 ///////////// Middleware /////////////
+app.keys = ['ineed', 'better', 'keys'];
+app.proxy = true;
 app
+  .use(helmet())
+  .use(convert(cors()))
   .use(bodyparser())
-  .use(errorResponder);
+  .use(errorResponder)
+  .use(convert(session({
+    key: 'qm.sid',
+    store: redisStore({})
+  })));
 
 ///////////// Routing /////////////
 api

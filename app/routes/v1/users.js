@@ -26,6 +26,7 @@ const userControllers = User => ({
     if (!user) {
       ctx.status = 400;
       ctx.body = {
+        status: 1,
         message: 'Cannot find that user!'
       }
     } else {
@@ -33,22 +34,29 @@ const userControllers = User => ({
       if (!passwordCheck) {
         ctx.status = 401;
         ctx.body = {
+          status: 1,
           message: 'Incorrect password'
         }
       } else {
-        let token = await genToken({
-          id: user.id,
-          email: user.email,
-          role: user.role,
-          companyId: user.company_id
-        });
+        // Set session
+        ctx.session.key = user.id;
 
         ctx.status = 200;
         ctx.body = {
-          message: 'Proper password!',
-          token
+          status: 0,
+          user: user.id,
         }
       }
+    }
+  },
+
+  logout: async ctx => {
+    ctx.session = null;
+
+    ctx.status = 200;
+    ctx.body = {
+      message: 'Logged out!',
+      logout: true,
     }
   },
 
