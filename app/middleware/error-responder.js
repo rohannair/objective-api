@@ -1,19 +1,20 @@
-const winston = require('winston');
+const error = require('debug')('app:error');
 
 const UNKNOWN_ERROR_CODE = 500;
+const UNAUTHORIZED_ERROR_CODE = 401;
 
 module.exports = async (ctx, next) => {
   try {
     await next();
   } catch (err) {
-    if (err.status === 401) err.message = 'Protected resource, use Authorization header to get access\n';
+    if (err.status === UNAUTHORIZED_ERROR_CODE) err.message = 'Protected resource, use Authorization header to get access';
 
     ctx.status = err.status || UNKNOWN_ERROR_CODE;
     ctx.body = { message: err.message || 'An error occurred' };
 
-    winston.error(`${ctx.status} response: ${ctx.body}`);
+    error(`${ctx.status} response: ${JSON.stringify(ctx.body)}`);
     if (ctx.status === UNKNOWN_ERROR_CODE) {
-      winston.error(`${err.stack}`);
+      error(`${err.stack}`);
     }
   }
 }

@@ -1,4 +1,5 @@
 const { verifyToken } = require('../utils/auth');
+const ApiError = require('../utils/error');
 
 const isAuthed = async (ctx, next) => {
   try {
@@ -10,11 +11,8 @@ const isAuthed = async (ctx, next) => {
     ctx.state.role = user.role;
 
     await next();
-  } catch(e) {
-    ctx.status = 401;
-    ctx.body = {
-      message: 'Could not verify token'
-    }
+  } catch (e) {
+    throw new ApiError(e.message, 401)
   }
 }
 
