@@ -1,3 +1,7 @@
+require('babel-core/register')({
+  sourceMap: 'inline'
+})
+
 const HOST = process.env.host || 'localhost';
 const PORT = process.env.port || 3000;
 

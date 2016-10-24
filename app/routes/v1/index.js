@@ -1,9 +1,11 @@
 // Deps
 const router = require('koa-router');
 
+// Middleware
+const { isAuthed } = require('../../middleware');
+
 // Controllers
 const {
-  login,
   logout,
   searchUsers,
   getUsers,
@@ -27,13 +29,13 @@ const { updateTarget } = require('./targets');
 
 // Routes
 module.exports = router()
+  .use(isAuthed)
   .all('/', async ctx => ctx.body = { message: 'Welcome to the v1 API'})
 
   .get('/users', getUsers)
   .get('/users/search', searchUsers)
   .get('/user/:id', getOneUser)
   .post('/user/:id', updateUser)
-  .post('/login', login)
   .post('/logout', logout)
 
   .get('/missions', getMissions)

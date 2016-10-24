@@ -1,16 +1,17 @@
+'use strict';
+
 ///////////// Deps /////////////
 const Koa = require('koa');
 const router = require('koa-router');
+const chalk = require('chalk');
 const co = require('co');
-const debug = require('debug')('app:debug');
+const debug = require('debug')('app:index');
+
 const knex = require('knex');
 const { Model } = require('objection');
 const convert = require('koa-convert');
 const helmet = require('koa-helmet');
 const cors = require('koa-cors');
-
-const session = require('koa-generic-session');
-const redisStore = require('koa-redis');
 
 const keys = ['ineed', 'better', 'keys'];
 
@@ -26,6 +27,7 @@ const errorResponder = require('./middleware/error-responder');
 
 ///////////// Routes /////////////
 const healthCheckRouter = require('./routes/health-check/health-check.routes');
+const publicRouter = require('./routes/public');
 const v1Router = require('./routes/v1');
 
 ///////////// App /////////////
@@ -39,16 +41,13 @@ app
   .use(helmet())
   .use(convert(cors()))
   .use(bodyparser())
-  .use(errorResponder)
-  .use(convert(session({
-    key: 'qm.sid',
-    store: redisStore({})
-  })));
+  .use(errorResponder);
 
 ///////////// Routing /////////////
 api
   .all('/', ctx => ctx.body = 'Quartermaster API')
   .use('/health', healthCheckRouter.routes())
+  .use('/public', publicRouter.routes())
   .use('/v1', v1Router.routes());
 
 app
