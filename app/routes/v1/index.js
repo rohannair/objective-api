@@ -34,7 +34,7 @@ module.exports = router()
 
   .get('/users', getUsers)
   .get('/users/search', searchUsers)
-  .get('/user/:id', getOneUser)
+  .get('/users/:id', getOneUser)
   .post('/user/:id', updateUser)
   .post('/logout', logout)
 

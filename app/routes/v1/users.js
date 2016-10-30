@@ -1,8 +1,10 @@
 const User = require('../../models/User');
+const { addId } = require('../../utils');
 
 const {
   encryptPassword,
-  checkPassword
+  checkPassword,
+  randomPassword
 } = require('../../utils/encryption');
 
 const {
@@ -39,9 +41,10 @@ const userControllers = User => ({
     const results = await User
       .query()
       .select('id', 'first_name', 'last_name', 'email', 'role', 'img')
-      .limit(limit || 25)
-      .offset(offset || 0)
-      .orderBy('last_name');
+      .limit(limit)
+      .offset(offset)
+      .orderBy('last_name')
+      .eager('[squads]');
 
     ctx.body = {
       results,
@@ -62,18 +65,60 @@ const userControllers = User => ({
     ctx.body = { user };
   },
 
+  createUser: async ctx => {
+    const { body } = ctx.request;
+    const { company } = ctx.state;
+
+    const pword = await randomPassword();
+
+    const user = await User
+      .query()
+      .insert({
+        ...addId(body),
+        digest: encryptPassword(pword)
+      })
+      .where('company_id', company)
+      .returning(['id', 'first_name', 'last_name', 'email', 'role', 'img']);
+
+      // TODO: send email to user with password
+
+      ctx.status = 201;
+      // TODO: get rid of returning the password here
+      ctx.body = { user: { ...user, password: pword } };
+  },
+
+  updateUserPassword: async ctx => {
+    const { id } = ctx.params;
+    const { body } = ctx.request;
+    const { user, company, role } = ctx.state;
+
+    if (user === id) {
+      // TODO: Do some shit here to reset a password
+    }
+  },
+
   updateUser: async ctx => {
     const { id } = ctx.params;
     const { body } = ctx.request;
+    const { company, role } = ctx.state;
 
-    // Does user have permission to edit?
-    const user = User
-      .query()
-      .update({
-        ...ctx.request.body
-      })
-      .where({ id })
-      .returning(['id', 'first_name', 'last_name', 'email', 'role', 'img'])
+    // TODO: Does user have permission to edit?
+    try {
+      const isAdmin = await(isAdmin(role));
+      const user = await User
+        .query()
+        .update({
+          ...omit(body, ['digest'])
+        })
+        .where({ id })
+        .returning(['id', 'first_name', 'last_name', 'email', 'role', 'img'])
+
+      ctx.body = { user };
+    } catch(e) {
+      ctx.body = {
+        message: 'Not authorized to edit that user'
+      }
+    }
   }
 
 });

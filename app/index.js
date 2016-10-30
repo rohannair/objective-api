@@ -6,6 +6,7 @@ const router = require('koa-router');
 const chalk = require('chalk');
 const co = require('co');
 const debug = require('debug')('app:index');
+const Boom = require('boom');
 
 const knex = require('knex');
 const { Model } = require('objection');
@@ -52,4 +53,8 @@ api
 
 app
   .use(api.routes())
-  .use(api.allowedMethods());
+  .use(api.allowedMethods({
+    throw: true,
+    notImplemented: () => new Boom.notImplemented(),
+    methodNotAllowed: () => new Boom.methodNotAllowed()
+  }));

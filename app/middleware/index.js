@@ -12,6 +12,7 @@ const isAuthed = async (ctx, next) => {
 
     await next();
   } catch (e) {
+    console.error(e.stack)
     throw new ApiError(e.message, 401)
   }
 }

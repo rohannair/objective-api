@@ -1,4 +1,7 @@
+const Company = require('../../models/Company');
 const User = require('../../models/User');
+const { addId } = require('../../utils');
+const omit = require('lodash/omit');
 
 const {
   encryptPassword,
@@ -46,6 +49,36 @@ const userControllers = User => ({
         }
       }
     }
+  },
+
+  forgotPassword: async ctx => {
+    // TODO: allow password reset
+  },
+
+  signup: async ctx => {
+    const { body } = ctx.request;
+
+    const domain = body.email.split('@')[1];
+    const company = await Company
+      .query()
+      .where('domain', domain)
+      .select('id')
+      .first();
+
+    const newUser = {
+      ...addId({ email: body.email }),
+      digest: await encryptPassword(body.password),
+      company_id: company.id
+    };
+
+    const user = await User
+      .query()
+      .insert(newUser)
+      .where('company_id', company)
+      .returning(['id', 'first_name', 'last_name', 'email', 'role', 'img']);
+
+    ctx.status = 201;
+    ctx.body = { user: omit(user, 'digest') };
   }
 });
 

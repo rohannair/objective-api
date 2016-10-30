@@ -13,7 +13,8 @@ exports.seed = function(knex, Promise) {
     .then(password => Promise.all([
       knex('companies').insert({
         id: companyId,
-        name: 'Quartermaster'
+        name: 'Quartermaster',
+        domain: 'qrtrmstr.com'
       }).then(() =>
         knex('users').insert([
           {

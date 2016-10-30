@@ -2,28 +2,37 @@ const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
 // Async function to encrypt a password, given the password and a saltRound value
-function encryptPassword(password) {
-  return new Promise((resolve, reject) => {
+const encryptPassword = password =>
+  new Promise((resolve, reject) => {
     bcrypt.hash(password, saltRounds, (err, hash) => {
-      if (err !== undefined) return reject(err);
+      if (err) return reject(err);
       resolve(hash);
     });
   });
-}
 
 // password is the password supplied by the user at the login screen
 // dbHash is the hashed password in the database
 // returns a boolean depending on the match
-function checkPassword(password, dbHash) {
-  return new Promise((resolve, reject) => {
+const checkPassword = (password, dbHash) =>
+  new Promise((resolve, reject) => {
     bcrypt.compare(password, dbHash, (err, res) => {
-      if (err !== undefined) return resolve(false);
+      if (err) return resolve(false);
       resolve(res);
     });
-  })
-}
+  });
+
+const randomPassword = length =>
+  Promise.resolve(Math.random().toString(36).slice(-length));
+
+const isAdmin = role =>
+  new Promise((resolve, reject) => {
+    if (role === 'user') return reject(false);
+    resolve(true);
+  });
 
 module.exports = {
-  encryptPassword: encryptPassword,
-  checkPassword: checkPassword
+  encryptPassword,
+  checkPassword,
+  randomPassword,
+  isAdmin
 };
