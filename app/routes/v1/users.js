@@ -46,7 +46,7 @@ const userControllers = User => ({
       .limit(limit)
       .offset(offset)
       .orderBy('last_name')
-      .eager('[squads]');
+      .eager('[squads, missions]');
 
     ctx.body = {
       results,

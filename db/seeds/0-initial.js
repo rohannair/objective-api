@@ -1,5 +1,5 @@
 const uuid = require('node-uuid');
-const { encryptPassword } = require('../../app/utils/encryption');
+const { encryptPassword } = require('../utils/encryption');
 
 exports.seed = function(knex, Promise) {
   let companyId = uuid.v4();
@@ -25,7 +25,9 @@ exports.seed = function(knex, Promise) {
             digest: password,
             role: 'superuser',
             company_id: companyId,
-            img: 'https://avatars.io/instagram/therealrohannair'
+            img: 'https://avatars.io/instagram/therealrohannair',
+            pending: false,
+            job_title: 'CTO'
           },
           {
             id: userId2,
@@ -35,7 +37,9 @@ exports.seed = function(knex, Promise) {
             digest: password,
             role: 'admin',
             company_id: companyId,
-            img: 'https://avatars.io/twitter/raykanani'
+            img: 'https://avatars.io/twitter/raykanani',
+            pending: false,
+            job_title: 'CEO'
           },
           {
             id: userId3,
@@ -45,7 +49,9 @@ exports.seed = function(knex, Promise) {
             digest: password,
             role: 'admin',
             company_id: companyId,
-            img: 'https://avatars.io/facebook/stu.peters.3'
+            img: 'https://avatars.io/facebook/stu.peters.3',
+            pending: false,
+            job_title: 'Operations'
           },
         ])
       ),
@@ -121,8 +127,21 @@ exports.seed = function(knex, Promise) {
           name: 'Head of Marketing @raykanani'
         }
 
-      ])
+      ]),
     ]))
+    .then(() =>
+      knex('squads').insert([
+        {
+          name: 'Product',
+          company_id: companyId,
+          creator: userId
+        },
+        {
+          name: 'Customer Success',
+          company_id: companyId,
+          creator: userId2
+        }
+      ]))
     .then(() => Promise.all([
       knex('missions_resources').insert([
         {
@@ -172,5 +191,20 @@ exports.seed = function(knex, Promise) {
           mission_id: missionId2
         }
       ]),
+
+      knex('squads_users').insert([
+        {
+          squad_id: knex('squads').where('name','Product').select('id'),
+          user_id: userId
+        },
+        {
+          squad_id: knex('squads').where('name','Product').select('id'),
+          user_id: userId3
+        },
+        {
+          squad_id: knex('squads').where('name','Customer Success').select('id'),
+          user_id: userId2
+        }
+      ])
     ]))
 }
