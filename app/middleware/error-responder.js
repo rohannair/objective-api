@@ -1,3 +1,4 @@
+'use strict';
 const error = require('debug')('app:error');
 
 const UNKNOWN_ERROR_CODE = 500;

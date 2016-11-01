@@ -1,3 +1,4 @@
+'use strict';
 const router = require('koa-router');
 const { shallow, deep } = require('./health-check.controller');
 

@@ -1,3 +1,4 @@
+'use strict';
 const Company = require('../../models/Company');
 const User = require('../../models/User');
 const { addId } = require('../../utils');

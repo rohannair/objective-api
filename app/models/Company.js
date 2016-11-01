@@ -1,3 +1,4 @@
+'use strict';
 import BaseModel from './Base';
 
 class Company extends BaseModel {

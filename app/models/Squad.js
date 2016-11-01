@@ -1,3 +1,4 @@
+'use strict';
 import { Model } from 'objection';
 
 import BaseModel from './Base';

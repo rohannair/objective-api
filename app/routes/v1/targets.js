@@ -1,3 +1,4 @@
+'use strict';
 import Target from '../../models/Target';
 
 const targetsController = Target => ({

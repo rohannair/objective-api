@@ -1,4 +1,6 @@
 // Deps
+'use strict';
+
 const router = require('koa-router');
 
 // Controllers
@@ -13,5 +15,5 @@ module.exports = router()
   .post('/login', login)
   .post('/forgotpassword', forgotPassword)
   .post('/signup', signup)
-  // TODO: need a create company API
-  // .post('/createCompany', createCompany)
+// TODO: need a create company API
+// .post('/createCompany', createCompany)

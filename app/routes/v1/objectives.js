@@ -1,3 +1,4 @@
+'use strict';
 import Objective from '../../models/Objective';
 
 const objectivesController = Objective => ({

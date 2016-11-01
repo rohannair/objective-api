@@ -1,3 +1,4 @@
+'use strict';
 const ApiError = Error;
 const jwt = require('jsonwebtoken');
 const SECRET = process.env.JWT_SECRET || 'abcd1234';

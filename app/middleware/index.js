@@ -1,3 +1,4 @@
+'use strict';
 const { verifyToken } = require('../utils/auth');
 const ApiError = require('../utils/error');
 

@@ -1,3 +1,4 @@
+'use strict';
 import Resource from '../../models/Resource';
 
 const resourceControllers = Resource => ({

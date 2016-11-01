@@ -1,3 +1,4 @@
+'use strict';
 import User from '../../models/User';
 
 const { addId } = require('../../utils');
