@@ -12,7 +12,8 @@ import {
   searchUsers,
   getUsers,
   getOneUser,
-  updateUser
+  updateUser,
+  inviteUser
 } from './users';
 
 import {
@@ -37,6 +38,7 @@ module.exports = router()
   .get('/users', getUsers)
   .get('/users/search', searchUsers)
   .get('/users/:id', getOneUser)
+  .post('/user/invite', inviteUser)
   .post('/user/:id', updateUser)
   .post('/logout', logout)
 

@@ -42,7 +42,7 @@ const userControllers = User => ({
 
     const results = await User
       .query()
-      .select('id', 'first_name', 'last_name', 'email', 'role', 'img', 'job_title')
+      .select('id', 'first_name', 'last_name', 'email', 'role', 'img', 'job_title', 'pending')
       .limit(limit)
       .offset(offset)
       .orderBy('last_name')
@@ -78,16 +78,52 @@ const userControllers = User => ({
       .query()
       .insert({
         ...addId(body),
-        digest: encryptPassword(pword)
+        digest: encryptPassword(pword),
+        company_id: company
       })
-      .where('company_id', company)
-      .returning(['id', 'first_name', 'last_name', 'email', 'role', 'img', 'job_title']);
+      .returning(['id', 'first_name', 'last_name', 'email', 'role', 'img', 'job_title', 'pending']);
 
       // TODO: send email to user with password
 
       ctx.status = 201;
       // TODO: get rid of returning the password here
       ctx.body = { user: { ...user, password: pword } };
+  },
+
+  inviteUser: async ctx => {
+    const { email, jobTitle } = ctx.request.body;
+    const { company } = ctx.state;
+    console.log('COMPANY', email);
+
+    try {
+      const user = await User
+        .query()
+        .where({
+          email,
+          company_id: company
+        })
+        .first();
+
+      if (user) throw new Error(`User ${user} already exists`, );
+
+      const newUser = await User
+        .query()
+        .insert(addId({
+            email,
+            job_title: jobTitle,
+            company_id: company
+        }))
+        .returning(['id', 'first_name', 'last_name', 'email', 'role', 'img', 'job_title', 'pending']);
+
+      ctx.status = 201;
+      ctx.body = { user: newUser };
+    } catch(e) {
+      ctx.status = 500;
+      ctx.body = {
+        message: e.message
+      }
+    }
+
   },
 
   updateUserPassword: async ctx => {
