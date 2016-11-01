@@ -27,3 +27,5 @@
 - [ ] Heroku deploy instructions
 - [ ] New customer creation
 - [ ] Microservices
+- [ ] Write up stuff for codemods (`jscodeshift -t codemods/transforms/requires-to-imports.js app/**/*.js`)
+
