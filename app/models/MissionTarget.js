@@ -1,10 +1,7 @@
-const { Model } = require('objection');
-const BaseModel = require('./Base');
+import BaseModel from './Base';
 
 class Mission_Target extends BaseModel {
-  static get tableName() {
-    return 'missions_targets';
-  }
+  static tableName = 'missions_targets';
 }
 
-module.exports = Mission_Target;
+export default Mission_Target;

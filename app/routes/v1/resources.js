@@ -1,6 +1,4 @@
-const {
-  Resource
-} = require('../../models/Resource');
+import Resource from '../../models/Resource';
 
 const resourceControllers = Resource => ({
   updateResource: async ctx => {

@@ -1,10 +1,22 @@
-const { Model } = require('objection');
+import { Model } from 'objection';
 
-const camelCase = require('lodash/camelCase');
-const mapKeys = require('lodash/mapKeys');
-const snakeCase = require('lodash/snakeCase');
+import camelCase from 'lodash/camelCase';
+import mapKeys from 'lodash/mapKeys';
+import snakeCase from 'lodash/snakeCase';
 
 class BaseModel extends Model {
+  static get Model() {
+    return Model;
+  }
+
+  $beforeUpdate () {
+    if (this.updated_at) this.updated_at = new Date().toISOString();
+  }
+
+  $beforeInsert () {
+    if (this.created_at)  this.created_at = new Date().toISOString();
+  }
+
   $formatDatabaseJson(json) {
     json = super.$formatDatabaseJson(json);
 
@@ -22,4 +34,4 @@ class BaseModel extends Model {
   }
 }
 
-module.exports = BaseModel;
+export default BaseModel;

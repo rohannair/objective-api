@@ -1,4 +1,4 @@
-const Objective = require('../../models/Objective');
+import Objective from '../../models/Objective';
 
 const objectivesController = Objective => ({
   updateObjective: async ctx => {

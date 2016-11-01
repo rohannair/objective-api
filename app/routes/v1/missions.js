@@ -1,16 +1,15 @@
-const {
-  Mission,
+import Mission, {
   getMission,
   getAllMissions
-} = require('../../models/Mission');
+} from '../../models/Mission';
 
-const { Resource } = require('../../models/Resource');
-const Objective = require('../../models/Objective');
-const Target = require('../../models/Target');
+import Resource from '../../models/Resource';
+import Objective from '../../models/Objective';
+import Target from '../../models/Target';
 
-const MissionResource = require('../../models/MissionResource');
-const MissionObjective = require('../../models/MissionObjective');
-const MissionTarget = require('../../models/MissionTarget');
+import MissionResource from '../../models/MissionResource';
+import MissionObjective from '../../models/MissionObjective';
+import MissionTarget from '../../models/MissionTarget';
 
 const { addId } = require('../../utils');
 const snakeCase = require('lodash/snakeCase');

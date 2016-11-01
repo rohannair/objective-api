@@ -1,4 +1,5 @@
-const User = require('../../models/User');
+import User from '../../models/User';
+
 const { addId } = require('../../utils');
 
 const {
@@ -27,7 +28,7 @@ const userControllers = User => ({
 
     const results = await User
       .query()
-      .select('id', 'first_name', 'last_name', 'email', 'role', 'img')
+      .select('id', 'first_name', 'last_name', 'email', 'role', 'img', 'job_title')
       .where('email', 'LIKE', q + '%')
       .orWhere('first_name', 'LIKE', q + '%')
       .orWhere('last_name', 'LIKE', q + '%');
@@ -40,7 +41,7 @@ const userControllers = User => ({
 
     const results = await User
       .query()
-      .select('id', 'first_name', 'last_name', 'email', 'role', 'img')
+      .select('id', 'first_name', 'last_name', 'email', 'role', 'img', 'job_title')
       .limit(limit)
       .offset(offset)
       .orderBy('last_name')
@@ -58,8 +59,9 @@ const userControllers = User => ({
 
     const user = await User
       .query()
-      .select('id', 'first_name', 'last_name', 'email', 'img')
-      .where({id})
+      .select('id', 'first_name', 'last_name', 'email', 'img', 'job_title')
+      .eager('[squads]')
+      .where({ id })
       .first();
 
     ctx.body = { user };
@@ -78,7 +80,7 @@ const userControllers = User => ({
         digest: encryptPassword(pword)
       })
       .where('company_id', company)
-      .returning(['id', 'first_name', 'last_name', 'email', 'role', 'img']);
+      .returning(['id', 'first_name', 'last_name', 'email', 'role', 'img', 'job_title']);
 
       // TODO: send email to user with password
 
@@ -111,7 +113,7 @@ const userControllers = User => ({
           ...omit(body, ['digest'])
         })
         .where({ id })
-        .returning(['id', 'first_name', 'last_name', 'email', 'role', 'img'])
+        .returning(['id', 'first_name', 'last_name', 'email', 'role', 'img', 'job_title'])
 
       ctx.body = { user };
     } catch(e) {

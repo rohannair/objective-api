@@ -1,4 +1,4 @@
-const Target = require('../../models/Target');
+import Target from '../../models/Target';
 
 const targetsController = Target => ({
   updateTarget: async ctx => {

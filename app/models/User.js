@@ -1,13 +1,12 @@
-const { Model } = require('objection');
+import { Model } from 'objection';
 
-const BaseModel = require('./Base');
-const Company = require('./Company');
-const Squad = require('./Squad');
+import BaseModel from './Base';
+import Company from './Company';
+import Mission from './Mission';
+import Squad from './Squad';
 
 class User extends BaseModel {
-  static get tableName() {
-    return 'users';
-  }
+  static tableName = 'users';
 
   static get relationMappings() {
     return {
@@ -31,10 +30,23 @@ class User extends BaseModel {
           },
           to: 'squads.id'
         }
+      },
+
+      missions: {
+        relation: Model.ManyToManyRelation,
+        modelClass: Mission,
+        join: {
+          from: 'users.id',
+          through: {
+            from: 'missions_users.user_id',
+            to: 'missions_users.mission_id'
+          },
+          to: 'missions.id'
+        }
       }
     }
 
   }
 }
 
-module.exports = User;
+export default User;

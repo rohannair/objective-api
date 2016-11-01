@@ -1,22 +1,20 @@
-const { Model } = require('objection');
-const { addId } = require('../utils');
+import { Model } from 'objection';
+import { addId } from '../utils';
 
-const BaseModel = require('./Base');
-const Objective = require('./Objective');
-const { Resource } = require('./Resource');
-const { CheckIn } = require('./CheckIn');
-const Target = require('./Target');
-const User = require('./User');
+import BaseModel from './Base';
+import Objective from './Objective';
+import Resource from './Resource';
+import CheckIn from './CheckIn';
+import Target from './Target';
+// import User from './User';
 
-const Mission_Objective = require('./MissionObjective');
-const Mission_Resource = require('./MissionResource');
-const Mission_Target = require('./MissionTarget');
-const Mission_User = require('./MissionUser');
+import Mission_Objective from './MissionObjective';
+import Mission_Resource from './MissionResource';
+import Mission_Target from './MissionTarget';
+import Mission_User from './MissionUser';
 
 class Mission extends BaseModel {
-  static get tableName() {
-    return 'missions';
-  }
+  static tableName = 'missions';
 
   $beforeUpdate() {
     this.updated_at = new Date().toUTCString();
@@ -24,18 +22,18 @@ class Mission extends BaseModel {
 
   static get relationMappings() {
     return {
-      users: {
-        relation: Model.ManyToManyRelation,
-        modelClass: User,
-        join: {
-          from: 'missions.id',
-          through: {
-            from: 'missions_users.mission_id',
-            to: 'missions_users.user_id'
-          },
-          to: 'users.id'
-        }
-      },
+      // users: {
+      //   relation: Model.ManyToManyRelation,
+      //   modelClass: User,
+      //   join: {
+      //     from: 'missions.id',
+      //     through: {
+      //       from: 'missions_users.mission_id',
+      //       to: 'missions_users.user_id'
+      //     },
+      //     to: 'users.id'
+      //   }
+      // },
 
       resources: {
         relation: Model.ManyToManyRelation,
@@ -88,43 +86,42 @@ class Mission extends BaseModel {
   }
 }
 
-const getAllMissions = (limit = 10, offset = 0) =>
+export default Mission;
+
+/// Queries
+export const getAllMissions = (limit = 10, offset = 0) =>
   Mission
     .query()
     .select('id', 'name', 'description', 'duration', 'status', 'end_at')
     .limit(limit)
     .offset(offset)
-    .eager('[resources, objectives, targets, users, checkIns]')
+    .eager('[resources, objectives, targets, checkIns]')
     .filterEager('resources', b =>
       b.select('resources.id', 'resources.name'))
     .filterEager('targets', b =>
       b.select('targets.id', 'targets.objective', 'targets.key_results'))
     .filterEager('objectives', b =>
       b.select('objectives.id', 'objectives.name', 'objectives.completed'))
-    .filterEager('users', b =>
-      b.select('users.id', 'email', 'first_name', 'last_name', 'role', 'img'))
     .filterEager('checkIns', b =>
         b.orderBy('created_at').limit(5)
       )
     .orderBy('missions.updated_at');
 
-const getMission = id =>
+export const getMission = id =>
   Mission
     .query()
     .select('id', 'name', 'description', 'duration', 'status', 'end_at')
     .where({ id })
-    .eager('[resources, objectives, targets, users]')
+    .eager('[resources, objectives, targets]')
     .filterEager('resources', b =>
       b.select('resources.id', 'resources.name'))
     .filterEager('targets', b =>
       b.select('targets.id', 'targets.objective', 'targets.key_results'))
     .filterEager('objectives', b =>
       b.select('objectives.id', 'objectives.name', 'objectives.completed'))
-    .filterEager('users', b =>
-      b.select('users.id', 'email', 'first_name', 'last_name', 'role', 'img'))
     .first();
 
-const putMission = mission =>
+export const putMission = mission =>
   Mission
     .query()
     .insertWithRelated([
@@ -137,8 +134,3 @@ const putMission = mission =>
       }
     ]);
 
-module.exports = {
-  Mission,
-  getMission,
-  getAllMissions
-};
