@@ -1,6 +1,6 @@
 'use strict';
-const router = require('koa-router');
-const { shallow, deep } = require('./health-check.controller');
+import router from 'koa-router';
+import { shallow, deep } from './health-check.controller';
 
 module.exports = router()
   .get('/shallow', shallow)

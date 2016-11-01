@@ -1,17 +1,17 @@
 'use strict';
-const Company = require('../../models/Company');
-const User = require('../../models/User');
-const { addId } = require('../../utils');
-const omit = require('lodash/omit');
+import Company from '../../models/Company';
+import User from '../../models/User';
+import { addId } from '../../utils';
+import omit from 'lodash/omit';
 
-const {
+import {
   encryptPassword,
   checkPassword
-} = require('../../utils/encryption');
+} from '../../utils/encryption';
 
-const {
+import {
   genToken
-} = require('../../utils/auth');
+} from '../../utils/auth';
 
 const userControllers = User => ({
   login: async ctx => {

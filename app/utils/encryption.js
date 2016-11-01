@@ -1,5 +1,5 @@
 'use strict';
-const bcrypt = require('bcrypt');
+import bcrypt from 'bcrypt';
 const saltRounds = 10;
 
 // Async function to encrypt a password, given the password and a saltRound value

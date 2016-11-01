@@ -1,18 +1,18 @@
 'use strict';
 
 ///////////// Deps /////////////
-const Koa = require('koa');
-const router = require('koa-router');
-const chalk = require('chalk');
-const co = require('co');
+import Koa from 'koa';
+import router from 'koa-router';
+import chalk from 'chalk';
+import co from 'co';
 const debug = require('debug')('app:index');
-const Boom = require('boom');
+import Boom from 'boom';
 
-const knex = require('knex');
-const { Model } = require('objection');
-const convert = require('koa-convert');
-const helmet = require('koa-helmet');
-const cors = require('koa-cors');
+import knex from 'knex';
+import { Model } from 'objection';
+import convert from 'koa-convert';
+import helmet from 'koa-helmet';
+import cors from 'koa-cors';
 
 const keys = ['ineed', 'better', 'keys'];
 
@@ -23,13 +23,13 @@ Model.knex(db);
 const ENV = process.env.NODE_ENV || 'development';
 
 ///////////// Middleware /////////////
-const bodyparser = require('koa-bodyparser');
-const errorResponder = require('./middleware/error-responder');
+import bodyparser from 'koa-bodyparser';
+import errorResponder from './middleware/error-responder';
 
 ///////////// Routes /////////////
-const healthCheckRouter = require('./routes/health-check/health-check.routes');
-const publicRouter = require('./routes/public');
-const v1Router = require('./routes/v1');
+import healthCheckRouter from './routes/health-check/health-check.routes';
+import publicRouter from './routes/public';
+import v1Router from './routes/v1';
 
 ///////////// App /////////////
 const app = module.exports = new Koa();

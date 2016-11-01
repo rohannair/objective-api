@@ -1,6 +1,6 @@
 'use strict';
-const { verifyToken } = require('../utils/auth');
-const ApiError = require('../utils/error');
+import { verifyToken } from '../utils/auth';
+import ApiError from '../utils/error';
 
 const isAuthed = async (ctx, next) => {
   try {

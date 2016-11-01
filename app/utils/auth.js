@@ -1,6 +1,6 @@
 'use strict';
-const jwt = require('jsonwebtoken');
-const omit = require('lodash/omit');
+import jwt from 'jsonwebtoken';
+import omit from 'lodash/omit';
 
 const secret = process.env.JWT_SECRET || new Buffer('abcd1234').toString('base64');
 

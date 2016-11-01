@@ -1,21 +1,21 @@
 // Deps
 'use strict';
 
-const router = require('koa-router');
+import router from 'koa-router';
 
 // Middleware
-const { isAuthed } = require('../../middleware');
+import { isAuthed } from '../../middleware';
 
 // Controllers
-const {
+import {
   logout,
   searchUsers,
   getUsers,
   getOneUser,
   updateUser
-} = require('./users');
+} from './users';
 
-const {
+import {
   getMissions,
   getOneMission,
   addResource,
@@ -23,11 +23,11 @@ const {
   addTarget,
   newMission,
   updateMission
-} = require('./missions');
+} from './missions';
 
-const { updateResource } = require('./resources');
-const { updateObjective } = require('./objectives');
-const { updateTarget } = require('./targets');
+import { updateResource } from './resources';
+import { updateObjective } from './objectives';
+import { updateTarget } from './targets';
 
 // Routes
 module.exports = router()

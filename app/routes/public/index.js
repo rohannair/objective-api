@@ -1,14 +1,14 @@
 // Deps
 'use strict';
 
-const router = require('koa-router');
+import router from 'koa-router';
 
 // Controllers
-const {
+import {
   login,
   forgotPassword,
   signup
-} = require('./users');
+} from './users';
 
 module.exports = router()
   .all('/', async ctx => ctx.body = { message: 'Welcome!' })

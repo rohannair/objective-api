@@ -12,8 +12,8 @@ import MissionResource from '../../models/MissionResource';
 import MissionObjective from '../../models/MissionObjective';
 import MissionTarget from '../../models/MissionTarget';
 
-const { addId } = require('../../utils');
-const snakeCase = require('lodash/snakeCase');
+import { addId } from '../../utils';
+import snakeCase from 'lodash/snakeCase';
 
 const missionControllers = Mission => ({
   getMissions: async ctx => {

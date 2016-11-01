@@ -1,6 +1,6 @@
 'use strict';
 const ApiError = Error;
-const jwt = require('jsonwebtoken');
+import jwt from 'jsonwebtoken';
 const SECRET = process.env.JWT_SECRET || 'abcd1234';
 
 // Function to generate a JWT, with the user details to be included as the payload

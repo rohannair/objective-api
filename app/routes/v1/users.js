@@ -1,17 +1,17 @@
 'use strict';
 import User from '../../models/User';
 
-const { addId } = require('../../utils');
+import { addId } from '../../utils';
 
-const {
+import {
   encryptPassword,
   checkPassword,
   randomPassword
-} = require('../../utils/encryption');
+} from '../../utils/encryption';
 
-const {
+import {
   genToken
-} = require('../../utils/token');
+} from '../../utils/token';
 
 const userControllers = User => ({
   logout: async ctx => {
