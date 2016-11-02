@@ -26,6 +26,8 @@ import {
   updateMission
 } from './missions';
 
+import { getSquads } from './squads';
+
 import { updateResource } from './resources';
 import { updateObjective } from './objectives';
 import { updateTarget } from './targets';
@@ -41,6 +43,8 @@ module.exports = router()
   .post('/user/invite', inviteUser)
   .post('/user/:id', updateUser)
   .post('/logout', logout)
+
+  .get('/squads', getSquads)
 
   .get('/missions', getMissions)
   .get('/missions/new', newMission)

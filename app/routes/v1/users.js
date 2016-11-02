@@ -93,7 +93,6 @@ const userControllers = User => ({
   inviteUser: async ctx => {
     const { email, jobTitle } = ctx.request.body;
     const { company } = ctx.state;
-    console.log('COMPANY', email);
 
     try {
       const user = await User

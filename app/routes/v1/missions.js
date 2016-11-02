@@ -36,7 +36,7 @@ const missionControllers = Mission => ({
   updateMission: async ctx => {
     const { id } = ctx.params;
     const { field } = ctx.query;
-    console.log('RETURN', snakeCase(field));
+
     const mission = await Mission
       .query()
       .update({ ...ctx.request.body })
