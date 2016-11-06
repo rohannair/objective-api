@@ -6,11 +6,7 @@ import Mission, {
 
 import Resource from '../../models/Resource';
 import Objective from '../../models/Objective';
-import Target from '../../models/Target';
-
-import MissionResource from '../../models/MissionResource';
-import MissionObjective from '../../models/MissionObjective';
-import MissionTarget from '../../models/MissionTarget';
+import Mission_Squad from '../../models/MissionSquad';
 
 import { addId } from '../../utils';
 import snakeCase from 'lodash/snakeCase';
@@ -25,7 +21,6 @@ const missionControllers = Mission => ({
 
   getOneMission: async ctx => {
     const { id } = ctx.params;
-
     const mission = await getMission(id);
 
     ctx.body = {
@@ -73,13 +68,6 @@ const missionControllers = Mission => ({
       .insert(objective)
       .returning('*');
 
-    const newJoin = await MissionObjective
-      .query()
-      .insert({
-        mission_id: id,
-        objective_id: newObjective.id
-      });
-
     ctx.status = 201;
     ctx.body = { inserted: newObjective };
   },
@@ -91,13 +79,6 @@ const missionControllers = Mission => ({
       .query()
       .insert(target)
       .returning('*');
-
-    const newJoin = await MissionTarget
-      .query()
-      .insert({
-        mission_id: id,
-        target_id: newTarget.id
-      });
 
       ctx.status = 201;
       ctx.body = { inserted: newTarget };
@@ -123,6 +104,43 @@ const missionControllers = Mission => ({
 
     ctx.status = 201;
     ctx.body = { mission };
+  },
+
+  createMission: async ctx => {
+    const data = ctx.request.body;
+    // {
+    //   "data": {
+    //     "objective": "a",
+    //     "keyResults": [
+    //       "b"
+    //     ],
+    //     "timeline": "c"
+    //   }
+    // }
+    //
+    //
+
+    const newMission = await Mission
+      .query()
+      .insertWithRelated({
+        ...addId({
+          name: data.objective,
+          duration: data.timeline
+        }),
+
+        key_results: data.keyResults.map(v => ({ name: v })),
+      })
+      .returning('*');
+
+    const missionSquadJoin = await Mission_Squad()
+      .query()
+      .insert({
+        squad_id: data.squadId,
+        mission_id: newMission.id
+      });
+
+    const mission = await getMission(newMission.id);
+    ctx.body = { mission }
   }
 
 });

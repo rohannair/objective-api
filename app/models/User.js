@@ -3,8 +3,7 @@ import { Model } from 'objection';
 
 import BaseModel from './Base';
 import Company from './Company';
-import Mission from './Mission';
-import Squad from './Squad';
+import Objective from './Objective';
 
 class User extends BaseModel {
   static tableName = 'users';
@@ -20,29 +19,16 @@ class User extends BaseModel {
         }
       },
 
-      squads: {
+      objectives: {
         relation: Model.ManyToManyRelation,
-        modelClass: Squad,
+        modelClass: Objective,
         join: {
           from: 'users.id',
           through: {
-            from: 'squads_users.user_id',
-            to: 'squads_users.squad_id'
+            from: 'objectives_users.user_id',
+            to: 'objectives_users.objective_id'
           },
-          to: 'squads.id'
-        }
-      },
-
-      missions: {
-        relation: Model.ManyToManyRelation,
-        modelClass: Mission,
-        join: {
-          from: 'users.id',
-          through: {
-            from: 'missions_users.user_id',
-            to: 'missions_users.mission_id'
-          },
-          to: 'missions.id'
+          to: 'objectives.id'
         }
       }
     }

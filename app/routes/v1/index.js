@@ -7,56 +7,20 @@ import router from 'koa-router';
 import { isAuthed } from '../../middleware';
 
 // Controllers
-import {
-  logout,
-  searchUsers,
-  getUsers,
-  getOneUser,
-  updateUser,
-  inviteUser
-} from './users';
-
-import {
-  getMissions,
-  getOneMission,
-  addResource,
-  addObjective,
-  addTarget,
-  newMission,
-  updateMission
-} from './missions';
-
-import { getSquads } from './squads';
-
-import { updateResource } from './resources';
-import { updateObjective } from './objectives';
-import { updateTarget } from './targets';
+import * as users from './users';
+import * as squads from './squads';
 
 // Routes
 module.exports = router()
   .use(isAuthed)
   .all('/', async ctx => ctx.body = { message: 'Welcome to the v1 API'})
 
-  .get('/users', getUsers)
-  .get('/users/search', searchUsers)
-  .get('/users/:id', getOneUser)
-  .post('/user/invite', inviteUser)
-  .post('/user/:id', updateUser)
-  .post('/logout', logout)
+  .get('/users', users.get)
+  .get('/users/search', users.search)
+  .get('/users/:id', users.getOne)
+  .post('/user/invite', users.invite)
+  .post('/user/:id', users.update)
+  .post('/logout', users.logout)
 
-  .get('/squads', getSquads)
-
-  .get('/missions', getMissions)
-  .get('/missions/new', newMission)
-  .get('/missions/:id', getOneMission)
-  .post('/missions/:id', updateMission)
-
-  .get('/missions/:id/resources/add', addResource)
-  .post('/missions/:id/resources/:resourceId', updateResource)
-
-  .get('/missions/:id/objectives/add', addObjective)
-  .post('/missions/:id/objectives/:objectiveId', updateObjective)
-
-  .get('/missions/:id/targets/add', addTarget)
-  .post('/missions/:id/targets/:targetId', updateTarget)
+  .get('/squads', squads.get)
 

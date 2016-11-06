@@ -5,7 +5,6 @@ import Koa from 'koa';
 import router from 'koa-router';
 import chalk from 'chalk';
 import co from 'co';
-const debug = require('debug')('app:index');
 import Boom from 'boom';
 
 import knex from 'knex';
@@ -15,6 +14,7 @@ import helmet from 'koa-helmet';
 import cors from 'koa-cors';
 
 const keys = ['ineed', 'better', 'keys'];
+const debug = require('debug')('app:index');
 
 const db = knex(require('../knexfile'));
 Model.knex(db);

@@ -4,7 +4,7 @@ import { Model } from 'objection';
 import BaseModel from './Base';
 
 import Company from './Company';
-import Mission from './Mission';
+import Objective from './Objective';
 import User from './User';
 
 class Squad extends BaseModel {
@@ -21,7 +21,7 @@ class Squad extends BaseModel {
         }
       },
 
-      creator: {
+      leader: {
         relation: Model.BelongsToOneRelation,
         modelClass: User,
         join: {
@@ -30,29 +30,12 @@ class Squad extends BaseModel {
         }
       },
 
-      missions: {
-        relation: Model.ManyToManyRelation,
-        modelClass: Mission,
+      objectives: {
+        relation: Model.HasManyRelation,
+        modelClass: Objective,
         join: {
           from: 'squads.id',
-          through: {
-            from: 'missions_squads.squad_id',
-            to: 'missions_squads.mission_id'
-          },
-          to: 'missions.id'
-        }
-      },
-
-      users: {
-        relation: Model.ManyToManyRelation,
-        modelClass: User,
-        join: {
-          from: 'squads.id',
-          through: {
-            from: 'squads_users.squad_id',
-            to: 'squads_users.user_id',
-          },
-          to: 'users.id'
+          to: 'objectives.squad_id'
         }
       }
     }

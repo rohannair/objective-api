@@ -2,16 +2,13 @@
 import User from '../../models/User';
 
 import { addId } from '../../utils';
+import { genToken } from '../../utils/token';
 
 import {
   encryptPassword,
   checkPassword,
   randomPassword
 } from '../../utils/encryption';
-
-import {
-  genToken
-} from '../../utils/token';
 
 const userControllers = User => ({
   logout: async ctx => {
@@ -24,12 +21,20 @@ const userControllers = User => ({
     }
   },
 
-  searchUsers: async ctx => {
+  search: async ctx => {
     const { q } = ctx.query;
 
     const results = await User
       .query()
-      .select('id', 'first_name', 'last_name', 'email', 'role', 'img', 'job_title')
+      .select(
+        'id',
+        'first_name',
+        'last_name',
+        'email',
+        'role',
+        'img',
+        'job_title'
+       )
       .where('email', 'LIKE', q + '%')
       .orWhere('first_name', 'LIKE', q + '%')
       .orWhere('last_name', 'LIKE', q + '%');
@@ -37,16 +42,25 @@ const userControllers = User => ({
     ctx.body = { results };
   },
 
-  getUsers: async ctx => {
+  get: async ctx => {
     const { limit, offset } = ctx.query;
 
     const results = await User
       .query()
-      .select('id', 'first_name', 'last_name', 'email', 'role', 'img', 'job_title', 'pending')
+      .select(
+        'id',
+        'email',
+        'first_name',
+        'last_name',
+        'img',
+        'job_title',
+        'role',
+        'pending'
+      )
       .limit(limit)
       .offset(offset)
       .orderBy('last_name')
-      .eager('[squads, missions]');
+      .eager('[objectives]');
 
     ctx.body = {
       results,
@@ -55,20 +69,29 @@ const userControllers = User => ({
     }
   },
 
-  getOneUser: async ctx => {
+  getOne: async ctx => {
     const { id } = ctx.params;
 
     const user = await User
       .query()
-      .select('id', 'first_name', 'last_name', 'email', 'img', 'job_title')
-      .eager('[squads]')
+      .select(
+        'id',
+        'email',
+        'first_name',
+        'last_name',
+        'img',
+        'job_title',
+        'role',
+        'pending'
+      )
+      .eager('[objectives]')
       .where({ id })
       .first();
 
     ctx.body = { user };
   },
 
-  createUser: async ctx => {
+  create: async ctx => {
     const { body } = ctx.request;
     const { company } = ctx.state;
 
@@ -81,7 +104,16 @@ const userControllers = User => ({
         digest: encryptPassword(pword),
         company_id: company
       })
-      .returning(['id', 'first_name', 'last_name', 'email', 'role', 'img', 'job_title', 'pending']);
+      .returning([
+        'id',
+        'email',
+        'first_name',
+        'last_name',
+        'img',
+        'job_title',
+        'role',
+        'pending'
+      ]);
 
       // TODO: send email to user with password
 
@@ -90,7 +122,7 @@ const userControllers = User => ({
       ctx.body = { user: { ...user, password: pword } };
   },
 
-  inviteUser: async ctx => {
+  invite: async ctx => {
     const { email, jobTitle } = ctx.request.body;
     const { company } = ctx.state;
 
@@ -112,7 +144,16 @@ const userControllers = User => ({
             job_title: jobTitle,
             company_id: company
         }))
-        .returning(['id', 'first_name', 'last_name', 'email', 'role', 'img', 'job_title', 'pending']);
+        .returning([
+          'id',
+          'email',
+          'first_name',
+          'last_name',
+          'img',
+          'job_title',
+          'role',
+          'pending'
+        ]);
 
       ctx.status = 201;
       ctx.body = { user: newUser };
@@ -125,7 +166,7 @@ const userControllers = User => ({
 
   },
 
-  updateUserPassword: async ctx => {
+  updatePassword: async ctx => {
     const { id } = ctx.params;
     const { body } = ctx.request;
     const { user, company, role } = ctx.state;
@@ -135,7 +176,7 @@ const userControllers = User => ({
     }
   },
 
-  updateUser: async ctx => {
+  update: async ctx => {
     const { id } = ctx.params;
     const { body } = ctx.request;
     const { company, role } = ctx.state;
@@ -149,7 +190,16 @@ const userControllers = User => ({
           ...omit(body, ['digest'])
         })
         .where({ id })
-        .returning(['id', 'first_name', 'last_name', 'email', 'role', 'img', 'job_title'])
+        .returning([
+          'id',
+          'email',
+          'first_name',
+          'last_name',
+          'img',
+          'job_title',
+          'role',
+          'pending'
+        ])
 
       ctx.body = { user };
     } catch(e) {

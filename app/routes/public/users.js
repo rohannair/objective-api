@@ -20,7 +20,7 @@ const userControllers = User => ({
 
     let user = await User
       .query()
-      .select('id', 'email', 'digest', 'role', 'company_id', 'img')
+      .select('id', 'email', 'digest', 'role', 'company_id')
       .where({
         email: username
       })
@@ -46,7 +46,8 @@ const userControllers = User => ({
         ctx.body = {
           status: 0,
           user: user.id,
-          token
+          token,
+          companyId: user.companyId
         }
       }
     }
