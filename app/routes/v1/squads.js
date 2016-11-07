@@ -3,6 +3,8 @@
 import Squad from '../../models/Squad';
 import SquadUser from '../../models/SquadUser';
 
+import { addId } from '../../utils';
+
 const squadControllers = Squad => ({
 
   get: async ctx => {
@@ -19,11 +21,59 @@ const squadControllers = Squad => ({
         'leader'
       )
       .orderBy('name')
-      .eager('[objectives.[key_results], users.[objectives]]');
+      .eager('[objectives.[key_results], users.[objectives.[key_results, resources]]]')
+      .filterEager('objectives', b => {
+        b.whereNull('user_id');
+      })
+      .filterEager('users', b => {
+        b.select(
+          'users.id',
+          'users.email',
+          'users.first_name',
+          'users.last_name',
+          'users.img',
+          'users.job_title',
+          'users.pending'
+        );
+      });
 
     ctx.body = {
       results
     }
+  },
+
+  create: async ctx => {
+    const { company } = ctx.state;
+    const { body } = ctx.request;
+
+    const newSquad = await Squad
+      .query()
+      .insert({
+        ...addId({
+          ...body,
+          company_id: company
+        })
+      })
+      .returning('id');
+
+    const squad = await Squad
+      .query()
+      .where('company_id', company)
+      .andWhere('id', newSquad.id)
+      .select(
+        'id',
+        'name',
+        'created_at',
+        'updated_at',
+        'leader'
+      )
+      .eager('[objectives.[key_results], users.[objectives]]')
+      .first();
+
+    ctx.status = 201;
+    ctx.body = {
+      squad
+    };
   },
 
   assignUser: async ctx => {

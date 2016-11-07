@@ -4,6 +4,7 @@ import BaseModel from './Base';
 
 import Squad from './Squad';
 import Key_Result from './KeyResult';
+import Resource from './Resource';
 
 class Objective extends BaseModel {
   static tableName = 'objectives';
@@ -29,6 +30,15 @@ class Objective extends BaseModel {
         join: {
           from: 'objectives.squad_id',
           to: 'squads.id'
+        }
+      },
+
+      resources: {
+        relation: Model.HasManyRelation,
+        modelClass: Resource,
+        join: {
+          from: 'objectives.id',
+          to: 'resources.objective_id'
         }
       }
     }

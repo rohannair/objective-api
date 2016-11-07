@@ -1,8 +1,12 @@
 'use strict';
 import User from '../../models/User';
+import Objective from '../../models/Objective';
 
 import { addId } from '../../utils';
 import { genToken } from '../../utils/token';
+
+import chalk from 'chalk';
+const debug = require('debug')('app:debug');
 
 import {
   encryptPassword,
@@ -207,6 +211,46 @@ const userControllers = User => ({
         message: 'Not authorized to edit that user'
       }
     }
+  },
+
+  createObjective: async ctx => {
+    const { id } = ctx.params;
+    const { body } = ctx.request;
+    const { name, timeline, squadId, keyResults, resources } = body;
+
+    const mission = await Objective
+      .query()
+      .insertWithRelated({
+        ...addId({
+          name: name,
+          timeline: timeline,
+          squad_id: squadId,
+          user_id: id
+        }),
+
+        key_results: keyResults.map(v => ({ name: v })),
+        resources: resources.map(v => ({ name: v }))
+      });
+
+    const user = await User
+      .query()
+      .where({id})
+      .select(
+        'users.id',
+        'users.email',
+        'users.first_name',
+        'users.last_name',
+        'users.img',
+        'users.job_title',
+        'users.pending'
+      )
+      .eager('[objectives.[key_results, resources]]');
+
+      ctx.body = {
+        user,
+        squadId,
+        userId: id
+      };
   }
 
 });

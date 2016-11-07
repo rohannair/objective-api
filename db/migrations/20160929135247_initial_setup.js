@@ -105,6 +105,19 @@ exports.up = function(knex, Promise) {
       t.timestamp('updated_at').defaultTo(knex.raw('now()'));
     })
 
+    .createTableIfNotExists('resources', t => {
+      t.increments('id').primary();
+      t.string('name');
+
+      t.uuid('objective_id')
+        .references('id')
+        .inTable('objectives')
+        .onDelete('cascade')
+        .index();
+
+      t.timestamp('created_at').notNull().defaultTo(knex.raw('now()'));
+      t.timestamp('updated_at').defaultTo(knex.raw('now()'));
+    })
 
     .createTableIfNotExists('check_ins', t => {
       t.increments('id').primary();

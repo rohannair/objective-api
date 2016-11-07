@@ -9,6 +9,7 @@ import { isAuthed } from '../../middleware';
 // Controllers
 import * as users from './users';
 import * as squads from './squads';
+import * as objectives from './objectives';
 
 // Routes
 module.exports = router()
@@ -20,8 +21,12 @@ module.exports = router()
   .get('/users/:id', users.getOne)
   .post('/user/invite', users.invite)
   .post('/user/:id', users.update)
+  .post('/user/:id/objective', users.createObjective)
   .post('/logout', users.logout)
 
   .get('/squads', squads.get)
   .post('/squads/assign', squads.assignUser)
+  .post('/squads', squads.create)
+
+  .post('/objectives/add', objectives.create)
 
