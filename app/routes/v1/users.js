@@ -1,5 +1,6 @@
 'use strict';
 import User from '../../models/User';
+import CheckIn from '../../models/CheckIn';
 import Objective from '../../models/Objective';
 
 import { addId } from '../../utils';
@@ -244,13 +245,55 @@ const userControllers = User => ({
         'users.job_title',
         'users.pending'
       )
-      .eager('[objectives.[key_results, resources]]');
+      .eager('[objectives.[key_results, check_ins, resources]]')
+      .filterEager('objectives.check_ins', b => {
+        b.orderBy('created_at', 'desc');
+        b.limit(3);
+      });
 
       ctx.body = {
         user,
         squadId,
         userId: id
       };
+  },
+
+  createCheckIn: async ctx => {
+    const { body } = ctx.request;
+
+    const checkIn = await CheckIn
+      .query()
+      .insert(body);
+
+    const squad = await Objective
+      .query()
+      .where({id: body.objectiveId})
+      .select('squad_id')
+      .first();
+
+    const user = await User
+      .query()
+      .where({id: body.userId})
+      .select(
+        'users.id',
+        'users.email',
+        'users.first_name',
+        'users.last_name',
+        'users.img',
+        'users.job_title',
+        'users.pending'
+      )
+      .eager('[objectives.[key_results, check_ins, resources]]')
+      .filterEager('objectives.check_ins', b => {
+        b.orderBy('created_at', 'desc');
+        b.limit(3);
+      });
+
+    ctx.body = {
+      user,
+      userId: body.userId,
+      squadId: squad.squadId
+    }
   }
 
 });

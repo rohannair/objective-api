@@ -1,7 +1,11 @@
 'use strict';
 import Objective from '../../models/Objective';
+import CheckIn from '../../models/CheckIn';
 
 import { addId } from '../../utils';
+
+import chalk from 'chalk';
+const debug = require('debug')('app:debug');
 
 const objectiveControllers = Objective => ({
   create: async ctx => {

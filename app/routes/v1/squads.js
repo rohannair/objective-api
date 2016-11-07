@@ -21,7 +21,7 @@ const squadControllers = Squad => ({
         'leader'
       )
       .orderBy('name')
-      .eager('[objectives.[key_results], users.[objectives.[key_results, resources]]]')
+      .eager('[objectives.[key_results], users.[objectives.[key_results, resources, check_ins]]]')
       .filterEager('objectives', b => {
         b.whereNull('user_id');
       })
@@ -35,6 +35,10 @@ const squadControllers = Squad => ({
           'users.job_title',
           'users.pending'
         );
+      })
+      .filterEager('users.objectives.check_ins', b => {
+        b.orderBy('created_at', 'desc');
+        b.limit(3);
       });
 
     ctx.body = {
@@ -67,7 +71,11 @@ const squadControllers = Squad => ({
         'updated_at',
         'leader'
       )
-      .eager('[objectives.[key_results], users.[objectives]]')
+      .eager('[objectives.[key_results], users.[objectives.[key_results, check_ins]]]')
+      .filterEager('users.objectives.check_ins', b => {
+        b.orderBy('created_at', 'desc');
+        b.limit(3);
+      })
       .first();
 
     ctx.status = 201;
@@ -98,7 +106,11 @@ const squadControllers = Squad => ({
         'leader'
       )
       .orderBy('name')
-      .eager('[objectives.[key_results], users.[objectives]]');
+      .eager('[objectives.[key_results], users.[objectives.[key_results, check_ins]]]')
+      .filterEager('users.objectives.check_ins', b => {
+        b.orderBy('created_at', 'desc');
+        b.limit(3);
+      });
 
     ctx.body = {
       results

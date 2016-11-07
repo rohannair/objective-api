@@ -127,9 +127,9 @@ exports.up = function(knex, Promise) {
       t.timestamp('created_at').notNull().defaultTo(knex.raw('now()'));
       t.timestamp('updated_at').defaultTo(knex.raw('now()'));
 
-      t.biginteger('key_result_id')
+      t.uuid('objective_id')
         .references('id')
-        .inTable('key_results')
+        .inTable('objectives')
         .onDelete('cascade')
         .index();
 

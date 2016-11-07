@@ -18,8 +18,8 @@ module.exports = router()
 
   .get('/users', users.get)
   .get('/users/search', users.search)
-  .get('/users/:id', users.getOne)
   .post('/user/invite', users.invite)
+  .get('/users/:id', users.getOne)
   .post('/user/:id', users.update)
   .post('/user/:id/objective', users.createObjective)
   .post('/logout', users.logout)
@@ -29,4 +29,4 @@ module.exports = router()
   .post('/squads', squads.create)
 
   .post('/objectives/add', objectives.create)
-
+  .post('/objectives/:id/check_in', users.createCheckIn)
