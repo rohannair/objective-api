@@ -20,15 +20,11 @@ class User extends BaseModel {
       },
 
       objectives: {
-        relation: Model.ManyToManyRelation,
+        relation: Model.HasManyRelation,
         modelClass: Objective,
         join: {
           from: 'users.id',
-          through: {
-            from: 'objectives_users.user_id',
-            to: 'objectives_users.objective_id'
-          },
-          to: 'objectives.id'
+          to: 'objectives.user_id'
         }
       }
     }

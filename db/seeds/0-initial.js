@@ -84,4 +84,11 @@ exports.seed = function(knex, Promise) {
     })
   )
 
+  .then(_ =>
+    knex('squads_users').insert({
+      squad_id: squadId,
+      user_id: userId
+    })
+  )
+
 }

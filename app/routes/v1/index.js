@@ -23,4 +23,5 @@ module.exports = router()
   .post('/logout', users.logout)
 
   .get('/squads', squads.get)
+  .post('/squads/assign', squads.assignUser)
 

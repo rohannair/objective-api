@@ -35,9 +35,9 @@ const userControllers = User => ({
         'img',
         'job_title'
        )
-      .where('email', 'LIKE', q + '%')
-      .orWhere('first_name', 'LIKE', q + '%')
-      .orWhere('last_name', 'LIKE', q + '%');
+      .whereRaw(`lower(email) LIKE '%${q.toLowerCase()}%'`)
+      .orWhereRaw(`lower(first_name) LIKE '%${q.toLowerCase()}%'`)
+      .orWhereRaw(`lower(last_name) LIKE '%${q.toLowerCase()}%'`);
 
     ctx.body = { results };
   },

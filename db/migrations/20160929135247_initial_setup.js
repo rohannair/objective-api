@@ -66,11 +66,15 @@ exports.up = function(knex, Promise) {
       t.uuid('squad_id')
         .references('id')
         .inTable('squads')
-        .notNull()
+        .index();
+
+      t.uuid('user_id')
+        .references('id')
+        .inTable('users')
         .index();
     })
 
-    .createTableIfNotExists('objectives_users', t => {
+    .createTableIfNotExists('squads_users', t => {
       t.increments('id').primary();
 
       t.uuid('user_id')
@@ -78,9 +82,9 @@ exports.up = function(knex, Promise) {
         .inTable('users')
         .index();
 
-      t.uuid('objective_id')
+      t.uuid('squad_id')
         .references('id')
-        .inTable('objectives')
+        .inTable('squads')
         .index();
     })
 
@@ -130,7 +134,7 @@ exports.down = function(knex, Promise) {
     knex.schema.raw('DROP TABLE users CASCADE'),
     knex.schema.raw('DROP TABLE squads CASCADE'),
     knex.schema.raw('DROP TABLE objectives CASCADE'),
-    knex.schema.raw('DROP TABLE objectives_users CASCADE'),
+    knex.schema.raw('DROP TABLE squads_users CASCADE'),
     knex.schema.raw('DROP TABLE key_results CASCADE'),
     knex.schema.raw('DROP TABLE check_ins CASCADE')
   ])
