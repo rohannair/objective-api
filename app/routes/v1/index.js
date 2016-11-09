@@ -29,4 +29,5 @@ module.exports = router()
   .post('/squads', squads.create)
 
   .post('/objectives/add', objectives.create)
+  .post('/objectives/:id/edit', objectives.update)
   .post('/objectives/:id/check_in', users.createCheckIn)
