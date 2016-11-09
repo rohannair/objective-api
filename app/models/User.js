@@ -3,6 +3,7 @@ import { Model } from 'objection';
 
 import BaseModel from './Base';
 import Company from './Company';
+import Squad from './Squad';
 import Objective from './Objective';
 
 class User extends BaseModel {
@@ -16,6 +17,19 @@ class User extends BaseModel {
         join: {
           from: 'users.company_id',
           to: 'companies.id'
+        }
+      },
+
+      squads: {
+        relation: Model.ManyToManyRelation,
+        modelClass: Squad,
+        join: {
+          from: 'users.id',
+          through: {
+            from: 'squads_users.user_id',
+            to: 'squads_users.squad_id',
+          },
+          to: 'squads.id'
         }
       },
 

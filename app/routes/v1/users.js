@@ -65,7 +65,7 @@ const userControllers = User => ({
       .limit(limit)
       .offset(offset)
       .orderBy('last_name')
-      .eager('[objectives]');
+      .eager('[objectives, squads]');
 
     ctx.body = {
       results,
@@ -89,7 +89,7 @@ const userControllers = User => ({
         'role',
         'pending'
       )
-      .eager('[objectives]')
+      .eager('[objectives, squads]')
       .where({ id })
       .first();
 
