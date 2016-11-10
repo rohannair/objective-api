@@ -1,4 +1,5 @@
 'use strict';
+require('dotenv').config({silent: true});
 
 ///////////// Deps /////////////
 import Koa from 'koa';
