@@ -106,7 +106,7 @@ const squadControllers = Squad => ({
         'leader'
       )
       .orderBy('name')
-      .eager('[objectives.[key_results], users.[objectives.[key_results, check_ins]]]')
+      .eager('[objectives.[key_results], users.[objectives.[key_results, check_ins, resources]]]')
       .filterEager('users.objectives.check_ins', b => {
         b.orderBy('created_at', 'desc');
         b.limit(3);

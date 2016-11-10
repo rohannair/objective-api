@@ -8,3 +8,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 #### Added
 - Edit Objective controller and route
 - Squads relation for Users
+
+#### Fixed
+- Resources not being returned from assign user controller
