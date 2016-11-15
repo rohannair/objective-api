@@ -45,7 +45,7 @@ const userControllers = User => ({
         'job_title'
        )
       .where('company_id', company)
-      .orwhereRaw(`lower(email) LIKE '%${q.toLowerCase()}%'`)
+      .orWhereRaw(`lower(email) LIKE '%${q.toLowerCase()}%'`)
       .orWhereRaw(`lower(first_name) LIKE '%${q.toLowerCase()}%'`)
       .orWhereRaw(`lower(last_name) LIKE '%${q.toLowerCase()}%'`);
 
