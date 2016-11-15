@@ -8,9 +8,32 @@ import User from '../../models/User';
 import { addId, createRandomToken } from '../../utils';
 import { randomPassword, encryptPassword } from '../../utils/encryption';
 
+import { sendEmail } from '../../config/mailer'
+
 const debug = require('debug')('app:privateRouter');
 
 module.exports = router()
+  .use(async (ctx, next) => {
+    try {
+      const { password } = ctx.request.body;
+      debug('PASSWORD', password);
+      // Send email
+      const isPassword = (pword) =>
+        new Promise((resolve, reject) => {
+          if (pword !== process.env.ADMINPASSWORD) reject(false);
+          resolve(true);
+        }
+      );
+
+      await isPassword(password);
+      await next();
+    } catch (e) {
+      ctx.status = 401;
+      ctx.body = {
+        message: 'DENIED'
+      }
+    }
+  })
   .get('/createCompany', async ctx => {
     ctx.body = {
       shape: `{companyName, companyDomain, userEmail, userJobTitle}`
