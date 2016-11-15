@@ -20,7 +20,7 @@ class User extends BaseModel {
         }
       },
 
-      squad: {
+      squads: {
         relation: Model.BelongsToOneRelation,
         modelClass: Squad,
         join: {
