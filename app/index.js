@@ -2,7 +2,7 @@
 require('dotenv').config({silent: true});
 
 if (process.env.NODE_ENV === 'production') {
-  require('./newrelic');
+  require('newrelic');
 }
 
 ///////////// Deps /////////////
