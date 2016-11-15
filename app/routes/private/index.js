@@ -6,7 +6,7 @@ import Company from '../../models/Company';
 import User from '../../models/User';
 
 import { addId, createRandomToken } from '../../utils';
-import { randomPassword, encryptPassword } from '../../utils/encryption';
+import { randomPassword, encryptPassword, checkPassword } from '../../utils/encryption';
 
 import { sendEmail } from '../../config/mailer'
 
@@ -18,12 +18,13 @@ module.exports = router()
       const { password } = ctx.request.body;
       debug('PASSWORD', password);
       // Send email
-      const isPassword = (pword) =>
-        new Promise((resolve, reject) => {
-          if (pword !== process.env.ADMINPASSWORD) reject(false);
+      const isPassword = async (pword) => {
+        const existing = await encryptPassword(process.env.ADMINPASSWORD);
+        return new Promise((resolve, reject) => {
+          if (!checkPassword(password, existing)) reject(false);
           resolve(true);
-        }
-      );
+        });
+      };
 
       await isPassword(password);
       await next();
