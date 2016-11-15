@@ -83,7 +83,8 @@ const squadControllers = Squad => ({
       .update({
         squad_id: squadId
       })
-      .where('id', userId);
+      .where('id', userId)
+      .andWhere('company_id', company);
 
     const results = await Squad
       .query()

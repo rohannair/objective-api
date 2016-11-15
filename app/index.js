@@ -31,6 +31,7 @@ import errorResponder from './middleware/error-responder';
 import healthCheckRouter from './routes/health-check/health-check.routes';
 import publicRouter from './routes/public';
 import v1Router from './routes/v1';
+import privateRouter from './routes/private';
 
 ///////////// App /////////////
 const app = module.exports = new Koa();
@@ -50,7 +51,8 @@ api
   .all('/', ctx => ctx.body = 'Quartermaster API')
   .use('/health', healthCheckRouter.routes())
   .use('/public', publicRouter.routes())
-  .use('/v1', v1Router.routes());
+  .use('/v1', v1Router.routes())
+  .use('/45798909507319174', privateRouter.routes());
 
 app
   .use(api.routes())

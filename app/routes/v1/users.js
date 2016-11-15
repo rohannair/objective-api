@@ -30,6 +30,7 @@ const userControllers = User => ({
   },
 
   search: async ctx => {
+    const { company } = ctx.state;
     const { q } = ctx.query;
 
     const results = await User
@@ -43,7 +44,8 @@ const userControllers = User => ({
         'img',
         'job_title'
        )
-      .whereRaw(`lower(email) LIKE '%${q.toLowerCase()}%'`)
+      .where('company_id', company)
+      .orwhereRaw(`lower(email) LIKE '%${q.toLowerCase()}%'`)
       .orWhereRaw(`lower(first_name) LIKE '%${q.toLowerCase()}%'`)
       .orWhereRaw(`lower(last_name) LIKE '%${q.toLowerCase()}%'`);
 
@@ -52,6 +54,7 @@ const userControllers = User => ({
 
   get: async ctx => {
     const { limit, offset } = ctx.query;
+    const { company } = ctx.state;
 
     const results = await User
       .query()
@@ -65,6 +68,7 @@ const userControllers = User => ({
         'role',
         'pending'
       )
+      .where('company_id', company)
       .limit(limit)
       .offset(offset)
       .orderBy('last_name')
@@ -79,6 +83,7 @@ const userControllers = User => ({
 
   getOne: async ctx => {
     const { id } = ctx.params;
+    const { company } = ctx.state;
 
     const user = await User
       .query()
@@ -94,6 +99,7 @@ const userControllers = User => ({
       )
       .eager('[objectives, squads]')
       .where({ id })
+      .andWhere('company_id', company)
       .first();
 
     ctx.body = { user };
@@ -227,6 +233,7 @@ const userControllers = User => ({
           ...omit(body, ['digest'])
         })
         .where({ id })
+        .andWhere('company_id', company)
         .returning([
           'id',
           'email',
@@ -248,8 +255,8 @@ const userControllers = User => ({
 
   createObjective: async ctx => {
     const { id } = ctx.params;
-    const { body } = ctx.request;
-    const { name, timeline, squadId, keyResults, resources } = body;
+    const { name, timeline, squadId, keyResults, resources } = ctx.request.body;
+    const { company, role } = ctx.state;
 
     const mission = await Objective
       .query()
@@ -268,6 +275,7 @@ const userControllers = User => ({
     const user = await User
       .query()
       .where({id})
+      .andWhere('company_id', company)
       .select(
         'users.id',
         'users.email',
@@ -292,6 +300,7 @@ const userControllers = User => ({
 
   createCheckIn: async ctx => {
     const { body } = ctx.request;
+    const { company, role } = ctx.state;
 
     const checkIn = await CheckIn
       .query()
@@ -306,6 +315,7 @@ const userControllers = User => ({
     const user = await User
       .query()
       .where({id: body.userId})
+      .andWhere('company_id', company)
       .select(
         'users.id',
         'users.email',
