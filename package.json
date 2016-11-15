@@ -26,7 +26,7 @@
       "command": "nodemon --exec babel-node ./app/server ",
       "env": {
         "NODE_ENV": "development",
-        "DEBUG": "koa:*,app:*,koa-router:*,knex:query",
+        "DEBUG": "koa:*,app:*,koa-router:*,knex:query,knex:bindings",
         "WEB_CONCURRENCY": 1,
         "PORT": 3000
       }

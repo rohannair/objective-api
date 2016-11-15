@@ -20,15 +20,11 @@ class User extends BaseModel {
         }
       },
 
-      squads: {
-        relation: Model.ManyToManyRelation,
+      squad: {
+        relation: Model.BelongsToOneRelation,
         modelClass: Squad,
         join: {
-          from: 'users.id',
-          through: {
-            from: 'squads_users.user_id',
-            to: 'squads_users.squad_id',
-          },
+          from: 'users.squad_id',
           to: 'squads.id'
         }
       },

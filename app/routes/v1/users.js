@@ -1,9 +1,10 @@
 'use strict';
 import User from '../../models/User';
+import Company from '../../models/Company';
 import CheckIn from '../../models/CheckIn';
 import Objective from '../../models/Objective';
 
-import { addId } from '../../utils';
+import { addId, createRandomToken } from '../../utils';
 import { genToken } from '../../utils/token';
 
 import chalk from 'chalk';
@@ -14,6 +15,8 @@ import {
   checkPassword,
   randomPassword
 } from '../../utils/encryption';
+
+import * as emails from './emails';
 
 const userControllers = User => ({
   logout: async ctx => {
@@ -128,26 +131,39 @@ const userControllers = User => ({
   },
 
   invite: async ctx => {
-    const { email, jobTitle } = ctx.request.body;
-    const { company } = ctx.state;
-
     try {
+      const { email, jobTitle } = ctx.request.body;
+      const { company, user: adminId } = ctx.state;
+
       const user = await User
         .query()
         .where({
-          email,
+          email: email,
           company_id: company
         })
         .first();
 
-      if (user) throw new Error(`User ${user} already exists`, );
+      if (user) {
+        ctx.throw(`User ${user} already exists`, 200);
+        return;
+      }
 
+      const companyInfo = await Company
+        .query()
+        .where({ id: company })
+        .select('domain')
+        .first();
+
+      const signupToken = await createRandomToken();
+      const password = await randomPassword();
       const newUser = await User
         .query()
         .insert(addId({
             email,
             job_title: jobTitle,
-            company_id: company
+            company_id: company,
+            signup_token: signupToken,
+            digest: await encryptPassword(password)
         }))
         .returning([
           'id',
@@ -160,8 +176,24 @@ const userControllers = User => ({
           'pending'
         ]);
 
+        const admin = await User
+          .query()
+          .where({ id: adminId})
+          .select(['first_name', 'last_name', 'email'])
+          .first();
+
+        const emailResult = await emails.inviteUser({
+          email,
+          signupToken,
+          admin: {
+            name: `${admin.firstName} ${admin.lastName}`,
+            email: admin.email
+          },
+          domain: companyInfo.domain.split('.')[0]
+        })
+
       ctx.status = 201;
-      ctx.body = { user: newUser };
+      ctx.body = { user: newUser, signupToken };
     } catch(e) {
       ctx.status = 500;
       ctx.body = {

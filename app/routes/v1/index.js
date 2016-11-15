@@ -11,6 +11,8 @@ import * as users from './users';
 import * as squads from './squads';
 import * as objectives from './objectives';
 
+import * as emails from './emails';
+
 // Routes
 module.exports = router()
   .use(isAuthed)
@@ -22,6 +24,7 @@ module.exports = router()
   .get('/users/:id', users.getOne)
   .post('/user/:id', users.update)
   .post('/user/:id/objective', users.createObjective)
+
   .post('/logout', users.logout)
 
   .get('/squads', squads.get)
@@ -31,3 +34,4 @@ module.exports = router()
   .post('/objectives/add', objectives.create)
   .post('/objectives/:id/edit', objectives.update)
   .post('/objectives/:id/check_in', users.createCheckIn)
+

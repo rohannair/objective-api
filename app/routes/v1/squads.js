@@ -1,6 +1,7 @@
 'use strict';
 
 import Squad from '../../models/Squad';
+import User from '../../models/User';
 import SquadUser from '../../models/SquadUser';
 
 import { addId } from '../../utils';
@@ -25,20 +26,9 @@ const squadControllers = Squad => ({
       .filterEager('objectives', b => {
         b.whereNull('user_id');
       })
-      .filterEager('users', b => {
-        b.select(
-          'users.id',
-          'users.email',
-          'users.first_name',
-          'users.last_name',
-          'users.img',
-          'users.job_title',
-          'users.pending'
-        );
-      })
       .filterEager('users.objectives.check_ins', b => {
         b.orderBy('created_at', 'desc');
-        b.limit(3);
+        b.limit(5);
       });
 
     ctx.body = {
@@ -88,12 +78,12 @@ const squadControllers = Squad => ({
     const { company } = ctx.state;
     const { squadId, userId } = ctx.request.body;
 
-    const join = await SquadUser
+    const join = await User
       .query()
-      .insert({
-        squadId,
-        userId
-      });
+      .update({
+        squad_id: squadId
+      })
+      .where('id', userId);
 
     const results = await Squad
       .query()
@@ -107,9 +97,12 @@ const squadControllers = Squad => ({
       )
       .orderBy('name')
       .eager('[objectives.[key_results], users.[objectives.[key_results, check_ins, resources]]]')
+      .filterEager('objectives', b => {
+        b.whereNull('user_id');
+      })
       .filterEager('users.objectives.check_ins', b => {
         b.orderBy('created_at', 'desc');
-        b.limit(3);
+        b.limit(5);
       });
 
     ctx.body = {

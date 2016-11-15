@@ -3,6 +3,10 @@ import Company from '../../models/Company';
 import User from '../../models/User';
 import { addId } from '../../utils';
 import omit from 'lodash/omit';
+import Boom from 'boom';
+
+import chalk from 'chalk';
+const debug = require('debug')('app:debug');
 
 import {
   encryptPassword,
@@ -12,6 +16,8 @@ import {
 import {
   genToken
 } from '../../utils/auth';
+
+import { forgotPassword } from '../v1/emails';
 
 const userControllers = User => ({
   login: async ctx => {
@@ -34,13 +40,16 @@ const userControllers = User => ({
       }
     } else {
       let passwordCheck = await checkPassword(password, user.digest);
+      debug(passwordCheck);
       if (!passwordCheck) {
+        debug('WTF');
         ctx.status = 401;
         ctx.body = {
           status: 1,
           message: 'Incorrect password'
         }
       } else {
+        debug('WTF');
         const token = await genToken(user);
         ctx.status = 200;
         ctx.body = {
@@ -54,7 +63,61 @@ const userControllers = User => ({
   },
 
   forgotPassword: async ctx => {
-    // TODO: allow password reset
+    const { email } = ctx.body;
+
+    try {
+      // Todo check for finishedInvite
+      await forgotPassword(email);
+      ctx.status = 200;
+      ctx.body = {
+        message: `Password reset email sent to ${email}`
+      };
+
+    } catch(e) {
+
+      ctx.status = 400;
+      ctx.body = {
+        ...e
+      };
+
+    }
+  },
+
+  finishInvite: async ctx => {
+    const { email, token, firstName, lastName, img, password } = ctx.request.body;
+
+    const digest = await encryptPassword(password);
+    const user = await User
+      .query()
+      .update({
+        email,
+        firstName,
+        lastName,
+        img: img || '',
+        pending: false,
+        digest,
+        signup_token: null
+      })
+      .whereNotNull('signup_token')
+      .andWhere('email', email)
+      .andWhere('signup_token', token)
+      .returning(['id', 'email', 'digest', 'role', 'company_id'])
+      .first();
+
+    if (!user) {
+      ctx.throw('Invalid signup_token', 400);
+    }
+
+    const loginToken = await genToken(user);
+
+    ctx.status = 200;
+    ctx.body = {
+      status: 0,
+      user: user.id,
+      token: loginToken,
+      companyId: user.companyId,
+      message: 'User details updated'
+    };
   },
 
   signup: async ctx => {
