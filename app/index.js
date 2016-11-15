@@ -1,6 +1,10 @@
 'use strict';
 require('dotenv').config({silent: true});
 
+if (process.env.NODE_ENV === 'production') {
+  require('./newrelic');
+}
+
 ///////////// Deps /////////////
 import Koa from 'koa';
 import router from 'koa-router';
