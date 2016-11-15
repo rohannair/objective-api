@@ -8,7 +8,7 @@ import { sendEmail } from '../../config/mailer';
 const emailControllers = () => ({
   inviteUser: async ({email, admin, domain, signupToken}) => {
 
-    let link = `https://${domain}.objectiveiq.io/signup?id=${email}&token=${signupToken}`;
+    let link = `https://${domain}.objectiveiq.io/auth/signup?id=${email}&token=${signupToken}`;
 
     const template = {
       content: {
