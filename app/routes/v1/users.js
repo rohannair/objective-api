@@ -207,16 +207,6 @@ const userControllers = User => ({
 
   },
 
-  updatePassword: async ctx => {
-    const { id } = ctx.params;
-    const { body } = ctx.request;
-    const { user, company, role } = ctx.state;
-
-    if (user === id) {
-      // TODO: Do some shit here to reset a password
-    }
-  },
-
   update: async ctx => {
     const { id } = ctx.params;
     const { body } = ctx.request;
@@ -231,13 +221,15 @@ const userControllers = User => ({
     if (body.password || body.newPassword) {
       const { digest } = await User
         .query()
-        .where({ id })
         .select('digest')
+        .where({ id })
         .first();
 
-      const isPassword = await checkPassword(digest, body.password);
-      if (!isPassword) {
+      const check = await checkPassword(body.password, digest);
+
+      if (!check) {
         ctx.throw('Password does not match', 401);
+        ctx.body = { ...e }
         return;
       }
     }
@@ -246,7 +238,6 @@ const userControllers = User => ({
       ...omit(body, ['digest', 'password', 'newPassword']),
       digest: await encryptPassword(body.newPassword)
     }
-      debug('wadup', updatedBody)
 
     const editedUser = await User
       .query()
