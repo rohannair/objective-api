@@ -11,6 +11,7 @@ import router from 'koa-router';
 import chalk from 'chalk';
 import co from 'co';
 import Boom from 'boom';
+import logger from 'koa-logger';
 
 import knex from 'knex';
 import { Model } from 'objection';
@@ -48,6 +49,7 @@ app
   .use(helmet())
   .use(convert(cors()))
   .use(bodyparser())
+  .use(logger())
   .use(errorResponder);
 
 ///////////// Routing /////////////
