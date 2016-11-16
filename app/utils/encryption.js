@@ -6,7 +6,7 @@ const salt = bcrypt.genSaltSync(saltRounds);
 // Async function to encrypt a password, given the password and a saltRound value
 const encryptPassword = password =>
   new Promise((resolve, reject) => {
-    bcrypt.hash(password, salt, (err, hash) => {
+    bcrypt.hash(password, saltRounds, (err, hash) => {
       if (err) return reject(err);
       return resolve(hash);
   });
@@ -18,7 +18,7 @@ const encryptPassword = password =>
 const checkPassword = (password, dbHash) =>
   new Promise((resolve, reject) => {
     bcrypt.compare(password, dbHash, (err, res) => {
-      if (err) return resolve(false);
+      if (err || !res) return resolve(false);
       resolve(true);
   });
 });

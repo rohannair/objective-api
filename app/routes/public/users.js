@@ -40,16 +40,13 @@ const userControllers = User => ({
       }
     } else {
       let passwordCheck = await checkPassword(password, user.digest);
-      debug(passwordCheck);
       if (!passwordCheck) {
-        debug('WTF');
         ctx.status = 401;
         ctx.body = {
           status: 1,
           message: 'Incorrect password'
         }
       } else {
-        debug('WTF');
         const token = await genToken(user);
         ctx.status = 200;
         ctx.body = {
