@@ -21,7 +21,7 @@ module.exports = router()
   .get('/users', users.get)
   .get('/users/search', users.search)
   .post('/user/invite', users.invite)
-  .get('/users/:id', users.getOne)
+  .get('/user/:id', users.getOne)
   .post('/user/:id', users.update)
   .post('/user/:id/objective', users.createObjective)
 

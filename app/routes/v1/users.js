@@ -6,6 +6,7 @@ import Objective from '../../models/Objective';
 
 import { addId, createRandomToken } from '../../utils';
 import { genToken } from '../../utils/token';
+import omit from 'lodash/omit';
 
 import chalk from 'chalk';
 const debug = require('debug')('app:debug');
@@ -219,35 +220,52 @@ const userControllers = User => ({
   update: async ctx => {
     const { id } = ctx.params;
     const { body } = ctx.request;
-    const { company, role } = ctx.state;
+    const { company, role, user } = ctx.state;
 
-    // TODO: Does user have permission to edit?
-    try {
-      const isAdmin = await(isAdmin(role));
-      const user = await User
+    // Does user have permission to edit?
+    if (user !== id) {
+      ctx.throw('Not authorized to edit that user', 401);
+      return;
+    }
+
+    if (body.password || body.newPassword) {
+      const { digest } = await User
         .query()
-        .update({
-          ...omit(body, ['digest'])
-        })
         .where({ id })
-        .andWhere('company_id', company)
-        .returning([
-          'id',
-          'email',
-          'first_name',
-          'last_name',
-          'img',
-          'job_title',
-          'role',
-          'pending'
-        ])
+        .select('digest')
+        .first();
 
-      ctx.body = { user };
-    } catch(e) {
-      ctx.body = {
-        message: 'Not authorized to edit that user'
+      const isPassword = await checkPassword(digest, body.password);
+      if (!isPassword) {
+        ctx.throw('Password does not match', 401);
+        return;
       }
     }
+
+    const updatedBody = {
+      ...omit(body, ['digest', 'password', 'newPassword']),
+      digest: await encryptPassword(body.newPassword)
+    }
+      debug('wadup', updatedBody)
+
+    const editedUser = await User
+      .query()
+      .update(updatedBody)
+      .where({ id })
+      .andWhere('company_id', company)
+      .returning([
+        'id',
+        'email',
+        'first_name',
+        'last_name',
+        'img',
+        'job_title',
+        'role',
+        'pending'
+      ])
+      .first();
+
+    ctx.body = { user: editedUser };
   },
 
   createObjective: async ctx => {

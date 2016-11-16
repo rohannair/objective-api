@@ -16,7 +16,7 @@ module.exports = router()
   .use(async (ctx, next) => {
     try {
       const { password } = ctx.request.body;
-      debug('PASSWORD', password);
+
       // Send email
       const isPassword = async (pword) => {
         const existing = await encryptPassword(process.env.ADMINPASSWORD);
@@ -53,13 +53,10 @@ module.exports = router()
       domain: companyDomain
     });
 
-    debug('BEFORE COMPANY INSERT', JSON.stringify(companyInfo, null, 3));
-
     const company = await Company
       .query()
       .insert(companyInfo);
 
-    debug('AFTER COMPANY INSERT', JSON.stringify(company, null, 3));
     const passwordDigest = await randomPassword().then(encryptPassword);
     const userInfo = addId({
       email: userEmail,
@@ -70,13 +67,9 @@ module.exports = router()
       role: 'admin'
     });
 
-    debug('BEFORE USER INSERT', JSON.stringify(userInfo, null, 3));
-
     const user = await User
       .query()
       .insert(userInfo);
-
-    debug('AFTER USER INSERT', JSON.stringify(user, null, 3));
 
     ctx.status = 201;
     ctx.body = {
