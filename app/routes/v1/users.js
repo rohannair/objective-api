@@ -212,13 +212,14 @@ const userControllers = User => ({
     const { body } = ctx.request;
     const { company, role, user } = ctx.state;
 
+    const editingPassword = body.password || body.newPassword
     // Does user have permission to edit?
     if (user !== id) {
       ctx.throw('Not authorized to edit that user', 401);
       return;
     }
 
-    if (body.password || body.newPassword) {
+    if (editingPassword) {
       const { digest } = await User
         .query()
         .select('digest')
@@ -236,7 +237,9 @@ const userControllers = User => ({
 
     const updatedBody = {
       ...omit(body, ['digest', 'password', 'newPassword']),
-      digest: await encryptPassword(body.newPassword)
+      digest: editingPassword
+        ? await encryptPassword(body.newPassword)
+        : null
     }
 
     const editedUser = await User
