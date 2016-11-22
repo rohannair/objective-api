@@ -37,6 +37,7 @@ import healthCheckRouter from './routes/health-check/health-check.routes';
 import publicRouter from './routes/public';
 import v1Router from './routes/v1';
 import privateRouter from './routes/private';
+import graphql from './routes/graphql';
 
 ///////////// App /////////////
 const app = module.exports = new Koa();
@@ -58,7 +59,8 @@ api
   .use('/health', healthCheckRouter.routes())
   .use('/public', publicRouter.routes())
   .use('/v1', v1Router.routes())
-  .use('/45798909507319174', privateRouter.routes());
+  .use('/45798909507319174', privateRouter.routes())
+  .use('/graphql', graphql.routes());
 
 app
   .use(api.routes())

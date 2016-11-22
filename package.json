@@ -26,7 +26,7 @@
       "command": "nodemon --exec babel-node ./app/server ",
       "env": {
         "NODE_ENV": "development",
-        "DEBUG": "koa:*,app:*,koa-router:*,knex:query,knex:bindings",
+        "DEBUG": "graphql:*,koa:*,app:*,koa-router:*,knex:query,knex:bindings",
         "WEB_CONCURRENCY": 1,
         "PORT": 3000
       }
@@ -53,6 +53,9 @@
     "debug": "~2.2.0",
     "dotenv": "~2.0.0",
     "forever": "^0.15.3",
+    "graphql": "^0.8.2",
+    "graphql-server-koa": "^0.4.3",
+    "graphql-tools": "^0.8.1",
     "jsonwebtoken": "^7.1.9",
     "knex": "~0.12.2",
     "koa": "~2.0.0",
@@ -68,6 +71,7 @@
     "newrelic": "^1.34.0",
     "node-uuid": "~1.4.7",
     "objection": "^0.6.1",
+    "objection-graphql": "^0.1.1",
     "pg": "~6.1.0",
     "pm2": "~2.0.18",
     "sparkpost": "^2.0.1",
@@ -83,6 +87,7 @@
     "babel-preset-es2015": "~6.16.0",
     "babel-preset-stage-0": "~6.16.0",
     "better-npm-run": "0.0.11",
+    "casual": "^1.5.8",
     "nodemon": "~1.10.2",
     "rimraf": "~2.5.4"
   }
