@@ -17,5 +17,12 @@ module.exports = async (ctx, next) => {
     if (ctx.status === UNKNOWN_ERROR_CODE) {
       error(`${err.stack}`);
     }
+
+    if (process.env.NODE_ENV === 'production') {
+      const raven = require('raven');
+      const sentry = new raven.Client(process.env.SENTRY_API_URL);
+
+      sentry.captureException(err);
+    }
   }
 }

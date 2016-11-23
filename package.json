@@ -74,6 +74,7 @@
     "objection-graphql": "^0.1.1",
     "pg": "~6.1.0",
     "pm2": "~2.0.18",
+    "raven": "^0.12.3",
     "sparkpost": "^2.0.1",
     "throng": "~4.0.0",
     "winston": "~2.2.0"
