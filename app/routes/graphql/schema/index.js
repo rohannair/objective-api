@@ -1,16 +1,11 @@
-import { makeExecutableSchema } from 'graphql-tools';
-
 // Types
 import Mutation from './mutation.schema';
-import User from './user.schema';
-
-// Resolvers
-import resolvers from '../resolvers';
+import Viewer from './viewer.schema';
 
 // Schema
 const Query = `
   type Query {
-    viewer(id: String): User
+    viewer: Viewer
   }
 `;
 
@@ -26,5 +21,5 @@ export default [
   SchemaDefinition,
   Query,
   Mutation,
-  User
+  Viewer
 ];

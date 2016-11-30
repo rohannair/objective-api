@@ -26,6 +26,6 @@ const resolver = {
         .andWhere('squad_id', squad.id);
     }
   }
-}
+};
 
 export default resolver;

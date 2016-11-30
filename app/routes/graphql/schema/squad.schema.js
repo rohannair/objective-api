@@ -14,4 +14,4 @@ const Squad = `
   }
 `;
 
-export default () => [Squad, Company, User, Objective]
+export default () => [Squad, Company, User, Objective];

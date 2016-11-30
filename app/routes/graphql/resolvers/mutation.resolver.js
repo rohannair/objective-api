@@ -3,7 +3,7 @@ import { addId, createRandomToken } from '../../../utils';
 import { randomPassword, encryptPassword } from '../../../utils/encryption';
 
 import * as emails from '../../v1/emails';
-
+/* eslint-disable no-unused-vars */
 const debug = require('debug')('app:debug');
 
 const resolver = {
@@ -64,7 +64,7 @@ const resolver = {
         },
         company: admin.companyName,
         domain: admin.domain.split('.')[0]
-      })
+      });
 
       // resolve inviteUser
       return user;
@@ -149,6 +149,24 @@ const resolver = {
     // Delete a resource
     deleteResource: async (root, args, ctx) => {
 
+    },
+
+    /// Create a new snapshot
+    // addSnapshot(body: String!, objective: String): CheckIn
+    addSnapshot: async (root, args, ctx) => {
+      const { body, objective } = args;
+      const { company, user: userId } = ctx.state;
+
+      const snapshot = await models.CheckIn.query()
+        .insert({
+          body,
+          objective_id: objective,
+          company_id: company,
+          user_id: userId
+        })
+        .returning('*');
+
+      return snapshot;
     }
   },
 };

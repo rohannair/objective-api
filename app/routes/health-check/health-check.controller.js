@@ -15,4 +15,4 @@ module.exports.shallow = async function(ctx) {
  */
 module.exports.deep = async function(ctx) {
   ctx.body = { ok: 'OK' };
-}
+};

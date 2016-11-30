@@ -8,9 +8,11 @@ import User from '../../models/User';
 import { addId, createRandomToken } from '../../utils';
 import { randomPassword, encryptPassword, checkPassword } from '../../utils/encryption';
 
-import { sendEmail } from '../../config/mailer'
-
+/* eslint-disable no-unused-vars */
+import chalk from 'chalk';
+import { sendEmail } from '../../config/mailer';
 const debug = require('debug')('app:privateRouter');
+/* eslint-enable no-unused-vars */
 
 module.exports = router()
   .use(async (ctx, next) => {
@@ -18,7 +20,7 @@ module.exports = router()
       const { password } = ctx.request.body;
 
       // Send email
-      const isPassword = async (pword) => {
+      const isPassword = async () => {
         const existing = await encryptPassword(process.env.ADMINPASSWORD);
         return new Promise((resolve, reject) => {
           if (!checkPassword(password, existing)) reject(false);
@@ -32,13 +34,13 @@ module.exports = router()
       ctx.status = 401;
       ctx.body = {
         message: 'DENIED'
-      }
+      };
     }
   })
   .get('/createCompany', async ctx => {
     ctx.body = {
-      shape: `{companyName, companyDomain, userEmail, userJobTitle}`
-    }
+      shape: '{companyName, companyDomain, userEmail, userJobTitle}'
+    };
   })
   .post('/createCompany', async ctx => {
     const {
@@ -78,4 +80,4 @@ module.exports = router()
       message: `Company ${company.name} and user ${user.email} were created`
     };
 
-  })
+  });

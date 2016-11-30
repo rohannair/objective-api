@@ -74,9 +74,14 @@ const Mutation = `
 
     # Delete a resource
     deleteResource(id: Int!): Resource
+
+    ###
+    # SnapShots
+    ###
+
+    # Create a new SnapShots
+    addSnapshot(body: String!, objective: String): CheckIn
   }
-`
-export default () => [Mutation]
-/**
- *
- */
+`;
+
+export default () => [Mutation];

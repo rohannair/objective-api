@@ -8,6 +8,6 @@ const resolver = {
         .first();
     }
   }
-}
+};
 
 export default resolver;

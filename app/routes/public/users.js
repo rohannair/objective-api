@@ -3,10 +3,10 @@ import Company from '../../models/Company';
 import User from '../../models/User';
 import { addId } from '../../utils';
 import omit from 'lodash/omit';
-import Boom from 'boom';
-
+/* eslint-disable no-unused-vars */
 import chalk from 'chalk';
 const debug = require('debug')('app:debug');
+/* eslint-enable no-unused-vars */
 
 import {
   encryptPassword,
@@ -37,7 +37,7 @@ const userControllers = User => ({
       ctx.body = {
         status: 1,
         message: 'Cannot find that user!'
-      }
+      };
     } else {
       let passwordCheck = await checkPassword(password, user.digest);
       if (!passwordCheck) {
@@ -45,7 +45,7 @@ const userControllers = User => ({
         ctx.body = {
           status: 1,
           message: 'Incorrect password'
-        }
+        };
       } else {
         const token = await genToken(user);
         ctx.status = 200;
@@ -54,7 +54,7 @@ const userControllers = User => ({
           user: user.id,
           token,
           companyId: user.companyId
-        }
+        };
       }
     }
   },

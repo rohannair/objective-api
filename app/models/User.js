@@ -37,8 +37,7 @@ class User extends BaseModel {
           to: 'objectives.user_id'
         }
       }
-    }
-
+    };
   }
 }
 

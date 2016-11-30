@@ -17,8 +17,8 @@ function genToken(userDetails) {
       (err, decoded) => {
         if(err) reject(new ApiError('Error creating JWT', 500, err));
         resolve (decoded);
-    });
-  })
+      });
+  });
 }
 
 // Function to verify an incoming JWT
@@ -31,15 +31,15 @@ function verifyToken(token) {
         issuer: 'qrtrmstr',
         subject: 'user-token',
         clockTolerance: 60
-     },
-     (err, decoded) => {
-       if(err) reject (new ApiError('JWT can not be verified', 401, err));
-       resolve(decoded);
-    });
-  })
+      },
+      (err, decoded) => {
+        if(err) reject (new ApiError('JWT can not be verified', 401, err));
+        resolve(decoded);
+      });
+  });
 }
 
 module.exports = {
   genToken: genToken,
   verifyToken: verifyToken
-}
+};

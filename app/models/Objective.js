@@ -51,8 +51,7 @@ class Objective extends BaseModel {
           to: 'squads.id'
         }
       },
-
-    }
+    };
   }
 }
 

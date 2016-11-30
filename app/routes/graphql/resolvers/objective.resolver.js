@@ -29,10 +29,10 @@ const resolver = {
     },
 
     resources(objective) {
-      return Resources.query()
+      return Resource.query()
         .where('objective_id', objective.id);
     }
   }
-}
+};
 
 export default resolver;

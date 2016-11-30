@@ -1,22 +1,11 @@
 import Objective from './objective.schema';
 import Company from './company.schema';
 import Squad from './squad.schema';
+import CheckIn from './checkIn.schema';
+import { UserStatus } from './user.schema';
 
-export const UserStatus = `
-  enum UserStatus {
-    # Regular user
-    user,
-
-    # Administrator
-    admin,
-
-    # Super Admin, IE an ObjectiveIQ user
-    superuser
-  }
-`;
-
-const User = `
-  type User {
+const Viewer = `
+  type Viewer {
     id: String!
     email: String!
     firstName: String
@@ -28,8 +17,9 @@ const User = `
 
     company: Company,
     squads: [Squad],
-    objectives: [Objective]
+    objectives: [Objective],
+    snapshots: [CheckIn]
   }
 `;
 
-export default () => [User, UserStatus, Company, Squad, Objective];
+export default () => [Viewer, UserStatus, Company, Squad, Objective, CheckIn];

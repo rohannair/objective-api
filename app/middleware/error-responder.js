@@ -25,4 +25,4 @@ module.exports = async (ctx, next) => {
       sentry.captureException(err);
     }
   }
-}
+};

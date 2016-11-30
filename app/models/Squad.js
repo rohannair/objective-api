@@ -47,7 +47,7 @@ class Squad extends BaseModel {
           to: 'users.squad_id'
         }
       }
-    }
+    };
   }
 }
 

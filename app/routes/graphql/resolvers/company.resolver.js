@@ -13,6 +13,6 @@ const resolver = {
         .where('company_id', company.id);
     }
   }
-}
+};
 
 export default resolver;

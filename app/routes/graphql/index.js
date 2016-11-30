@@ -15,12 +15,12 @@ const executableSchema = makeExecutableSchema({
   typeDefs: Schema,
   resolvers: Resolvers,
   debug: true
-})
+});
 
 export default router()
   .use(isAuthed)
   .post('/', (ctx, next) => graphqlKoa({
-      schema: executableSchema,
-      context: ctx
-    })(ctx, next)
-  );
+    schema: executableSchema,
+    context: ctx
+  })(ctx, next)
+);

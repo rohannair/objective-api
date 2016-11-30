@@ -10,4 +10,4 @@ const KeyResult = `
   }
 `;
 
-export default () => [KeyResult, Objective]
+export default () => [KeyResult, Objective];

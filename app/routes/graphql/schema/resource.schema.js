@@ -1,4 +1,3 @@
-import User from './user.schema';
 import Objective from './objective.schema';
 
 const Resource = `

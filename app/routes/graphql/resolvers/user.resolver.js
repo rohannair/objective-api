@@ -20,6 +20,6 @@ const resolver = {
         .where('user_id', user.id);
     }
   }
-}
+};
 
 export default resolver;

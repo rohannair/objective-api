@@ -16,6 +16,6 @@ module.exports = router()
   .post('/login', login)
   .post('/forgotpassword', forgotPassword)
   .post('/signup', signup)
-  .post('/finishinvite', finishInvite)
+  .post('/finishinvite', finishInvite);
 // TODO: need a create company API
 // .post('/createCompany', createCompany)

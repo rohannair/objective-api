@@ -1,7 +1,8 @@
 'use strict';
+/* eslint-disable no-unused-vars */
 import chalk from 'chalk';
-import Boom from 'boom';
 const debug = require('debug')('app:debug');
+/* eslint-enable no-unused-vars */
 
 import { sendEmail } from '../../config/mailer';
 
@@ -45,7 +46,8 @@ const emailControllers = () => ({
   },
 
   forgotPassword: async (user) => {
-
+    // ToDo;
+    return user;
   }
 });
 
