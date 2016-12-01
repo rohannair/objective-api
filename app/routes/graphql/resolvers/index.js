@@ -14,7 +14,6 @@ const debug = require('debug')('app:index');
 const QueryResolver = {
   Query: {
     viewer(root, args, ctx) {
-      debug(JSON.stringify(ctx.state), null, 4);
       return User.query()
         .where('id', ctx.state.user)
         .first();
