@@ -1,7 +1,5 @@
 'use strict';
 import { verifyToken } from '../utils/auth';
-import ApiError from '../utils/error';
-const debug = require('debug')('app:debug');
 
 const isAuthed = async (ctx, next) => {
   const token = ctx.headers.authorization
@@ -13,8 +11,8 @@ const isAuthed = async (ctx, next) => {
   ctx.state.role = user.role;
 
   await next();
-}
+};
 
 module.exports = {
   isAuthed
-}
+};

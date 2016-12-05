@@ -73,7 +73,8 @@ exports.seed = function(knex, Promise) {
       id: objectiveId,
       name: 'Build CEO Dashboard',
       timeline: '3 months',
-      squad_id: squadId
+      squad_id: squadId,
+      company_id: companyId
     })
   )
 
@@ -89,6 +90,25 @@ exports.seed = function(knex, Promise) {
       squad_id: squadId,
       user_id: userId
     })
+  )
+
+  .then(_ =>
+    knex('check_ins').insert([
+      {
+        name: 'This shouldn\'t matter',
+        body: 'I did some cool stuff today on this',
+        objective_id: objectiveId,
+        user_id: userId,
+        company_id: companyId
+      },
+      {
+        name: 'This shouldn\'t matter',
+        body: 'I also did some cool stuff here',
+        objective_id: objectiveId,
+        user_id: userId,
+        company_id: companyId
+      }
+    ])
   )
 
 }

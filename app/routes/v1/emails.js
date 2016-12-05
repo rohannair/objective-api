@@ -1,7 +1,8 @@
 'use strict';
+/* eslint-disable no-unused-vars */
 import chalk from 'chalk';
-import Boom from 'boom';
 const debug = require('debug')('app:debug');
+/* eslint-enable no-unused-vars */
 
 import { sendEmail } from '../../config/mailer';
 
@@ -44,8 +45,43 @@ const emailControllers = () => ({
     return data;
   },
 
-  forgotPassword: async (user) => {
+  forgotPassword: async ({email, domain, token}) => {
+    debug({email, domain, token});
 
+    let link = `https://${domain}.objectiveiq.io/auth/resetpassword?id=${email}&token=${token}`;
+
+    const template = {
+      content: {
+        from: {
+          name: 'objectiveIQ Admin',
+          email: 'noreply@objectiveIQ.com'
+        },
+        subject: 'Forgot your objectiveIQ Password?',
+        html: `<html>
+          <body style="background-color:#EBEFFE; width:100%;height:100%">
+            <div style="width:640px;margin:0 auto;padding:40px; text-align:center">
+              <img src="https://s3.amazonaws.com/objectiveiq/objectiveiqlogo-blue.png" alt="objectiveIQ" />
+            </div>
+            <div style="background-color:#FFFFFF;width:640px;margin:0 auto 30px;padding:30px;">
+              <h2 style="color:#344055;text-align:left">Forgot your objectiveIQ Password?</h2>
+              <p style="color:#393E47;font-size:16px;margin-bottom:20px;text-align:left">Need to reset your password? No problem!</p>
+              <p style="font-size:16px;color:#393E47;text-align:center;margin:40px 0;">
+                <a style="height:60px;line-height:60px;background-color:#3861F4;color:#FFFFFF;font-weight:bold;padding:10px 15px;text-decoration:none;border-radius:3px;font-size:22px;" href="${link}">Reset Password</a><br />
+                <small style="color:#777;">You may copy/paste the link into your browser: <a href="${link}">${link}</a></small>
+              </p>
+              <p style="color:#393E47;font-size:16px;margin-bottom:20px;text-align:left">Have a question or need help? Please contact <a href="mailto:support@objectiveiq.com">support@objectiveiq.com</a></p>
+              <p style="color:#393E47;font-size:16px;margin-bottom:20px;text-align:left">Cheers, <br />The objectiveIQ team</p>
+            </div>
+          </body>
+        </html>`
+      },
+      recipients: [
+        { address: email }
+      ]
+    };
+
+    const data = await sendEmail(template);
+    return data;
   }
 });
 

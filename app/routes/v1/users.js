@@ -5,11 +5,12 @@ import CheckIn from '../../models/CheckIn';
 import Objective from '../../models/Objective';
 
 import { addId, createRandomToken } from '../../utils';
-import { genToken } from '../../utils/token';
 import omit from 'lodash/omit';
 
+/* eslint-disable no-unused-vars */
 import chalk from 'chalk';
 const debug = require('debug')('app:debug');
+/* eslint-enable no-unused-vars */
 
 import {
   encryptPassword,
@@ -27,12 +28,12 @@ const userControllers = User => ({
     ctx.body = {
       message: 'Logged out!',
       logout: true,
-    }
+    };
   },
 
   search: async ctx => {
     const { company } = ctx.state;
-    const { q } = ctx.query;
+    // const { q } = ctx.query;
 
     const results = await User
       .query()
@@ -76,7 +77,7 @@ const userControllers = User => ({
       results,
       nextOffset: offset + limit | 25,
       nextLimit: limit || 25
-    }
+    };
   },
 
   getOne: async ctx => {
@@ -127,11 +128,11 @@ const userControllers = User => ({
         'pending'
       ]);
 
-      // TODO: send email to user with password
+    // TODO: send email to user with password
+    ctx.status = 201;
 
-      ctx.status = 201;
-      // TODO: get rid of returning the password here
-      ctx.body = { user: { ...user, password: pword } };
+    // TODO: get rid of returning the password here
+    ctx.body = { user: { ...user, password: pword } };
   },
 
   invite: async ctx => {
@@ -163,11 +164,11 @@ const userControllers = User => ({
       const newUser = await User
         .query()
         .insert(addId({
-            email,
-            job_title: jobTitle,
-            company_id: company,
-            signup_token: signupToken,
-            digest: await encryptPassword(password)
+          email,
+          job_title: jobTitle,
+          company_id: company,
+          signup_token: signupToken,
+          digest: await encryptPassword(password)
         }))
         .returning([
           'id',
@@ -180,29 +181,33 @@ const userControllers = User => ({
           'pending'
         ]);
 
-        const admin = await User
-          .query()
-          .where({ id: adminId})
-          .select(['first_name', 'last_name', 'email'])
-          .first();
+      const admin = await User
+        .query()
+        .where({ id: adminId})
+        .select(['first_name', 'last_name', 'email'])
+        .first();
 
-        const emailResult = await emails.inviteUser({
-          email,
-          signupToken,
-          admin: {
-            name: `${admin.firstName} ${admin.lastName}`,
-            email: admin.email
-          },
-          domain: companyInfo.domain.split('.')[0]
-        })
+      const emailResult = await emails.inviteUser({
+        email,
+        signupToken,
+        admin: {
+          name: `${admin.firstName} ${admin.lastName}`,
+          email: admin.email
+        },
+        domain: companyInfo.domain.split('.')[0]
+      });
 
       ctx.status = 201;
-      ctx.body = { user: newUser, signupToken };
+      ctx.body = {
+        user: newUser,
+        signupToken,
+        emailSent: !!emailResult
+      };
     } catch(e) {
       ctx.status = 500;
       ctx.body = {
         message: e.message
-      }
+      };
     }
 
   },
@@ -210,9 +215,9 @@ const userControllers = User => ({
   update: async ctx => {
     const { id } = ctx.params;
     const { body } = ctx.request;
-    const { company, role, user } = ctx.state;
+    const { company, user } = ctx.state;
 
-    const editingPassword = body.password || body.newPassword
+    const editingPassword = body.password || body.newPassword;
     // Does user have permission to edit?
     if (user !== id) {
       ctx.throw('Not authorized to edit that user', 401);
@@ -230,7 +235,6 @@ const userControllers = User => ({
 
       if (!check) {
         ctx.throw('Password does not match', 401);
-        ctx.body = { ...e }
         return;
       }
     }
@@ -240,7 +244,7 @@ const userControllers = User => ({
       digest: editingPassword
         ? await encryptPassword(body.newPassword)
         : null
-    }
+    };
 
     const editedUser = await User
       .query()
@@ -265,7 +269,7 @@ const userControllers = User => ({
   createObjective: async ctx => {
     const { id } = ctx.params;
     const { name, timeline, squadId, keyResults, resources } = ctx.request.body;
-    const { company, role } = ctx.state;
+    const { company } = ctx.state;
 
     const mission = await Objective
       .query()
@@ -274,12 +278,18 @@ const userControllers = User => ({
           name: name,
           timeline: timeline,
           squad_id: squadId,
-          user_id: id
+          user_id: id,
+          company_id: company
         }),
 
         key_results: keyResults.map(v => ({ name: v })),
         resources: resources.map(v => ({ name: v }))
       });
+
+    if (!mission) {
+      ctx.throw(500);
+      return;
+    }
 
     const user = await User
       .query()
@@ -300,20 +310,25 @@ const userControllers = User => ({
         b.limit(3);
       });
 
-      ctx.body = {
-        user,
-        squadId,
-        userId: id
-      };
+    ctx.body = {
+      user,
+      squadId,
+      userId: id
+    };
   },
 
   createCheckIn: async ctx => {
     const { body } = ctx.request;
-    const { company, role } = ctx.state;
+    const { company } = ctx.state;
 
+    /* eslint-disable no-unused-vars */
     const checkIn = await CheckIn
       .query()
-      .insert(body);
+      .insert({
+        ...body,
+        company_id: company
+      });
+    /* eslint-enable no-unused-vars */
 
     const squad = await Objective
       .query()
@@ -344,7 +359,7 @@ const userControllers = User => ({
       user,
       userId: body.userId,
       squadId: squad.squadId
-    }
+    };
   }
 
 });

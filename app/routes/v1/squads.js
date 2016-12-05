@@ -2,7 +2,6 @@
 
 import Squad from '../../models/Squad';
 import User from '../../models/User';
-import SquadUser from '../../models/SquadUser';
 
 import { addId } from '../../utils';
 
@@ -33,7 +32,7 @@ const squadControllers = Squad => ({
 
     ctx.body = {
       results
-    }
+    };
   },
 
   create: async ctx => {
@@ -78,7 +77,7 @@ const squadControllers = Squad => ({
     const { company } = ctx.state;
     const { squadId, userId } = ctx.request.body;
 
-    const join = await User
+    await User
       .query()
       .update({
         squad_id: squadId
@@ -113,4 +112,4 @@ const squadControllers = Squad => ({
 
 });
 
-module.exports = squadControllers(Squad)
+module.exports = squadControllers(Squad);

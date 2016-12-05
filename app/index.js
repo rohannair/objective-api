@@ -1,15 +1,9 @@
 'use strict';
 require('dotenv').config({silent: true});
 
-if (process.env.NODE_ENV === 'production') {
-  require('newrelic');
-}
-
 ///////////// Deps /////////////
 import Koa from 'koa';
 import router from 'koa-router';
-import chalk from 'chalk';
-import co from 'co';
 import Boom from 'boom';
 import logger from 'koa-logger';
 
@@ -19,14 +13,8 @@ import convert from 'koa-convert';
 import helmet from 'koa-helmet';
 import cors from 'koa-cors';
 
-const keys = ['ineed', 'better', 'keys'];
-const debug = require('debug')('app:index');
-
 const db = knex(require('../knexfile'));
 Model.knex(db);
-
-///////////// Configs /////////////
-const ENV = process.env.NODE_ENV || 'development';
 
 ///////////// Middleware /////////////
 import bodyparser from 'koa-bodyparser';
@@ -37,6 +25,7 @@ import healthCheckRouter from './routes/health-check/health-check.routes';
 import publicRouter from './routes/public';
 import v1Router from './routes/v1';
 import privateRouter from './routes/private';
+import graphql from './routes/graphql';
 
 ///////////// App /////////////
 const app = module.exports = new Koa();
@@ -58,7 +47,8 @@ api
   .use('/health', healthCheckRouter.routes())
   .use('/public', publicRouter.routes())
   .use('/v1', v1Router.routes())
-  .use('/45798909507319174', privateRouter.routes());
+  .use('/45798909507319174', privateRouter.routes())
+  .use('/graphql', graphql.routes());
 
 app
   .use(api.routes())
