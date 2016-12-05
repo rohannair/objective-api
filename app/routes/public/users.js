@@ -1,11 +1,13 @@
 'use strict';
 import Company from '../../models/Company';
 import User from '../../models/User';
+
 import { addId } from '../../utils';
 import omit from 'lodash/omit';
 /* eslint-disable no-unused-vars */
 import chalk from 'chalk';
 const debug = require('debug')('app:debug');
+const logError = require('debug')('app:error');
 /* eslint-enable no-unused-vars */
 
 import {
@@ -18,6 +20,7 @@ import {
 } from '../../utils/auth';
 
 import { forgotPassword } from '../v1/emails';
+import { createRandomToken } from '../../utils';
 
 const userControllers = User => ({
   login: async ctx => {
@@ -60,24 +63,34 @@ const userControllers = User => ({
   },
 
   forgotPassword: async ctx => {
-    const { email } = ctx.body;
+    const { email } = ctx.request.body;
+    const domain = email.split('@')[1];
+    const token = await createRandomToken();
 
-    try {
-      // Todo check for finishedInvite
-      await forgotPassword(email);
-      ctx.status = 200;
-      ctx.body = {
-        message: `Password reset email sent to ${email}`
-      };
+    const company = Company.query()
+      .select()
+      .where({ domain });
 
-    } catch(e) {
-
-      ctx.status = 400;
-      ctx.body = {
-        ...e
-      };
-
+    if (!company) {
+      return ctx.throw(400, 'Invalid email domain; company not found');
     }
+
+    const user = await User.query()
+      .update({
+        signup_token: token
+      })
+      .where({ email });
+
+    if (!user) {
+      return ctx.throw(400, 'User not found');
+    }
+
+    await forgotPassword({email, domain, token});
+
+    ctx.status = 200;
+    ctx.body = {
+      message: `Password reset email sent to ${email}`
+    };
   },
 
   finishInvite: async ctx => {

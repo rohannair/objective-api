@@ -25,7 +25,7 @@
       "command": "forever ./dist/server.js"
     },
     "start:dev": {
-      "command": "nodemon --exec \"./node_modules/.bin/nodejs-dashboard -p 3009 babel-node\" ./app/server ",
+      "command": "nodemon --exec babel-node ./app/server ",
       "env": {
         "NODE_ENV": "development",
         "DEBUG": "graphql:*,koa:*,app:*,koa-router:*,knex:query,knex:bindings",
