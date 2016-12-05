@@ -7,6 +7,7 @@ const CheckIn = `
     id: Int!
     name: String
     body: String
+    blocker: Boolean
     completed: Boolean
     createdAt: String
 

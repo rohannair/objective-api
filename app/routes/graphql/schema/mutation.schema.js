@@ -80,7 +80,7 @@ const Mutation = `
     ###
 
     # Create a new SnapShots
-    addSnapshot(body: String!, objective: String): CheckIn
+    addSnapshot(body: String!, objective: String, blocker: Boolean): CheckIn
   }
 `;
 

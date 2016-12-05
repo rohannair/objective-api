@@ -154,12 +154,13 @@ const resolver = {
     /// Create a new snapshot
     // addSnapshot(body: String!, objective: String): CheckIn
     addSnapshot: async (root, args, ctx) => {
-      const { body, objective } = args;
+      const { body, objective, blocker } = args;
       const { company, user: userId } = ctx.state;
 
       const snapshot = await models.CheckIn.query()
         .insert({
           body,
+          blocker,
           objective_id: objective,
           company_id: company,
           user_id: userId
