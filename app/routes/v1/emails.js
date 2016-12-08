@@ -48,7 +48,7 @@ const emailControllers = () => ({
   forgotPassword: async ({email, domain, token}) => {
     debug({email, domain, token});
 
-    let link = `https://${domain}.objectiveiq.io/auth/resetpassword?id=${email}&token=${token}`;
+    let link = `https://${domain.split('.')[0]}.objectiveiq.io/auth/resetpassword?id=${email}&token=${token}`;
 
     const template = {
       content: {
