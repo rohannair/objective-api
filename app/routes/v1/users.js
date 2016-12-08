@@ -114,6 +114,7 @@ const userControllers = User => ({
       .query()
       .insert({
         ...addId(body),
+        email: body.email.toLowerCase(),
         digest: encryptPassword(pword),
         company_id: company
       })
@@ -143,7 +144,7 @@ const userControllers = User => ({
       const user = await User
         .query()
         .where({
-          email: email,
+          email: email.toLowerCase(),
           company_id: company
         })
         .first();
@@ -164,7 +165,7 @@ const userControllers = User => ({
       const newUser = await User
         .query()
         .insert(addId({
-          email,
+          email: email.toLowerCase(),
           job_title: jobTitle,
           company_id: company,
           signup_token: signupToken,

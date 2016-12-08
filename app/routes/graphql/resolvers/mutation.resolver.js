@@ -40,7 +40,7 @@ const resolver = {
       const signupToken = await createRandomToken();
       const user = await models.User.query()
         .insert(addId({
-          email,
+          email: email.toLowerCase(),
           company_id: company,
           signup_token: signupToken,
           digest: await randomPassword().then(encryptPassword)
@@ -56,7 +56,7 @@ const resolver = {
 
       // Send email invite
       const emailResult = await emails.inviteUser({
-        email,
+        email: email.toLowerCase(),
         signupToken,
         admin: {
           name: `${admin.firstName} ${admin.lastName}`,

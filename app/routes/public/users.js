@@ -31,7 +31,7 @@ const userControllers = User => ({
       .query()
       .select('id', 'email', 'digest', 'role', 'company_id')
       .where({
-        email: username
+        email: username.toLowerCase()
       })
       .first();
 
@@ -79,13 +79,14 @@ const userControllers = User => ({
       .update({
         signup_token: token
       })
-      .where({ email });
+      .where({ email: email.toLowerCase() });
 
     if (!user) {
       return ctx.throw(400, 'User not found');
     }
 
-    await forgotPassword({email, domain, token});
+    const forgotPasswordEmail = await forgotPassword({email, domain, token});
+    debug('EMAIL STATUS', forgotPasswordEmail);
 
     ctx.status = 200;
     ctx.body = {

@@ -11,8 +11,8 @@ exports.seed = function(knex, Promise) {
 
   return knex('companies').insert({
     id: companyId,
-    name: 'Quartermaster',
-    domain: 'qrtrmstr.com'
+    name: 'objectiveIQ',
+    domain: 'objectiveiq.com'
   })
 
   .then(_ => encryptPassword('password123'))
@@ -20,7 +20,7 @@ exports.seed = function(knex, Promise) {
     knex('users').insert([
       {
         id: userId,
-        email: 'rohan@qrtrmstr.com',
+        email: 'rohan@objectiveiq.com',
         first_name: 'Rohan',
         last_name: 'Nair',
         digest: password,
@@ -32,7 +32,7 @@ exports.seed = function(knex, Promise) {
       },
       {
         id: userId2,
-        email: 'ray@qrtrmstr.com',
+        email: 'ray@objectiveiq.com',
         first_name: 'Ray',
         last_name: 'Kanani',
         digest: password,
@@ -44,7 +44,7 @@ exports.seed = function(knex, Promise) {
       },
       {
         id: userId3,
-        email: 'stuart@qrtrmstr.com',
+        email: 'stuart@objectiveiq.com',
         first_name: 'Stu',
         last_name: 'Peters',
         digest: password,

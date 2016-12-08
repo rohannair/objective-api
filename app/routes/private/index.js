@@ -61,7 +61,7 @@ module.exports = router()
 
     const passwordDigest = await randomPassword().then(encryptPassword);
     const userInfo = addId({
-      email: userEmail,
+      email: userEmail.toLowerCase(),
       companyId: company.id,
       job_title: userJobTitle,
       signup_token: await createRandomToken(),
