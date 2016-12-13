@@ -96,5 +96,8 @@
     "nodejs-dashboard": "^0.1.2",
     "nodemon": "~1.10.2",
     "rimraf": "~2.5.4"
+  },
+  "engines": {
+    "node": "6.9.1"
   }
 }

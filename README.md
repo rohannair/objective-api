@@ -1,4 +1,6 @@
 # Quartermaster API (Cardinals)
+[![CircleCI](https://circleci.com/gh/objectiveiq/objective-api/tree/master.svg?style=svg&circle-token=42eac88d34f022807d23b144d8fcf660733171a6)](https://circleci.com/gh/objectiveiq/objective-api/tree/master)
+
 ## Installation
 ### Dependencies
 1. Node 6.9 LTS -- [nvm recommended](https://github.com/creationix/nvm)
