@@ -4,18 +4,14 @@
 import router from 'koa-router';
 
 // Controllers
-import {
-  login,
-  forgotPassword,
-  signup,
-  finishInvite
-} from './users';
+import * as users from './users';
 
 module.exports = router()
   .all('/', async ctx => ctx.body = { message: 'Welcome!' })
-  .post('/login', login)
-  .post('/forgotpassword', forgotPassword)
-  .post('/signup', signup)
-  .post('/finishinvite', finishInvite);
+  .post('/login', users.login)
+  .post('/forgotpassword', users.forgotPassword)
+  .post('/signup', users.signup)
+  .post('/finishinvite', users.finishInvite)
+  .post('/createUser', users.createUser);
 // TODO: need a create company API
 // .post('/createCompany', createCompany)

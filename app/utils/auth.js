@@ -1,40 +1,19 @@
 'use strict';
 import jwt from 'jsonwebtoken';
-import omit from 'lodash/omit';
 
-const secret = process.env.JWT_SECRET || new Buffer('abcd1234').toString('base64');
+/**
+ * Token creation has been delegated to Auth0
+ */
 
-const jwtDetails = {
-  algorithm: 'HS256',
-  expiresIn: '2d',
-  issuer: 'qrtrmstr.io'
-};
-
-function genToken(userDetails) {
+export function verifyToken(token) {
   return new Promise((resolve, reject) => {
-    jwt.sign(
-      { ...omit(userDetails, ['digest', 'img']) },
-      secret,
-      { ...jwtDetails },
-      (err, token) => {
-        if (err) reject(new Error('Error creating JWT'));
-        resolve(token);
-      }
-    );
+    jwt.verify(
+      token,
+      new Buffer(process.env.AUTH0_CLIENT_SECRET, 'base64'),
+      { audience: process.env.AUTH0_CLIENT_ID, },
+      (err, decoded) => {
+        if (err) reject(new Error('Could not verify JWT'));
+        resolve(decoded);
+      });
   });
 }
-
-function verifyToken(token) {
-  return new Promise((resolve, reject) => {
-    jwt.verify(token, secret, { ...jwtDetails }, (err, decoded) => {
-      if (err) reject(new Error('Could not verify JWT'));
-      resolve(decoded);
-    });
-  });
-}
-
-module.exports = {
-  secret,
-  genToken,
-  verifyToken
-};

@@ -6,8 +6,9 @@ const isAuthed = async (ctx, next) => {
     && ctx.headers.authorization.replace('Bearer ', '');
 
   const user = await verifyToken(token);
-  ctx.state.user = user.id;
-  ctx.state.company = user.companyId;
+  ctx.state.user = user.user_metadata.oiq_id;
+  ctx.state.email = user.email;
+  ctx.state.company = user.user_metadata.c_id;
   ctx.state.role = user.role;
 
   await next();

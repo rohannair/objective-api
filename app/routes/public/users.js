@@ -4,62 +4,27 @@ import User from '../../models/User';
 
 import { addId } from '../../utils';
 import omit from 'lodash/omit';
+import jwt from 'jsonwebtoken';
+
 /* eslint-disable no-unused-vars */
 import chalk from 'chalk';
 const debug = require('debug')('app:debug');
 const logError = require('debug')('app:error');
 /* eslint-enable no-unused-vars */
 
-import {
-  encryptPassword,
-  checkPassword
-} from '../../utils/encryption';
+import { auth0 } from '../../config/auth0';
 
 import {
-  genToken
-} from '../../utils/auth';
+  randomPassword,
+  encryptPassword,
+} from '../../utils/encryption';
 
 import { forgotPassword } from '../v1/emails';
 import { createRandomToken } from '../../utils';
 
 const userControllers = User => ({
   login: async ctx => {
-    const { username, password } = ctx.request.body;
-    if (!username || !password) return ctx.status = 400;
-
-    let user = await User
-      .query()
-      .select('id', 'email', 'digest', 'role', 'company_id')
-      .where({
-        email: username.toLowerCase()
-      })
-      .first();
-
-    if (!user) {
-      ctx.status = 400;
-      ctx.body = {
-        status: 1,
-        message: 'Cannot find that user!'
-      };
-    } else {
-      let passwordCheck = await checkPassword(password, user.digest);
-      if (!passwordCheck) {
-        ctx.status = 401;
-        ctx.body = {
-          status: 1,
-          message: 'Incorrect password'
-        };
-      } else {
-        const token = await genToken(user);
-        ctx.status = 200;
-        ctx.body = {
-          status: 0,
-          user: user.id,
-          token,
-          companyId: user.companyId
-        };
-      }
-    }
+    ctx.throw(500, 'DEPRECATED ENDPOINT');
   },
 
   forgotPassword: async ctx => {
@@ -155,6 +120,55 @@ const userControllers = User => ({
 
     ctx.status = 201;
     ctx.body = { user: omit(user, 'digest') };
+  },
+
+  createUser: async ctx => {
+    const { body: { token, state } } = ctx.request;
+    const decodedJWT = jwt.decode(token);
+    const {
+      email,
+      user: { given_name, family_name, picture, user_id }
+    } = decodedJWT;
+
+    // Does user exist?
+    let user = await User.query()
+      .where('email', email)
+      .select('id', 'company_id', 'role')
+      .first();
+
+    if (!user) {
+      const domain = email.split('@')[1];
+      const company = await Company.query()
+        .where('domain', domain)
+        .select('id')
+        .first();
+
+      const newUser = addId({
+        email,
+        firstName: given_name,
+        lastName: family_name,
+        img: picture,
+        pending: false,
+        company_id: company.id
+      });
+
+
+      user = await User
+        .query()
+        .insert(newUser)
+        .returning(['id', 'company_id', 'role']);
+    }
+
+    await auth0.users.update({ id: user_id }, {
+      user_metadata: {
+        oiq_id: user.id,
+        c_id: user.companyId
+      },
+      role: user.role
+    });
+
+    ctx.status = 201;
+    ctx.body = { state, token };
   }
 });
 
