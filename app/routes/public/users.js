@@ -162,9 +162,9 @@ const userControllers = User => ({
     await auth0.users.update({ id: user_id }, {
       user_metadata: {
         oiq_id: user.id,
-        c_id: user.companyId
+        c_id: user.companyId,
+        role: user.role
       },
-      role: user.role
     });
 
     ctx.status = 201;

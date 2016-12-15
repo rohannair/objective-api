@@ -9,7 +9,7 @@ const isAuthed = async (ctx, next) => {
   ctx.state.user = user.user_metadata.oiq_id;
   ctx.state.email = user.email;
   ctx.state.company = user.user_metadata.c_id;
-  ctx.state.role = user.role;
+  ctx.state.role = user.user_metadata.role;
 
   await next();
 };

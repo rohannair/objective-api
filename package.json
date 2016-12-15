@@ -4,7 +4,7 @@
   "main": "index.js",
   "private": true,
   "scripts": {
-    "start": "better-npm-run start:prod",
+    "start": "npm run build && better-npm-run start:prod",
     "dev": "better-npm-run start:dev",
     "clean": "rimraf dist",
     "build": "npm run clean && npm run build:transpile",
