@@ -19,6 +19,7 @@ Model.knex(db);
 ///////////// Middleware /////////////
 import bodyparser from 'koa-bodyparser';
 import errorResponder from './middleware/error-responder';
+import knexLogger from './middleware/knex-logger';
 
 ///////////// Routes /////////////
 import healthCheckRouter from './routes/health-check/health-check.routes';
@@ -39,6 +40,7 @@ app
   .use(convert(cors()))
   .use(bodyparser())
   .use(logger())
+  .use(knexLogger(db))
   .use(errorResponder);
 
 ///////////// Routing /////////////

@@ -28,7 +28,7 @@
       "command": "nodemon --exec babel-node ./app/server ",
       "env": {
         "NODE_ENV": "development",
-        "DEBUG": "graphql:*,koa:*,app:*,koa-router:*,knex:query,knex:bindings",
+        "DEBUG": "graphql:*,koa:*,app:*,koa-router:*",
         "WEB_CONCURRENCY": 1,
         "PORT": 3000
       }
