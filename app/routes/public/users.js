@@ -3,7 +3,6 @@ import Company from '../../models/Company';
 import User from '../../models/User';
 
 import { addId } from '../../utils';
-import omit from 'lodash/omit';
 import jwt from 'jsonwebtoken';
 
 /* eslint-disable no-unused-vars */
@@ -13,14 +12,6 @@ const logError = require('debug')('app:error');
 /* eslint-enable no-unused-vars */
 
 import { auth0 } from '../../config/auth0';
-
-import {
-  randomPassword,
-  encryptPassword,
-} from '../../utils/encryption';
-
-import { forgotPassword } from '../v1/emails';
-import { createRandomToken } from '../../utils';
 
 const userControllers = User => ({
   login: async ctx => {

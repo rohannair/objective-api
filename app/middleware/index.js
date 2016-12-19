@@ -6,10 +6,10 @@ const isAuthed = async (ctx, next) => {
     && ctx.headers.authorization.replace('Bearer ', '');
 
   const user = await verifyToken(token);
-  ctx.state.user = user.user_metadata.oiq_id;
+  ctx.state.user = user.app_metadata.oiq_id;
   ctx.state.email = user.email;
-  ctx.state.company = user.user_metadata.c_id;
-  ctx.state.role = user.user_metadata.role;
+  ctx.state.company = user.app_metadata.c_id;
+  ctx.state.role = user.app_metadata.role;
 
   await next();
 };
