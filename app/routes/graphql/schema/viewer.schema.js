@@ -1,8 +1,8 @@
-import Objective from './objective.schema';
-import Company from './company.schema';
-import Squad from './squad.schema';
-import CheckIn from './checkIn.schema';
-import { UserStatus } from './user.schema';
+import Objective from './objective.schema'
+import Company from './company.schema'
+import Squad from './squad.schema'
+import Snapshot from './snapshot.schema'
+import { UserStatus } from './user.schema'
 
 const Viewer = `
   type Viewer {
@@ -18,8 +18,9 @@ const Viewer = `
     company: Company,
     squads: [Squad],
     objectives: [Objective],
-    snapshots: [CheckIn]
+    objective(id: String): Objective,
+    snapshots: [Snapshot]
   }
-`;
+`
 
-export default () => [Viewer, UserStatus, Company, Squad, Objective, CheckIn];
+export default () => [Viewer, UserStatus, Company, Squad, Objective, Snapshot]

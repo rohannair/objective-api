@@ -1,14 +1,14 @@
 require('babel-core/register')({
   sourceMap: 'inline'
-});
-require('babel-polyfill');
+})
+require('babel-polyfill')
 
-const HOST = process.env.HOST || 'localhost';
-const PORT = process.env.PORT || 3000;
+const HOST = process.env.HOST || 'localhost'
+const PORT = process.env.PORT || 3000
 
-const app = require('./index');
-const chalk = require('chalk');
-const debug = require('debug');
+const app = require('./index')
+const chalk = require('chalk')
+const debug = require('debug')
 // const convert = require('koa-convert');
 
 // const throng = require('throng');
@@ -16,19 +16,19 @@ const debug = require('debug');
 // const WORKERS = process.env.WEB_CONCURRENCY || os.cpus().length;
 
 ///////////// Debugging /////////////
-const log = debug('app:log');
+const log = debug('app:log')
 /* eslint-disable no-console */
-log.log = console.log.bind(console);
+log.log = console.log.bind(console)
 /* eslint-enable no-console */
 
-const error = debug('app:error');
+const error = debug('app:error')
 
 function start(id) {
   app.listen(PORT, function(err) {
-    if (err) return error(err);
+    if (err) return error(err)
 
-    log(`⚡  Worker ${id} running at ${chalk.white.bold(`http://${HOST}:${PORT}`)}`);
-  });
+    log(`⚡  Worker ${id} running at ${chalk.white.bold(`http://${HOST}:${PORT}`)}`)
+  })
 }
 
 // function startMaster() {
@@ -42,4 +42,4 @@ function start(id) {
 //   master: startMaster
 // });
 
-start('1');
+start('1')

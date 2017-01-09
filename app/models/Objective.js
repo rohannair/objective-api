@@ -1,27 +1,27 @@
-'use strict';
-import { Model } from 'objection';
-import BaseModel from './Base';
+'use strict'
+import { Model } from 'objection'
+import BaseModel from './Base'
 
-import CheckIn from './CheckIn';
-import Key_Result from './KeyResult';
-import Resource from './Resource';
-import Squad from './Squad';
+import Snapshot from './Snapshot'
+import Key_Result from './KeyResult'
+import Resource from './Resource'
+import Squad from './Squad'
 
 class Objective extends BaseModel {
   static tableName = 'objectives';
 
   $beforeUpdate() {
-    this.updated_at = new Date().toUTCString();
+    this.updated_at = new Date().toUTCString()
   }
 
   static get relationMappings() {
     return {
-      check_ins: {
+      snapshots: {
         relation: Model.HasManyRelation,
-        modelClass: CheckIn,
+        modelClass: Snapshot,
         join: {
           from: 'objectives.id',
-          to: 'check_ins.objective_id'
+          to: 'snapshots.objective_id'
         }
       },
 
@@ -51,8 +51,8 @@ class Objective extends BaseModel {
           to: 'squads.id'
         }
       },
-    };
+    }
   }
 }
 
-export default Objective;
+export default Objective

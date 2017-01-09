@@ -1,10 +1,10 @@
 // Deps
-'use strict';
+'use strict'
 
-import router from 'koa-router';
+import router from 'koa-router'
 
 // Controllers
-import * as users from './users';
+import * as users from './users'
 
 module.exports = router()
   .all('/', async ctx => ctx.body = { message: 'Welcome!' })
@@ -12,6 +12,6 @@ module.exports = router()
   .post('/forgotpassword', users.forgotPassword)
   .post('/signup', users.signup)
   .post('/finishinvite', users.finishInvite)
-  .post('/createUser', users.createUser);
+  .post('/createUser', users.createUser)
 // TODO: need a create company API
 // .post('/createCompany', createCompany)

@@ -93,7 +93,7 @@ exports.seed = function(knex, Promise) {
   )
 
   .then(_ =>
-    knex('check_ins').insert([
+    knex('snapshots').insert([
       {
         name: 'This shouldn\'t matter',
         body: 'I did some cool stuff today on this',

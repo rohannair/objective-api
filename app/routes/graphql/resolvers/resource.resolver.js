@@ -1,13 +1,13 @@
-import Objective from '../../../models/Objective';
+import Objective from '../../../models/Objective'
 
 const resolver = {
   Resource: {
     objective(resource) {
       return Objective.query()
         .where('id', resource.objective_id)
-        .first();
+        .first()
     }
   }
-};
+}
 
-export default resolver;
+export default resolver

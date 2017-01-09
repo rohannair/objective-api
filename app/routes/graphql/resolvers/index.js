@@ -1,30 +1,32 @@
-import User from '../../../models/User';
+import User from '../../../models/User'
 
-import CheckinResolver from './checkIn.resolver';
-import CompanyResolver from './company.resolver';
-import ObjectiveResolver from './objective.resolver';
-import SquadResolver from './squad.resolver';
-import UserResolver from './user.resolver';
-import ViewerResolver from './viewer.resolver';
+import SnapshotResolver from './snapshot.resolver'
+import CompanyResolver from './company.resolver'
+import ObjectiveResolver from './objective.resolver'
+import SquadResolver from './squad.resolver'
+import UserResolver from './user.resolver'
+import ViewerResolver from './viewer.resolver'
 
-import MutationResolver from './mutation.resolver';
+import MutationResolver from './mutation.resolver'
 
-const debug = require('debug')('app:index');
+/* eslint-disable no-unused-vars */
+const debug = require('debug')('app:index')
+/* eslint-enable no-unused-vars */
 
 const QueryResolver = {
   Query: {
     viewer(root, args, ctx) {
       return User.query()
         .where('id', ctx.state.user)
-        .first();
+        .first()
     }
   }
-};
+}
 
 export default {
   ...QueryResolver,
   ...ViewerResolver,
-  ...CheckinResolver,
+  ...SnapshotResolver,
   ...CompanyResolver,
   ...ObjectiveResolver,
   ...SquadResolver,
@@ -32,4 +34,4 @@ export default {
 
   // Mutation resolvers:
   ...MutationResolver
-};
+}

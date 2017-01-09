@@ -1,8 +1,8 @@
-'use strict';
-import BaseModel from './Base';
+'use strict'
+import BaseModel from './Base'
 
 class Company extends BaseModel {
   static tableName = 'companies';
 }
 
-export default Company;
+export default Company

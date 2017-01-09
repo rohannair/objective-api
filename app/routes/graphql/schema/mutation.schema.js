@@ -44,10 +44,10 @@ const Mutation = `
     ###
 
     # Create an Objective
-    createObjective(body: String!): Objective
+    createObjective(name: String!, endsAt: String): Objective
 
     # Update an Objective
-    updateObjective(id: String!): Objective
+    editObjective(id: String!, name: String, endsAt: String): Objective
 
     ###
     # Key Results
@@ -80,8 +80,8 @@ const Mutation = `
     ###
 
     # Create a new SnapShots
-    addSnapshot(body: String!, objective: String, blocker: Boolean): CheckIn
+    addSnapshot(body: String!, objective: String, blocker: Boolean): Snapshot
   }
-`;
+`
 
-export default () => [Mutation];
+export default () => [Mutation]

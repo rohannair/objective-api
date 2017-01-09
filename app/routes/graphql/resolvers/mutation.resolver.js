@@ -1,10 +1,10 @@
-import models from '../../../models';
-import { addId, createRandomToken } from '../../../utils';
-import { randomPassword, encryptPassword } from '../../../utils/encryption';
+import models from '../../../models'
+import { addId, createRandomToken } from '../../../utils'
+import { randomPassword, encryptPassword } from '../../../utils/encryption'
 
-import * as emails from '../../v1/emails';
+import * as emails from '../../v1/emails'
 /* eslint-disable no-unused-vars */
-const debug = require('debug')('app:debug');
+const debug = require('debug')('app:debug')
 
 const resolver = {
   Mutation: {
@@ -33,11 +33,11 @@ const resolver = {
 
     // Invite an user
     inviteUser: async (root, args, ctx) => {
-      const { email } = args;
-      const { company, user: adminId } = ctx.state;
+      const { email } = args
+      const { company, user: adminId } = ctx.state
 
       // Insert user
-      const signupToken = await createRandomToken();
+      const signupToken = await createRandomToken()
       const user = await models.User.query()
         .insert(addId({
           email: email.toLowerCase(),
@@ -45,14 +45,14 @@ const resolver = {
           signup_token: signupToken,
           digest: await randomPassword().then(encryptPassword)
         }))
-        .returning('*');
+        .returning('*')
 
       // Pull inviter data
       const admin = await models.User.query()
         .where({ 'users.id': adminId })
         .select(['users.first_name', 'users.last_name', 'users.email', 'c.name as companyName', 'c.domain'])
         .leftJoin('companies as c', 'users.company_id', 'c.id')
-        .first();
+        .first()
 
       // Send email invite
       const emailResult = await emails.inviteUser({
@@ -64,10 +64,10 @@ const resolver = {
         },
         company: admin.companyName,
         domain: admin.domain.split('.')[0]
-      });
+      })
 
       // resolve inviteUser
-      return user;
+      return user
     },
 
     // Update an user
@@ -105,12 +105,40 @@ const resolver = {
 
     // Create an Objective
     createObjective: async (root, args, ctx) => {
+      const { name, endsAt } = args
+      const { company, user: adminId } = ctx.state
+      const objective = await models.Objective.query()
+        .insert(addId({
+          name,
+          endsAt,
+          companyId: company
+        }))
+        .returning('*')
 
+      return objective
     },
 
     // Update an objective
-    updateObjective: async (root, args, ctx) => {
+    editObjective: async (root, args, ctx) => {
+      const { id, name, endsAt } = args
+      const { company, user: adminId } = ctx.state
+      debug('ARGUMENTS', args)
 
+      const objective = await models.Objective.query()
+        .update(addId({
+          name,
+          endsAt
+        }))
+        .where({
+          id,
+          company_id: company
+        })
+        .returning('*')
+        .first()
+
+      debug('OBJECTIVE', objective)
+
+      return objective
     },
 
     /***
@@ -152,12 +180,12 @@ const resolver = {
     },
 
     /// Create a new snapshot
-    // addSnapshot(body: String!, objective: String): CheckIn
+    // addSnapshot(body: String!, objective: String): Snapshot
     addSnapshot: async (root, args, ctx) => {
-      const { body, objective, blocker } = args;
-      const { company, user: userId } = ctx.state;
+      const { body, objective, blocker } = args
+      const { company, user: userId } = ctx.state
 
-      const snapshot = await models.CheckIn.query()
+      const snapshot = await models.Snapshot.query()
         .insert({
           body,
           blocker,
@@ -165,11 +193,11 @@ const resolver = {
           company_id: company,
           user_id: userId
         })
-        .returning('*');
+        .returning('*')
 
-      return snapshot;
+      return snapshot
     }
   },
-};
+}
 
-export default resolver;
+export default resolver

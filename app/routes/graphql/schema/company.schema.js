@@ -1,5 +1,5 @@
-import User from './user.schema';
-import Squad from './squad.schema';
+import User from './user.schema'
+import Squad from './squad.schema'
 
 const Company = `
   type Company {
@@ -10,6 +10,6 @@ const Company = `
     users: [User]
     squads: [Squad]
   }
-`;
+`
 
-export default () => [Company, User, Squad];
+export default () => [Company, User, Squad]

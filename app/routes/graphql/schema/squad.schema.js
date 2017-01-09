@@ -1,6 +1,6 @@
-import User from './user.schema';
-import Objective from './objective.schema';
-import Company from './company.schema';
+import User from './user.schema'
+import Objective from './objective.schema'
+import Company from './company.schema'
 
 const Squad = `
   type Squad {
@@ -12,6 +12,6 @@ const Squad = `
     leader: User
     objectives: [Objective]
   }
-`;
+`
 
-export default () => [Squad, Company, User, Objective];
+export default () => [Squad, Company, User, Objective]

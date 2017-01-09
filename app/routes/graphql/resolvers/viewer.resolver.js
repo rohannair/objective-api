@@ -1,7 +1,7 @@
-import UserResolver from './user.resolver';
-import CheckIn from '../../../models/CheckIn';
-import Squad from '../../../models/Squad';
-import Objective from '../../../models/Objective';
+import UserResolver from './user.resolver'
+import Snapshot from '../../../models/Snapshot'
+import Squad from '../../../models/Squad'
+import Objective from '../../../models/Objective'
 
 const resolver = {
   Viewer: {
@@ -9,20 +9,28 @@ const resolver = {
 
     squads(viewer) {
       return Squad.query()
-        .where('company_id', viewer.companyId);
+        .where('company_id', viewer.companyId)
+    },
+
+    objective(viewer, args) {
+      if (!args.id) return null
+      return Objective.query()
+        .where('id', args.id)
+        .andWhere('company_id', viewer.companyId)
+        .first()
     },
 
     objectives(viewer) {
       return Objective.query()
-        .where('company_id', viewer.companyId);
+        .where('company_id', viewer.companyId)
     },
 
     snapshots(viewer) {
-      return CheckIn.query()
+      return Snapshot.query()
         .where('company_id', viewer.companyId)
-        .orderBy('created_at', 'desc');
+        .orderBy('created_at', 'desc')
     }
   }
-};
+}
 
-export default resolver;
+export default resolver

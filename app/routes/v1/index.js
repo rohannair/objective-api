@@ -1,15 +1,15 @@
 // Deps
-'use strict';
+'use strict'
 
-import router from 'koa-router';
+import router from 'koa-router'
 
 // Middleware
-import { isAuthed } from '../../middleware';
+import { isAuthed } from '../../middleware'
 
 // Controllers
-import * as users from './users';
-import * as squads from './squads';
-import * as objectives from './objectives';
+import * as users from './users'
+import * as squads from './squads'
+import * as objectives from './objectives'
 
 // Routes
 module.exports = router()
@@ -31,4 +31,4 @@ module.exports = router()
 
   .post('/objectives/add', objectives.create)
   .post('/objectives/:id/edit', objectives.update)
-  .post('/objectives/:id/check_in', users.createCheckIn);
+  .post('/objectives/:id/check_in', users.createSnapshot)

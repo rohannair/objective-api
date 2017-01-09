@@ -1,20 +1,20 @@
-'use strict';
+'use strict'
 
-import Objective from '../../models/Objective';
-import KeyResult from '../../models/KeyResult';
+import Objective from '../../models/Objective'
+import KeyResult from '../../models/KeyResult'
 
-import { addId } from '../../utils';
+import { addId } from '../../utils'
 
 /* eslint-disable no-unused-vars */
-import chalk from 'chalk';
-const debug = require('debug')('app:debug');
+import chalk from 'chalk'
+const debug = require('debug')('app:debug')
 /* eslint-enable no-unused-vars */
 
 const objectiveControllers = Objective => ({
   create: async ctx => {
-    const { company } = ctx.state;
-    const { body } = ctx.request;
-    const { name, timeline, squadId, keyResults } = body;
+    const { company } = ctx.state
+    const { body } = ctx.request
+    const { name, timeline, squadId, keyResults } = body
 
     const mission = await Objective
       .query()
@@ -25,14 +25,14 @@ const objectiveControllers = Objective => ({
         key_results: keyResults,
         company_id: company
       }))
-      .returning('*');
+      .returning('*')
 
-    ctx.body = { mission };
+    ctx.body = { mission }
   },
 
   update: async ctx => {
-    const { body } = ctx.request;
-    const { id, name, timeline, keyResults } = body;
+    const { body } = ctx.request
+    const { id, name, timeline, keyResults } = body
 
     await Objective
       .query()
@@ -40,16 +40,16 @@ const objectiveControllers = Objective => ({
         name,
         timeline
       })
-      .where({ id });
+      .where({ id })
 
     /* eslint-disable no-unused-vars */
     const missionKeyResults = keyResults.map(async kr => {
-      let { id, name } = kr;
+      let { id, name } = kr
       return await KeyResult
         .query()
         .update({ name })
-        .where({ id });
-    });
+        .where({ id })
+    })
     /* eslint-emable no-unused-vars */
 
     const mission = await Objective
@@ -57,13 +57,13 @@ const objectiveControllers = Objective => ({
       .whereNull('user_id')
       .andWhere({ id })
       .eager('[key_results]')
-      .first();
+      .first()
 
     ctx.body = {
       mission
-    };
+    }
   }
 
-});
+})
 
-module.exports = objectiveControllers(Objective);
+module.exports = objectiveControllers(Objective)

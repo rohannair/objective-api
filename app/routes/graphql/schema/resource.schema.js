@@ -1,4 +1,4 @@
-import Objective from './objective.schema';
+import Objective from './objective.schema'
 
 const Resource = `
   type Resource {
@@ -7,7 +7,7 @@ const Resource = `
 
     objective: Objective
   }
-`;
+`
 
 
-export default () => [Resource, Objective];
+export default () => [Resource, Objective]

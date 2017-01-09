@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
-import User from './user.schema';
-import Objective from './objective.schema';
+import User from './user.schema'
+import Objective from './objective.schema'
 
 // TODO: fix this
 const KeyResult = `
@@ -10,6 +10,6 @@ const KeyResult = `
 
     objective: Objective
   }
-`;
+`
 
-export default KeyResult;
+export default KeyResult

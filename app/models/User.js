@@ -1,10 +1,10 @@
-'use strict';
-import { Model } from 'objection';
+'use strict'
+import { Model } from 'objection'
 
-import BaseModel from './Base';
-import Company from './Company';
-import Squad from './Squad';
-import Objective from './Objective';
+import BaseModel from './Base'
+import Company from './Company'
+import Squad from './Squad'
+import Objective from './Objective'
 
 class User extends BaseModel {
   static tableName = 'users';
@@ -37,8 +37,8 @@ class User extends BaseModel {
           to: 'objectives.user_id'
         }
       }
-    };
+    }
   }
 }
 
-export default User;
+export default User

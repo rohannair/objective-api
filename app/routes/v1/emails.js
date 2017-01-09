@@ -1,15 +1,15 @@
-'use strict';
+'use strict'
 /* eslint-disable no-unused-vars */
-import chalk from 'chalk';
-const debug = require('debug')('app:debug');
+import chalk from 'chalk'
+const debug = require('debug')('app:debug')
 /* eslint-enable no-unused-vars */
 
-import { sendEmail } from '../../config/mailer';
+import { sendEmail } from '../../config/mailer'
 
 const emailControllers = () => ({
   inviteUser: async ({email, admin, domain, signupToken}) => {
 
-    let link = `https://${domain}.objectiveiq.io/auth/signup?id=${email}&token=${signupToken}`;
+    let link = `https://${domain}.objectiveiq.io/auth/signup?id=${email}&token=${signupToken}`
 
     const template = {
       content: {
@@ -39,16 +39,16 @@ const emailControllers = () => ({
       recipients: [
         { address: email }
       ]
-    };
+    }
 
-    const data = await sendEmail(template);
-    return data;
+    const data = await sendEmail(template)
+    return data
   },
 
   forgotPassword: async ({email, domain, token}) => {
-    debug({email, domain, token});
+    debug({email, domain, token})
 
-    let link = `https://${domain.split('.')[0]}.objectiveiq.io/auth/resetpassword?id=${email}&token=${token}`;
+    let link = `https://${domain.split('.')[0]}.objectiveiq.io/auth/resetpassword?id=${email}&token=${token}`
 
     const template = {
       content: {
@@ -78,11 +78,11 @@ const emailControllers = () => ({
       recipients: [
         { address: email }
       ]
-    };
+    }
 
-    const data = await sendEmail(template);
-    return data;
+    const data = await sendEmail(template)
+    return data
   }
-});
+})
 
-module.exports = emailControllers();
+module.exports = emailControllers()

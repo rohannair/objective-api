@@ -1,38 +1,38 @@
-'use strict';
-import User from '../../models/User';
-import Company from '../../models/Company';
-import CheckIn from '../../models/CheckIn';
-import Objective from '../../models/Objective';
+'use strict'
+import User from '../../models/User'
+import Company from '../../models/Company'
+import Snapshot from '../../models/Snapshot'
+import Objective from '../../models/Objective'
 
-import { addId, createRandomToken } from '../../utils';
-import omit from 'lodash/omit';
+import { addId, createRandomToken } from '../../utils'
+import omit from 'lodash/omit'
 
 /* eslint-disable no-unused-vars */
-import chalk from 'chalk';
-const debug = require('debug')('app:debug');
+import chalk from 'chalk'
+const debug = require('debug')('app:debug')
 /* eslint-enable no-unused-vars */
 
 import {
   encryptPassword,
   checkPassword,
   randomPassword
-} from '../../utils/encryption';
+} from '../../utils/encryption'
 
-import * as emails from './emails';
+import * as emails from './emails'
 
 const userControllers = User => ({
   logout: async ctx => {
-    ctx.session = null;
+    ctx.session = null
 
-    ctx.status = 200;
+    ctx.status = 200
     ctx.body = {
       message: 'Logged out!',
       logout: true,
-    };
+    }
   },
 
   search: async ctx => {
-    const { company } = ctx.state;
+    const { company } = ctx.state
     // const { q } = ctx.query;
 
     const results = await User
@@ -46,14 +46,14 @@ const userControllers = User => ({
         'img',
         'job_title'
        )
-      .where('company_id', company);
+      .where('company_id', company)
 
-    ctx.body = { results };
+    ctx.body = { results }
   },
 
   get: async ctx => {
-    const { limit, offset } = ctx.query;
-    const { company } = ctx.state;
+    const { limit, offset } = ctx.query
+    const { company } = ctx.state
 
     const results = await User
       .query()
@@ -71,18 +71,18 @@ const userControllers = User => ({
       .limit(limit)
       .offset(offset)
       .orderBy('last_name')
-      .eager('[objectives, squads]');
+      .eager('[objectives, squads]')
 
     ctx.body = {
       results,
       nextOffset: offset + limit | 25,
       nextLimit: limit || 25
-    };
+    }
   },
 
   getOne: async ctx => {
-    const { id } = ctx.params;
-    const { company } = ctx.state;
+    const { id } = ctx.params
+    const { company } = ctx.state
 
     const user = await User
       .query()
@@ -99,16 +99,16 @@ const userControllers = User => ({
       .eager('[objectives, squads]')
       .where({ id })
       .andWhere('company_id', company)
-      .first();
+      .first()
 
-    ctx.body = { user };
+    ctx.body = { user }
   },
 
   create: async ctx => {
-    const { body } = ctx.request;
-    const { company } = ctx.state;
+    const { body } = ctx.request
+    const { company } = ctx.state
 
-    const pword = await randomPassword();
+    const pword = await randomPassword()
 
     const user = await User
       .query()
@@ -127,19 +127,19 @@ const userControllers = User => ({
         'job_title',
         'role',
         'pending'
-      ]);
+      ])
 
     // TODO: send email to user with password
-    ctx.status = 201;
+    ctx.status = 201
 
     // TODO: get rid of returning the password here
-    ctx.body = { user: { ...user, password: pword } };
+    ctx.body = { user: { ...user, password: pword } }
   },
 
   invite: async ctx => {
     try {
-      const { email, jobTitle } = ctx.request.body;
-      const { company, user: adminId } = ctx.state;
+      const { email, jobTitle } = ctx.request.body
+      const { company, user: adminId } = ctx.state
 
       const user = await User
         .query()
@@ -147,21 +147,21 @@ const userControllers = User => ({
           email: email.toLowerCase(),
           company_id: company
         })
-        .first();
+        .first()
 
       if (user) {
-        ctx.throw(`User ${user} already exists`, 200);
-        return;
+        ctx.throw(`User ${user} already exists`, 200)
+        return
       }
 
       const companyInfo = await Company
         .query()
         .where({ id: company })
         .select('domain')
-        .first();
+        .first()
 
-      const signupToken = await createRandomToken();
-      const password = await randomPassword();
+      const signupToken = await createRandomToken()
+      const password = await randomPassword()
       const newUser = await User
         .query()
         .insert(addId({
@@ -180,13 +180,13 @@ const userControllers = User => ({
           'job_title',
           'role',
           'pending'
-        ]);
+        ])
 
       const admin = await User
         .query()
         .where({ id: adminId})
         .select(['first_name', 'last_name', 'email'])
-        .first();
+        .first()
 
       const emailResult = await emails.inviteUser({
         email,
@@ -196,33 +196,33 @@ const userControllers = User => ({
           email: admin.email
         },
         domain: companyInfo.domain.split('.')[0]
-      });
+      })
 
-      ctx.status = 201;
+      ctx.status = 201
       ctx.body = {
         user: newUser,
         signupToken,
         emailSent: !!emailResult
-      };
+      }
     } catch(e) {
-      ctx.status = 500;
+      ctx.status = 500
       ctx.body = {
         message: e.message
-      };
+      }
     }
 
   },
 
   update: async ctx => {
-    const { id } = ctx.params;
-    const { body } = ctx.request;
-    const { company, user } = ctx.state;
+    const { id } = ctx.params
+    const { body } = ctx.request
+    const { company, user } = ctx.state
 
-    const editingPassword = body.password || body.newPassword;
+    const editingPassword = body.password || body.newPassword
     // Does user have permission to edit?
     if (user !== id) {
-      ctx.throw('Not authorized to edit that user', 401);
-      return;
+      ctx.throw('Not authorized to edit that user', 401)
+      return
     }
 
     if (editingPassword) {
@@ -230,13 +230,13 @@ const userControllers = User => ({
         .query()
         .select('digest')
         .where({ id })
-        .first();
+        .first()
 
-      const check = await checkPassword(body.password, digest);
+      const check = await checkPassword(body.password, digest)
 
       if (!check) {
-        ctx.throw('Password does not match', 401);
-        return;
+        ctx.throw('Password does not match', 401)
+        return
       }
     }
 
@@ -245,7 +245,7 @@ const userControllers = User => ({
       digest: editingPassword
         ? await encryptPassword(body.newPassword)
         : null
-    };
+    }
 
     const editedUser = await User
       .query()
@@ -262,15 +262,15 @@ const userControllers = User => ({
         'role',
         'pending'
       ])
-      .first();
+      .first()
 
-    ctx.body = { user: editedUser };
+    ctx.body = { user: editedUser }
   },
 
   createObjective: async ctx => {
-    const { id } = ctx.params;
-    const { name, timeline, squadId, keyResults, resources } = ctx.request.body;
-    const { company } = ctx.state;
+    const { id } = ctx.params
+    const { name, timeline, squadId, keyResults, resources } = ctx.request.body
+    const { company } = ctx.state
 
     const mission = await Objective
       .query()
@@ -285,11 +285,11 @@ const userControllers = User => ({
 
         key_results: keyResults.map(v => ({ name: v })),
         resources: resources.map(v => ({ name: v }))
-      });
+      })
 
     if (!mission) {
-      ctx.throw(500);
-      return;
+      ctx.throw(500)
+      return
     }
 
     const user = await User
@@ -307,35 +307,33 @@ const userControllers = User => ({
       )
       .eager('[objectives.[key_results, check_ins, resources]]')
       .filterEager('objectives.check_ins', b => {
-        b.orderBy('created_at', 'desc');
-        b.limit(3);
-      });
+        b.orderBy('created_at', 'desc')
+        b.limit(3)
+      })
 
     ctx.body = {
       user,
       squadId,
       userId: id
-    };
+    }
   },
 
-  createCheckIn: async ctx => {
-    const { body } = ctx.request;
-    const { company } = ctx.state;
+  createSnapshot: async ctx => {
+    const { body } = ctx.request
+    const { company } = ctx.state
 
-    /* eslint-disable no-unused-vars */
-    const checkIn = await CheckIn
+    const Snapshot = await Snapshot
       .query()
       .insert({
         ...body,
         company_id: company
-      });
-    /* eslint-enable no-unused-vars */
+      })
 
     const squad = await Objective
       .query()
       .where({id: body.objectiveId})
       .select('squad_id')
-      .first();
+      .first()
 
     const user = await User
       .query()
@@ -352,17 +350,17 @@ const userControllers = User => ({
       )
       .eager('[objectives.[key_results, check_ins, resources]]')
       .filterEager('objectives.check_ins', b => {
-        b.orderBy('created_at', 'desc');
-        b.limit(3);
-      });
+        b.orderBy('created_at', 'desc')
+        b.limit(3)
+      })
 
     ctx.body = {
       user,
       userId: body.userId,
       squadId: squad.squadId
-    };
+    }
   }
 
-});
+})
 
-module.exports = userControllers(User);
+module.exports = userControllers(User)

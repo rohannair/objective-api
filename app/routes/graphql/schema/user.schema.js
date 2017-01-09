@@ -1,6 +1,6 @@
-import Objective from './objective.schema';
-import Company from './company.schema';
-import Squad from './squad.schema';
+import Objective from './objective.schema'
+import Company from './company.schema'
+import Squad from './squad.schema'
 
 export const UserStatus = `
   enum UserStatus {
@@ -13,7 +13,7 @@ export const UserStatus = `
     # Super Admin, IE an ObjectiveIQ user
     superuser
   }
-`;
+`
 
 const User = `
   type User {
@@ -30,6 +30,6 @@ const User = `
     squads: [Squad],
     objectives: [Objective]
   }
-`;
+`
 
-export default () => [User, UserStatus, Company, Squad, Objective];
+export default () => [User, UserStatus, Company, Squad, Objective]

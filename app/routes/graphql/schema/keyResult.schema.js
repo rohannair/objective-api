@@ -1,4 +1,4 @@
-import Objective from './objective.schema';
+import Objective from './objective.schema'
 
 const KeyResult = `
   type KeyResult {
@@ -8,6 +8,6 @@ const KeyResult = `
 
     objective: Objective
   }
-`;
+`
 
-export default () => [KeyResult, Objective];
+export default () => [KeyResult, Objective]
