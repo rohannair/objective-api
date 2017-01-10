@@ -46,10 +46,20 @@ const userControllers = User => ({
 
     if (!user) {
       const domain = email.split('@')[1]
-      const company = await Company.query()
+      let company = await Company.query()
         .where('domain', domain)
         .select('id')
         .first()
+
+      if (!company) {
+        company = await Company.query()
+          .insert(addId({
+            domain,
+            name: domain.split('.')[0]
+          }))
+          .returning('*')
+          .first()
+      }
 
       const newUser = addId({
         email,
