@@ -11,6 +11,19 @@ const debug = require('debug')('app:debug')
 /* eslint-enable no-unused-vars */
 
 const objectiveControllers = Objective => ({
+  get: async ctx => {
+    const { company } = ctx.state
+
+    const objectives = await Objective
+      .query()
+      .where({
+        company_id: company
+      })
+      .orderBy('created_at', 'desc')
+
+    ctx.body = { objectives }
+  },
+
   create: async ctx => {
     const { company } = ctx.state
     const { body } = ctx.request

@@ -10,6 +10,7 @@ import { isAuthed } from '../../middleware'
 import * as users from './users'
 import * as squads from './squads'
 import * as objectives from './objectives'
+import * as snapshots from './snapshots'
 
 // Routes
 module.exports = router()
@@ -25,10 +26,13 @@ module.exports = router()
 
   .post('/logout', users.logout)
 
+  .post('/snapshots', snapshots.create)
+
   .get('/squads', squads.get)
   .post('/squads/assign', squads.assignUser)
   .post('/squads', squads.create)
 
+  .get('/objectives', objectives.get)
   .post('/objectives/add', objectives.create)
   .post('/objectives/:id/edit', objectives.update)
   .post('/objectives/:id/check_in', users.createSnapshot)
