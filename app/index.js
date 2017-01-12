@@ -7,14 +7,11 @@ import router from 'koa-router'
 import Boom from 'boom'
 import logger from 'koa-logger'
 
-import knex from 'knex'
-import { Model } from 'objection'
 import convert from 'koa-convert'
 import helmet from 'koa-helmet'
 import cors from 'koa-cors'
 
-const db = knex(require('../knexfile'))
-Model.knex(db)
+import db from './db'
 
 ///////////// Middleware /////////////
 import bodyparser from 'koa-bodyparser'

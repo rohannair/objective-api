@@ -9,5 +9,4 @@ const Resource = `
   }
 `
 
-
 export default () => [Resource, Objective]

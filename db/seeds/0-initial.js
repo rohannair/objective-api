@@ -52,7 +52,7 @@ exports.seed = function(knex, Promise) {
     ])
   )
 
-  .then(_ =>
+  .then(() =>
     knex('squads').insert([
       {
         id: squadId,
@@ -63,7 +63,7 @@ exports.seed = function(knex, Promise) {
     ])
   )
 
-  .then(_ =>
+  .then(() =>
     knex('objectives').insert({
       id: objectiveId,
       name: 'Build CEO Dashboard',
@@ -73,21 +73,21 @@ exports.seed = function(knex, Promise) {
     })
   )
 
-  .then(_ =>
+  .then(() =>
     knex('key_results').insert({
       name: 'Ability to show aggregate performance',
       objective_id: objectiveId
     })
   )
 
-  .then(_ =>
+  .then(() =>
     knex('squads_users').insert({
       squad_id: squadId,
       user_id: userId
     })
   )
 
-  .then(_ =>
+  .then(() =>
     knex('snapshots').insert([
       {
         name: 'This shouldn\'t matter',
@@ -105,5 +105,11 @@ exports.seed = function(knex, Promise) {
       }
     ])
   )
+
+  .then(() => {
+    knex('reactions').insert({
+      name: 'like'
+    })
+  })
 
 }

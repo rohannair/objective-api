@@ -20,6 +20,7 @@ exports.up = function(knex) {
       .onDelete('cascade')
       .index()
 
+    t.unique(['snapshot_id', 'user_id'])
     t.timestamp('created_at').notNull().defaultTo(knex.raw('now()'))
   })
 }

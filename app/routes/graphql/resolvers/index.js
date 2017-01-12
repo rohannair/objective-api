@@ -3,6 +3,7 @@ import User from '../../../models/User'
 import SnapshotResolver from './snapshot.resolver'
 import CompanyResolver from './company.resolver'
 import ObjectiveResolver from './objective.resolver'
+import ReactionResolver from './reaction.resolver'
 import SquadResolver from './squad.resolver'
 import UserResolver from './user.resolver'
 import ViewerResolver from './viewer.resolver'
@@ -29,6 +30,7 @@ export default {
   ...SnapshotResolver,
   ...CompanyResolver,
   ...ObjectiveResolver,
+  ...ReactionResolver,
   ...SquadResolver,
   ...UserResolver,
 
