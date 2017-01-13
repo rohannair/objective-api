@@ -1,5 +1,4 @@
 const uuid = require('node-uuid');
-const { encryptPassword } = require('../utils/encryption');
 
 exports.seed = function(knex, Promise) {
   let companyId = '4b12f283-223e-4d96-b4ba-8429ed74dafc';
@@ -15,15 +14,13 @@ exports.seed = function(knex, Promise) {
     domain: 'objectiveiq.com'
   })
 
-  .then(_ => encryptPassword('password123'))
-  .then(password =>
+  .then(() =>
     knex('users').insert([
       {
         id: userId,
         email: 'rohan@objectiveiq.com',
         first_name: 'Rohan',
         last_name: 'Nair',
-        digest: password,
         img: 'https://avatars.io/instagram/therealrohannair',
         job_title: 'CTO',
         pending: false,
@@ -35,7 +32,6 @@ exports.seed = function(knex, Promise) {
         email: 'ray@objectiveiq.com',
         first_name: 'Ray',
         last_name: 'Kanani',
-        digest: password,
         img: 'https://avatars.io/twitter/raykanani',
         job_title: 'CEO',
         pending: false,
@@ -47,7 +43,6 @@ exports.seed = function(knex, Promise) {
         email: 'stuart@objectiveiq.com',
         first_name: 'Stu',
         last_name: 'Peters',
-        digest: password,
         img: 'https://avatars.io/facebook/stu.peters.3',
         job_title: 'Operations',
         pending: false,
@@ -57,7 +52,7 @@ exports.seed = function(knex, Promise) {
     ])
   )
 
-  .then(_ =>
+  .then(() =>
     knex('squads').insert([
       {
         id: squadId,
@@ -68,7 +63,7 @@ exports.seed = function(knex, Promise) {
     ])
   )
 
-  .then(_ =>
+  .then(() =>
     knex('objectives').insert({
       id: objectiveId,
       name: 'Build CEO Dashboard',
@@ -78,21 +73,21 @@ exports.seed = function(knex, Promise) {
     })
   )
 
-  .then(_ =>
+  .then(() =>
     knex('key_results').insert({
       name: 'Ability to show aggregate performance',
       objective_id: objectiveId
     })
   )
 
-  .then(_ =>
+  .then(() =>
     knex('squads_users').insert({
       squad_id: squadId,
       user_id: userId
     })
   )
 
-  .then(_ =>
+  .then(() =>
     knex('snapshots').insert([
       {
         name: 'This shouldn\'t matter',
@@ -110,5 +105,11 @@ exports.seed = function(knex, Promise) {
       }
     ])
   )
+
+  .then(() => {
+    knex('reactions').insert({
+      name: 'like'
+    })
+  })
 
 }

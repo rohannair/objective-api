@@ -81,6 +81,16 @@ const Mutation = `
 
     # Create a new SnapShots
     addSnapshot(body: String!, objective: String, blocker: Boolean): Snapshot
+
+    ###
+    # SnapShots
+    ###
+
+    # Add a reaction
+    addReaction(reactionId: Int!, snapshotId: Int!): Reaction
+
+    # Remove a reaction
+    deleteReaction(reactionId: Int!, snapshotId: Int!): Reaction
   }
 `
 
