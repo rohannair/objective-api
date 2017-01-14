@@ -1,0 +1,8 @@
+# Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities.
+version: v1.7.0
+ignore: {}
+# patches apply the minimum changes required to fix a vulnerability
+patch:
+  'npm:request:20160119':
+    - nodejs-dashboard > blessed-contrib > picture-tube > request:
+        patched: '2017-01-14T05:46:12.347Z'
