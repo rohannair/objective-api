@@ -1,5 +1,5 @@
 {
-  "name": "hoops-api",
+  "name": "objective-api",
   "version": "1.0.0",
   "main": "index.js",
   "private": true,
@@ -42,9 +42,9 @@
     }
   },
   "engines": {
-    "node": "6.9.1"
+    "node": "6.9.4"
   },
-  "author": "Rohan Nair <rohan@qrtrmstr.com>",
+  "author": "Rohan Nair <rohan@objectiveiq.com>",
   "dependencies": {
     "auth0": "^2.5.0",
     "auth0-api-tokens": "^1.1.1",
