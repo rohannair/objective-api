@@ -12,7 +12,7 @@
 2. Set up Postgres
     - `$ createdb qdb`
     - `$ psql qdb`
-    - `> create role root with password 'playbooks'`;
+    - `> CREATE ROLE root WITH LOGIN PASSWORD 'playbooks'`;
     - Exit
 3. Provision and seed  database
     - `yarn run db:migrate`
@@ -68,7 +68,7 @@ Theoretically fixes small linting issues according to eslint
 In theory this will allow us to run tests one day... in theory. *sigh*
 
 ## ToDo
-- [ ] Heroku setup
+- [x] Heroku setup
 - [ ] Heroku deploy instructions
-- [ ] New customer creation
+- [x] New customer creation
 - [ ] Write up stuff for codemods (`jscodeshift -t codemods/transforms/requires-to-imports.js app/**/*.js`)
