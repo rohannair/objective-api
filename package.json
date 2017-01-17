@@ -6,6 +6,7 @@
   "scripts": {
     "start": "npm run build && better-npm-run start:prod",
     "dev": "better-npm-run start:dev",
+    "debug": "better-npm-run start:debug",
     "clean": "rimraf dist",
     "build": "npm run clean && npm run build:transpile",
     "build:transpile": "./node_modules/.bin/babel app -d dist",
@@ -26,6 +27,15 @@
     },
     "start:dev": {
       "command": "nodemon --exec babel-node ./app/server ",
+      "env": {
+        "NODE_ENV": "development",
+        "DEBUG": "graphql:*,koa:*,app:*,koa-router:*",
+        "WEB_CONCURRENCY": 1,
+        "PORT": 3000
+      }
+    },
+    "start:debug": {
+      "command": "nodemon --exec babel-node ./app/server --inspect --port 3000 --remote-debugging-port=3000 --debug-brk",
       "env": {
         "NODE_ENV": "development",
         "DEBUG": "graphql:*,koa:*,app:*,koa-router:*",

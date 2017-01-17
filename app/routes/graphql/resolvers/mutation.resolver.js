@@ -107,7 +107,8 @@ const resolver = {
 
     // Create an Objective
     createObjective: async (root, args, ctx) => {
-      const { name, endsAt } = args
+      const { name } = args
+      const { endsAt } = ctx.request.body.variables
       const { company, user: adminId } = ctx.state
       const objective = await models.Objective.query()
         .insert(addId({
@@ -122,7 +123,8 @@ const resolver = {
 
     // Update an objective
     editObjective: async (root, args, ctx) => {
-      const { id, name, endsAt } = args
+      const { id, name } = args
+      const { endsAt } = ctx.request.body.variables
       const { company, user: adminId } = ctx.state
       debug('ARGUMENTS', args)
 

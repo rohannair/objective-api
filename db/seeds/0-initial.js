@@ -5,6 +5,7 @@ exports.seed = function(knex, Promise) {
   let userId = 'e8e49354-a078-4832-8596-8fdc70ee6278';
   let userId2 = '87eb4549-07c9-418c-8417-38af1c7a5805';
   let userId3 = '9f392a5b-8fc7-48af-9e27-f9831e50aed7';
+  let userId4 = 'b2aec89b-e83a-4bff-8caf-bebca78074e6';
   let squadId = 'c2defaf1-e79c-4745-8796-f034f20561c4';
   let objectiveId = '1a42e500-306e-4b52-862b-953806f6631d';
 
@@ -45,6 +46,17 @@ exports.seed = function(knex, Promise) {
         last_name: 'Peters',
         img: 'https://avatars.io/facebook/stu.peters.3',
         job_title: 'Operations',
+        pending: false,
+        role: 'admin',
+        company_id: companyId
+      },
+      {
+        id: userId4,
+        email: 'ghislain@objectiveiq.com',
+        first_name: 'Ghislain',
+        last_name: 'Le Sergeant',
+        img: '',
+        job_title: 'Developer',
         pending: false,
         role: 'admin',
         company_id: companyId
