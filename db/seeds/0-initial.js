@@ -129,7 +129,6 @@ exports.seed = function(knex, Promise) {
       }
     ])
   )
-
   .then(() =>
     knex('reactions').insert({
       name: 'like'

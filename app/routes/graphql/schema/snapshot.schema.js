@@ -11,6 +11,7 @@ const Snapshot = `
     blocker: Boolean
     completed: Boolean
     createdAt: String
+    img: String
 
     company: Company
     objective: Objective
