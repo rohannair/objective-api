@@ -126,7 +126,6 @@ const resolver = {
       const { id, name } = args
       const { endsAt } = ctx.request.body.variables
       const { company, user: adminId } = ctx.state
-      debug('ARGUMENTS', args)
 
       const objective = await models.Objective.query()
         .update(addId({
@@ -140,7 +139,6 @@ const resolver = {
         .returning('*')
         .first()
 
-      debug('OBJECTIVE', objective)
 
       return objective
     },
@@ -186,8 +184,10 @@ const resolver = {
     /// Create a new snapshot
     // addSnapshot(body: String!, objective: String): Snapshot
     addSnapshot: async (root, args, ctx) => {
-      const { body, objective, blocker } = args
+      const { body, objective, blocker, img } = args
       const { company, user: userId } = ctx.state
+
+      // TODO: Pass img to paparazzi service
 
       const snapshot = await models.Snapshot.query()
         .insert({
