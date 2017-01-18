@@ -3,6 +3,7 @@ import db from '../../../db'
 import models from '../../../models'
 import { addId, createRandomToken } from '../../../utils'
 import { randomPassword, encryptPassword } from '../../../utils/encryption'
+import { getImageUrl } from '../../../utils/paparazzi'
 
 import * as emails from '../../v1/emails'
 /* eslint-disable no-unused-vars */
@@ -126,7 +127,6 @@ const resolver = {
       const { id, name } = args
       const { endsAt } = ctx.request.body.variables
       const { company, user: adminId } = ctx.state
-      debug('ARGUMENTS', args)
 
       const objective = await models.Objective.query()
         .update(addId({
@@ -140,7 +140,6 @@ const resolver = {
         .returning('*')
         .first()
 
-      debug('OBJECTIVE', objective)
 
       return objective
     },
@@ -186,20 +185,28 @@ const resolver = {
     /// Create a new snapshot
     // addSnapshot(body: String!, objective: String): Snapshot
     addSnapshot: async (root, args, ctx) => {
-      const { body, objective, blocker } = args
+      const { body, objective, blocker, img } = args
       const { company, user: userId } = ctx.state
 
-      const snapshot = await models.Snapshot.query()
-        .insert({
-          body,
-          blocker,
-          objective_id: objective,
-          company_id: company,
-          user_id: userId
-        })
-        .returning('*')
+      try {
+        // Pass img to paparazzi service
+        const imageUrl = await getImageUrl(img)
 
-      return snapshot
+        const snapshot = await models.Snapshot.query()
+          .insert({
+            body,
+            blocker,
+            objective_id: objective,
+            company_id: company,
+            user_id: userId,
+            img: imageUrl
+          })
+          .returning('*')
+
+        return snapshot
+      } catch (e) {
+        ctx.throw(422, e)
+      }
     },
 
     // Add a reaction
