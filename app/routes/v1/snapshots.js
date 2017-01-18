@@ -2,6 +2,8 @@
 
 import Snapshot from '../../models/Snapshot'
 
+import { getImageUrl } from '../../../utils/paparazzi'
+
 /* eslint-disable no-unused-vars */
 import chalk from 'chalk'
 const debug = require('debug')('app:debug')
@@ -13,9 +15,8 @@ const snapshotControllers = () => ({
     const { body: { body, objective, screenshot: img }} = ctx.request
 
     // TODO: Pass img to paparazzi service
-    debug('\n')
-    debug('IMAGE EXISTS...', img.length)
-    debug('\n')
+    // FIXME: set a legitamate filename here
+    const imageUrl = await getImageUrl(img, 'test1')
 
     // Create image
     const snapshot = await Snapshot
@@ -24,7 +25,8 @@ const snapshotControllers = () => ({
         body,
         objective_id: objective,
         company_id: company,
-        user_id: user
+        user_id: user,
+        img: imageUrl
       })
       .returning('*')
 

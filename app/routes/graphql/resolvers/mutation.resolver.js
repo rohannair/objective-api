@@ -3,6 +3,7 @@ import db from '../../../db'
 import models from '../../../models'
 import { addId, createRandomToken } from '../../../utils'
 import { randomPassword, encryptPassword } from '../../../utils/encryption'
+import { getImageUrl } from '../../../utils/paparazzi'
 
 import * as emails from '../../v1/emails'
 /* eslint-disable no-unused-vars */
@@ -188,9 +189,8 @@ const resolver = {
       const { company, user: userId } = ctx.state
 
       // TODO: Pass img to paparazzi service
-      debug('\n')
-      debug('IMAGE EXISTS...', img.length)
-      debug('\n')
+      // FIXME: set a legitamate filename here
+      const imageUrl = await getImageUrl(img, 'test1')
 
       const snapshot = await models.Snapshot.query()
         .insert({
@@ -198,7 +198,8 @@ const resolver = {
           blocker,
           objective_id: objective,
           company_id: company,
-          user_id: userId
+          user_id: userId,
+          img: imageUrl
         })
         .returning('*')
 
