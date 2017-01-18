@@ -1,3 +1,5 @@
+import db from '../../../db'
+
 import models from '../../../models'
 import { addId, createRandomToken } from '../../../utils'
 import { randomPassword, encryptPassword } from '../../../utils/encryption'
@@ -105,7 +107,8 @@ const resolver = {
 
     // Create an Objective
     createObjective: async (root, args, ctx) => {
-      const { name, endsAt } = args
+      const { name } = args
+      const { endsAt } = ctx.request.body.variables
       const { company, user: adminId } = ctx.state
       const objective = await models.Objective.query()
         .insert(addId({
@@ -120,7 +123,8 @@ const resolver = {
 
     // Update an objective
     editObjective: async (root, args, ctx) => {
-      const { id, name, endsAt } = args
+      const { id, name } = args
+      const { endsAt } = ctx.request.body.variables
       const { company, user: adminId } = ctx.state
       debug('ARGUMENTS', args)
 
@@ -196,6 +200,43 @@ const resolver = {
         .returning('*')
 
       return snapshot
+    },
+
+    // Add a reaction
+    // (reactionId: Int!, snapshotId: Int!): Reaction
+    addReaction: async(root, args, ctx) => {
+      const { reactionId, snapshotId } = args
+      const { user: userId } = ctx.state
+
+      // TODO: allow changing reaction type
+      const reaction = await db('reactions_snapshots')
+        .insert({
+          user_id: userId,
+          reaction_id: reactionId,
+          snapshot_id: snapshotId
+        })
+        .returning('*')
+
+      return reaction[0]
+    },
+
+    // Remove a reaction
+    // (reactionId: Int!, snapshotId: Int!): Reaction
+    deleteReaction: async(root, args, ctx) => {
+      const { reactionId, snapshotId } = args
+      const { user: userId } = ctx.state
+
+      const reaction = await db('reactions_snapshots')
+        .where('user_id', userId)
+        .andWhere('snapshot_id', snapshotId)
+        .select('id')
+        .first()
+
+      await db('reactions_snapshots')
+        .where('id', reaction.id)
+        .del()
+
+      return { id: reaction.id }
     }
   },
 }
