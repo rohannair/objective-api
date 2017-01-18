@@ -6,6 +6,7 @@ exports.seed = function(knex, Promise) {
   let userId2 = '87eb4549-07c9-418c-8417-38af1c7a5805';
   let userId3 = '9f392a5b-8fc7-48af-9e27-f9831e50aed7';
   let userId4 = 'b2aec89b-e83a-4bff-8caf-bebca78074e6';
+  let userId5 = '49ac9cbe-c496-45a9-b97b-d59115031762';
   let squadId = 'c2defaf1-e79c-4745-8796-f034f20561c4';
   let objectiveId = '1a42e500-306e-4b52-862b-953806f6631d';
 
@@ -57,6 +58,17 @@ exports.seed = function(knex, Promise) {
         last_name: 'Le Sergeant',
         img: '',
         job_title: 'Developer',
+        pending: false,
+        role: 'admin',
+        company_id: companyId
+      },
+      {
+        id: userId5,
+        email: 'david@objectiveiq.com',
+        first_name: 'David',
+        last_name: 'Mills',
+        img: 'https://avatars.io/twitter/daegren',
+        job_title: 'Software Crafstman',
         pending: false,
         role: 'admin',
         company_id: companyId
