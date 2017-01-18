@@ -188,6 +188,9 @@ const resolver = {
       const { company, user: userId } = ctx.state
 
       // TODO: Pass img to paparazzi service
+      debug('\n')
+      debug('IMAGE EXISTS...', img.length)
+      debug('\n')
 
       const snapshot = await models.Snapshot.query()
         .insert({

@@ -10,7 +10,12 @@ const debug = require('debug')('app:debug')
 const snapshotControllers = () => ({
   create: async ctx => {
     const { company, user } = ctx.state
-    const { body: { body, objective, screenshot }} = ctx.request
+    const { body: { body, objective, screenshot: img }} = ctx.request
+
+    // TODO: Pass img to paparazzi service
+    debug('\n')
+    debug('IMAGE EXISTS...', img.length)
+    debug('\n')
 
     // Create image
     const snapshot = await Snapshot
