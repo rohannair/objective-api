@@ -188,9 +188,8 @@ const resolver = {
       const { body, objective, blocker, img } = args
       const { company, user: userId } = ctx.state
 
-      // TODO: Pass img to paparazzi service
-      // FIXME: set a legitamate filename here
-      const imageUrl = await getImageUrl(img, 'test1')
+      // Pass img to paparazzi service
+      const imageUrl = await getImageUrl(img)
 
       const snapshot = await models.Snapshot.query()
         .insert({
