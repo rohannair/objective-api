@@ -8,7 +8,7 @@ const debug = require('debug')('app:debug')
 const getImageUrl = async (image_data) => {
   const data = `{"filename": "${generateUUID()}.png", "image_data": "${image_data}"}`
 
-  const response = await request.put('http://localhost:4000/image')
+  const response = await request.put(putImageUrl())
     .set('Content-Type', 'application/json')
     .send(data)
 
@@ -17,6 +17,13 @@ const getImageUrl = async (image_data) => {
 
 const generateUUID = () => {
   return uuidV4()
+}
+
+const putImageUrl = () => {
+  const host = process.env.PAPARAZZI_HOST
+  const scheme = process.env.PAPARAZZI_SCHEME
+
+  return `${scheme}://${host}/image`
 }
 
 module.exports = {
