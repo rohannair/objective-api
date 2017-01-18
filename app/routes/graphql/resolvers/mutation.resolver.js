@@ -190,11 +190,7 @@ const resolver = {
 
       try {
         // Pass img to paparazzi service
-        var imageUrl
-
-        if (img) {
-          imageUrl = await getImageUrl(img)
-        }
+        const imageUrl = await getImageUrl(img)
 
         const snapshot = await models.Snapshot.query()
           .insert({

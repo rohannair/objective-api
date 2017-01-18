@@ -6,6 +6,7 @@ const uuidV4 = require('uuid/v4')
 const debug = require('debug')('app:debug')
 
 const getImageUrl = async (image_data) => {
+  if (!image_data) return undefined
   const data = `{"filename": "${generateUUID()}.png", "image_data": "${image_data}"}`
 
   const response = await request.put(putImageUrl())

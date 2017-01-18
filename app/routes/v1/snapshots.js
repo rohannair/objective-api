@@ -16,11 +16,7 @@ const snapshotControllers = () => ({
 
     try {
       // Pass img to paparazzi service
-      var imageUrl
-
-      if (img) {
-        imageUrl = await getImageUrl(img)
-      }
+      const imageUrl = await getImageUrl(img)
 
 
       // Create image
