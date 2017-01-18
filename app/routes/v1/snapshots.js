@@ -14,22 +14,26 @@ const snapshotControllers = () => ({
     const { company, user } = ctx.state
     const { body: { body, objective, screenshot: img }} = ctx.request
 
-    // Pass img to paparazzi service
-    const imageUrl = await getImageUrl(img)
+    try {
+      // Pass img to paparazzi service
+      const imageUrl = await getImageUrl(img)
 
-    // Create image
-    const snapshot = await Snapshot
-      .query()
-      .insert({
-        body,
-        objective_id: objective,
-        company_id: company,
-        user_id: user,
-        img: imageUrl
-      })
-      .returning('*')
+      // Create image
+      const snapshot = await Snapshot
+        .query()
+        .insert({
+          body,
+          objective_id: objective,
+          company_id: company,
+          user_id: user,
+          img: imageUrl
+        })
+        .returning('*')
 
-    ctx.body = { snapshot }
+      ctx.body = { snapshot }
+    } catch (e) {
+      ctx.throw(422, e)
+    }
   }
 
 })

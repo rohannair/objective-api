@@ -188,21 +188,29 @@ const resolver = {
       const { body, objective, blocker, img } = args
       const { company, user: userId } = ctx.state
 
-      // Pass img to paparazzi service
-      const imageUrl = await getImageUrl(img)
+      try {
+        // Pass img to paparazzi service
+        var imageUrl = ''
 
-      const snapshot = await models.Snapshot.query()
-        .insert({
-          body,
-          blocker,
-          objective_id: objective,
-          company_id: company,
-          user_id: userId,
-          img: imageUrl
-        })
-        .returning('*')
+        if (img != null || img != undefined) {
+          imageUrl = await getImageUrl(img)
+        }
 
-      return snapshot
+        const snapshot = await models.Snapshot.query()
+          .insert({
+            body,
+            blocker,
+            objective_id: objective,
+            company_id: company,
+            user_id: userId,
+            img: imageUrl
+          })
+          .returning('*')
+
+        return snapshot
+      } catch (e) {
+        ctx.throw(422, e)
+      }
     },
 
     // Add a reaction
