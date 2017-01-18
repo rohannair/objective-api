@@ -3,6 +3,7 @@ import db from '../../../db'
 import models from '../../../models'
 import { addId, createRandomToken } from '../../../utils'
 import { randomPassword, encryptPassword } from '../../../utils/encryption'
+import { getImageUrl } from '../../../utils/paparazzi'
 
 import * as emails from '../../v1/emails'
 /* eslint-disable no-unused-vars */
@@ -187,22 +188,25 @@ const resolver = {
       const { body, objective, blocker, img } = args
       const { company, user: userId } = ctx.state
 
-      // TODO: Pass img to paparazzi service
-      debug('\n')
-      debug('IMAGE EXISTS...', img.length)
-      debug('\n')
+      try {
+        // Pass img to paparazzi service
+        const imageUrl = await getImageUrl(img)
 
-      const snapshot = await models.Snapshot.query()
-        .insert({
-          body,
-          blocker,
-          objective_id: objective,
-          company_id: company,
-          user_id: userId
-        })
-        .returning('*')
+        const snapshot = await models.Snapshot.query()
+          .insert({
+            body,
+            blocker,
+            objective_id: objective,
+            company_id: company,
+            user_id: userId,
+            img: imageUrl
+          })
+          .returning('*')
 
-      return snapshot
+        return snapshot
+      } catch (e) {
+        ctx.throw(422, e)
+      }
     },
 
     // Add a reaction
