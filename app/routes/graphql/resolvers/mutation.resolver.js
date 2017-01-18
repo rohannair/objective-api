@@ -190,9 +190,9 @@ const resolver = {
 
       try {
         // Pass img to paparazzi service
-        var imageUrl = ''
+        var imageUrl
 
-        if (img != null || img != undefined) {
+        if (img) {
           imageUrl = await getImageUrl(img)
         }
 
