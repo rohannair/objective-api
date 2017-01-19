@@ -3,7 +3,7 @@ import db from '../../../db'
 import models from '../../../models'
 import { addId, createRandomToken } from '../../../utils'
 import { randomPassword, encryptPassword } from '../../../utils/encryption'
-import { getImageUrl } from '../../../utils/paparazzi'
+import { putSnapshotImage } from '../../../utils/paparazzi'
 
 import * as emails from '../../v1/emails'
 /* eslint-disable no-unused-vars */
@@ -190,7 +190,7 @@ const resolver = {
 
       try {
         // Pass img to paparazzi service
-        const imageUrl = await getImageUrl(img)
+        const imageUrl = await putSnapshotImage(img)
 
         const snapshot = await models.Snapshot.query()
           .insert({
