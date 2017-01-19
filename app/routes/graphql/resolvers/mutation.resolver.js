@@ -111,12 +111,22 @@ const resolver = {
       const { name } = args
       const { endsAt } = ctx.request.body.variables
       const { company, user: adminId } = ctx.state
+
+
+      let insertObject = addId({
+        name,
+        companyId: company
+      })
+
+      if (endsAt.length) {
+        insertObject = {
+          ...insertObject,
+          endsAt
+        }
+      }
+
       const objective = await models.Objective.query()
-        .insert(addId({
-          name,
-          endsAt,
-          companyId: company
-        }))
+        .insert(insertObject)
         .returning('*')
 
       return objective
@@ -128,11 +138,20 @@ const resolver = {
       const { endsAt } = ctx.request.body.variables
       const { company, user: adminId } = ctx.state
 
-      const objective = await models.Objective.query()
-        .update(addId({
-          name,
+      let insertObject = {
+        name,
+        companyId: company
+      }
+
+      if (endsAt.length) {
+        insertObject = {
+          ...insertObject,
           endsAt
-        }))
+        }
+      }
+
+      const objective = await models.Objective.query()
+        .update(insertObject)
         .where({
           id,
           company_id: company
