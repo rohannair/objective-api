@@ -143,7 +143,7 @@ const resolver = {
         companyId: company
       }
 
-      if (endsAt.length) {
+      if (endsAt && endsAt.length) {
         insertObject = {
           ...insertObject,
           endsAt
