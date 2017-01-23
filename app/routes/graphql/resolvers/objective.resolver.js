@@ -1,3 +1,5 @@
+import User from '../../../models/User'
+import Snapshot from '../../../models/Snapshot'
 import db from '../../../db'
 
 const resolver = {
@@ -8,12 +10,13 @@ const resolver = {
     },
 
     owner(objective) {
-      return db('users')
-        .where('id', objective.ownerId)[0]
+      return User.query()
+        .where('id', objective.ownerId)
+        .first()
     },
 
     snapshots(objective) {
-      return db('snapshots')
+      return Snapshot.query()
         .where('objective_id', objective.id)
     },
   }
