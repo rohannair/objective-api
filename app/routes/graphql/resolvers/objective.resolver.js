@@ -6,9 +6,9 @@ import Resource from '../../../models/Resource'
 
 const resolver = {
   Objective: {
-    user(objective) {
+    owner(objective) {
       return User.query()
-        .where('id', objective.userId)
+        .where('id', objective.ownerId)
         .first()
     },
 

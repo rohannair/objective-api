@@ -110,12 +110,12 @@ const resolver = {
     createObjective: async (root, args, ctx) => {
       const { name } = args
       const { endsAt } = ctx.request.body.variables
-      const { company, user: adminId } = ctx.state
-
+      const { company, user: ownerId } = ctx.state
 
       let insertObject = addId({
         name,
-        companyId: company
+        companyId: company,
+        ownerId
       })
 
       if (endsAt.length) {
