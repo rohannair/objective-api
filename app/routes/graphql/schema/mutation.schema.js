@@ -27,19 +27,6 @@ const Mutation = `
     deleteUser(id: String!): User
 
     ###
-    # Squads
-    ###
-
-    # Create a squad
-    createSquad(body: String!): Squad
-
-    # Update a squad
-    updateSquad(id: String!): Squad
-
-    # Delete a squad
-    deleteSquad(id: String!): Squad
-
-    ###
     # Objectives
     ###
 
@@ -50,32 +37,6 @@ const Mutation = `
     editObjective(id: String!, name: String, endsAt: String, owner: String): Objective
 
     ###
-    # Key Results
-    ###
-
-    # Create a key result
-    createKeyResult(body: String!): KeyResult
-
-    # Update a key result
-    updateKeyResult(id: String!): KeyResult
-
-    # Delete a key result
-    deleteKeyResult(id: String!): KeyResult
-
-    ###
-    # Resources
-    ###
-
-    # Create a resource
-    createResource(body: String!): Resource
-
-    # Update a resource
-    updateResource(id: Int!): Resource
-
-    # Delete a resource
-    deleteResource(id: Int!): Resource
-
-    ###
     # SnapShots
     ###
 
@@ -83,7 +44,7 @@ const Mutation = `
     addSnapshot(body: String!, objective: String, blocker: Boolean, img: String): Snapshot
 
     ###
-    # SnapShots
+    # Reactions
     ###
 
     # Add a reaction

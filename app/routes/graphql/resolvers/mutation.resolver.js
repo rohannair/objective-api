@@ -84,25 +84,6 @@ const resolver = {
     },
 
     /***
-     * Squads
-     ***/
-
-    // Create a squad
-    createSquad: async (root, args, ctx) => {
-
-    },
-
-    // Update a squad
-    updateSquad: async (root, args, ctx) => {
-
-    },
-
-    // Delete a squad
-    deleteSquad: async (root, args, ctx) => {
-
-    },
-
-    /***
      * Objectives
      ***/
 
@@ -167,44 +148,6 @@ const resolver = {
         .first()
 
       return objective
-    },
-
-    /***
-     * Key Results
-     ***/
-
-    // Create a key result
-    createKeyResult: async (root, args, ctx) => {
-
-    },
-
-    // Update a key result
-    updateKeyResult: async (root, args, ctx) => {
-
-    },
-
-    // Delete a key result
-    deleteKeyResult: async (root, args, ctx) => {
-
-    },
-
-    /***
-     * Resources
-     ***/
-
-    // Create a resource
-    createResource: async (root, args, ctx) => {
-
-    },
-
-    // Update a resource
-    updateResource: async (root, args, ctx) => {
-
-    },
-
-    // Delete a resource
-    deleteResource: async (root, args, ctx) => {
-
     },
 
     /// Create a new snapshot
