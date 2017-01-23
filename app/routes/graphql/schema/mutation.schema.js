@@ -47,7 +47,7 @@ const Mutation = `
     createObjective(name: String!, endsAt: String): Objective
 
     # Update an Objective
-    editObjective(id: String!, name: String, endsAt: String): Objective
+    editObjective(id: String!, name: String, endsAt: String, owner: String): Objective
 
     ###
     # Key Results

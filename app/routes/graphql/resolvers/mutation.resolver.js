@@ -135,8 +135,8 @@ const resolver = {
     // Update an objective
     editObjective: async (root, args, ctx) => {
       const { id, name } = args
-      const { endsAt } = ctx.request.body.variables
-      const { company, user: adminId } = ctx.state
+      const { endsAt, owner } = ctx.request.body.variables
+      const { company, user: userId } = ctx.state
 
       let insertObject = {
         name,
@@ -150,6 +150,13 @@ const resolver = {
         }
       }
 
+      if (owner && userId === owner) {
+        insertObject = {
+          ...insertObject,
+          ownerID: owner
+        }
+      }
+
       const objective = await models.Objective.query()
         .update(insertObject)
         .where({
@@ -158,7 +165,6 @@ const resolver = {
         })
         .returning('*')
         .first()
-
 
       return objective
     },
