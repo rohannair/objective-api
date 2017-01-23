@@ -11,9 +11,9 @@ const Objective = `
     timeline: String
     status: String
     endsAt: String
+    owner: User
 
     squad: Squad
-    user: User
     keyResults: [KeyResult]
     snapshots: [Snapshot]
     resources: [Resource]
