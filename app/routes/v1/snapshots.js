@@ -1,7 +1,6 @@
 'use strict'
 
 import Snapshot from '../../models/Snapshot'
-
 import { putSnapshotImage } from '../../utils/paparazzi'
 
 /* eslint-disable no-unused-vars */
