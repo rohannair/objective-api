@@ -121,7 +121,8 @@ const resolver = {
 
       let insertObject = {
         name,
-        companyId: company
+        companyId: company,
+        updatedAt: Date.now()
       }
 
       if (endsAt && endsAt.length) {
