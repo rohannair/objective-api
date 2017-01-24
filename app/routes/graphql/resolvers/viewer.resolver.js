@@ -2,6 +2,7 @@ import UserResolver from './user.resolver'
 import Snapshot from '../../../models/Snapshot'
 import Squad from '../../../models/Squad'
 import Objective from '../../../models/Objective'
+import User from '../../../models/User'
 import { formattedObjective } from '../../../queries/objective'
 
 const resolver = {
@@ -19,7 +20,7 @@ const resolver = {
         .where('id', args.id)
         .andWhere('company_id', viewer.companyId)
         .first()
-     
+
       return formattedObjective(query)
     },
 
@@ -41,10 +42,24 @@ const resolver = {
     },
 
     _snapshotsCount(viewer) {
-      return  Snapshot.query()
+      return Snapshot.query()
         .where('company_id', viewer.companyId)
         .count('id')
         .then(data => data[0].count)
+    },
+
+    users(viewer, args) {
+      const { q, limit } = args
+      return User.query()
+        .where(function() {
+          this
+            .whereRaw('LOWER(email) like ?', [`${q.toLowerCase()}%`])
+            .orWhereRaw('LOWER(last_name) like ?', [`${q.toLowerCase()}%`])
+            .orWhereRaw('LOWER(first_name) like ?', [`${q.toLowerCase()}%`])
+        })
+        .orderBy('email', 'asc')
+        .orderBy('last_name', 'asc')
+        .limit(limit || 20)
     }
   }
 }

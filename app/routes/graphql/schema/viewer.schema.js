@@ -21,6 +21,8 @@ const Viewer = `
     objective(id: String): Objective,
     snapshots(first: Int, offset: Int): [Snapshot],
     _snapshotsCount: Int!
+
+    users(q: String, limit: Int): [User]
   }
 `
 
