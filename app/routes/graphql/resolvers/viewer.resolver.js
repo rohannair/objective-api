@@ -25,10 +25,20 @@ const resolver = {
         .where('company_id', viewer.companyId)
     },
 
-    snapshots(viewer) {
+    snapshots(viewer, args) {
+      const { first, offset } = args
       return Snapshot.query()
         .where('company_id', viewer.companyId)
         .orderBy('created_at', 'desc')
+        .offset(offset)
+        .limit(first)
+    },
+
+    _snapshotsCount(viewer) {
+      return  Snapshot.query()
+        .where('company_id', viewer.companyId)
+        .count('id')
+        .then(data => data[0].count)
     }
   }
 }
