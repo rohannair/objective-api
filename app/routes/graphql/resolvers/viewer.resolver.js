@@ -23,6 +23,7 @@ const resolver = {
     objectives(viewer) {
       return Objective.query()
         .where('company_id', viewer.companyId)
+        .orderBy('updated_at', 'desc')
     },
 
     snapshots(viewer) {
