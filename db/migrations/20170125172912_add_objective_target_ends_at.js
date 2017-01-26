@@ -1,18 +1,13 @@
-
 exports.up = function(knex) {
   return knex.schema
     .table('objectives', t => {
-      t.uuid('owner_id')
-        .references('id')
-        .inTable('users')
-        .onDelete('cascade')
-        .index()
+      t.bigInteger('target_ends_at')
     })
 }
 
 exports.down = function(knex) {
   return knex.schema
     .table('objectives', t => {
-      t.dropColumn('owner_id')
+      t.dropColumn('target_ends_at')
     })
 }

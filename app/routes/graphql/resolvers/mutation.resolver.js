@@ -90,7 +90,7 @@ const resolver = {
     // Create an Objective
     createObjective: async (root, args, ctx) => {
       const { name } = args
-      const { endsAt } = ctx.request.body.variables
+      const { targetEndsAt } = ctx.request.body.variables
       const { company, user: ownerId } = ctx.state
 
       let insertObject = addId({
@@ -99,10 +99,10 @@ const resolver = {
         ownerId
       })
 
-      if (endsAt.length) {
+      if (targetEndsAt) {
         insertObject = {
           ...insertObject,
-          endsAt
+          targetEndsAt
         }
       }
 
@@ -116,7 +116,7 @@ const resolver = {
     // Update an objective
     editObjective: async (root, args, ctx) => {
       const { id, name } = args
-      const { endsAt, owner } = ctx.request.body.variables
+      const { targetEndsAt, owner } = ctx.request.body.variables
       const { company, user: userId } = ctx.state
 
       let insertObject = {
@@ -125,10 +125,10 @@ const resolver = {
         updatedAt: Date.now()
       }
 
-      if (endsAt && endsAt.length) {
+      if (targetEndsAt) {
         insertObject = {
           ...insertObject,
-          endsAt
+          targetEndsAt
         }
       }
 
