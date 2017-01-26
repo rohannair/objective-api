@@ -4,6 +4,7 @@ import models from '../../../models'
 import { addId, createRandomToken } from '../../../utils'
 import { randomPassword, encryptPassword } from '../../../utils/encryption'
 import { putSnapshotImage } from '../../../utils/paparazzi'
+import { addCollaborator } from '../../../queries/collaborators'
 
 import * as emails from '../../v1/emails'
 /* eslint-disable no-unused-vars */
@@ -149,6 +150,35 @@ const resolver = {
         .first()
 
       return objective
+    },
+
+    // Add a collaborator to an objective
+    addCollaborator: async(root, args, ctx) => {
+      const { user, objective } = args
+      // const currentUser = ctx.state.user
+
+      // Add user as collaborator
+      const collaborator = await addCollaborator(db, user, objective)
+
+      // TODO: create notification email here (or other type of notification)
+
+      return collaborator[0]
+    },
+
+    deleteCollaborator: async(root, args, ctx) => {
+      const { user, objective } = args
+
+      const { id } = await db('objectives_users')
+        .where('user_id', user)
+        .andWhere('objective_id', objective)
+        .select('id')
+        .first()
+
+      await db('objectives_users')
+        .where('id', id)
+        .del()
+
+      return { id }
     },
 
     /// Create a new snapshot

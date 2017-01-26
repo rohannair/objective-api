@@ -2,7 +2,8 @@ import UserResolver from './user.resolver'
 import Snapshot from '../../../models/Snapshot'
 import Squad from '../../../models/Squad'
 import Objective from '../../../models/Objective'
-import { formattedObjective } from '../../../queries/objective'
+
+import { formattedObjective, viewableObjectives, viewableObjectivesWithQuery } from '../../../queries/objectives'
 
 const resolver = {
   Viewer: {
@@ -19,25 +20,29 @@ const resolver = {
         .where('id', args.id)
         .andWhere('company_id', viewer.companyId)
         .first()
-     
+
       return formattedObjective(query)
     },
 
     objectives(viewer) {
-      const query = Objective.query()
-        .where('company_id', viewer.companyId)
+      const filteredObjectives = viewableObjectives(viewer)
         .orderBy('updated_at', 'desc')
 
-      return formattedObjective(query)
+
+      return formattedObjective(filteredObjectives)
     },
 
     snapshots(viewer, args) {
       const { first, offset } = args
-      return Snapshot.query()
-        .where('company_id', viewer.companyId)
-        .orderBy('created_at', 'desc')
+
+      const query = Snapshot.query()
+        .orWhere('snapshots.company_id', viewer.companyId)
+        .orderBy('snapshots.created_at', 'desc')
         .offset(offset)
         .limit(first)
+        .select('snapshots.id', 'snapshots.name', 'snapshots.body', 'blocker', 'completed', 'snapshots.created_at', 'img', 'snapshots.company_id', 'snapshots.objective_id', 'snapshots.user_id')
+
+      return viewableObjectivesWithQuery(query, viewer)
     },
 
     _snapshotsCount(viewer) {

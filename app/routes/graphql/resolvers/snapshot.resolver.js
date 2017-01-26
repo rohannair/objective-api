@@ -1,7 +1,7 @@
 import db from '../../../db'
 import User from '../../../models/User'
 import Objective from '../../../models/Objective'
-import { formattedObjective } from '../../../queries/objective'
+import { formattedObjective } from '../../../queries/objectives'
 
 /* eslint-disable no-unused-vars */
 const debug = require('debug')('app:debug')

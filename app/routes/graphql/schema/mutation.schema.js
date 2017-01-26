@@ -36,6 +36,12 @@ const Mutation = `
     # Update an Objective
     editObjective(id: String!, name: String, endsAt: Float, owner: String): Objective
 
+    # Add a collaborator
+    addCollaborator(user: String!, objective: String!) : Objective
+
+    # Remove a collaborator
+    deleteCollaborator(user: String!, objective: String!) : Objective
+
     ###
     # SnapShots
     ###
