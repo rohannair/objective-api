@@ -22,7 +22,7 @@ const resolver = {
     },
 
     objectives(squad) {
-      let query = Objective.query()
+      const query = Objective.query()
         .whereNull('user_id')
         .andWhere('squad_id', squad.id)
 

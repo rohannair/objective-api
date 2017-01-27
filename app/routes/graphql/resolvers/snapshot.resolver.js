@@ -15,7 +15,7 @@ const resolver = {
     },
 
     objective(snapshot) {
-      let query = Objective.query()
+      const query = Objective.query()
         .where('id', snapshot.objectiveId)
         .first()
 

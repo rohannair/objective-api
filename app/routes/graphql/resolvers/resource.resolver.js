@@ -4,7 +4,7 @@ import { formattedObjective } from '../../../queries/objective'
 const resolver = {
   Resource: {
     objective(resource) {
-      let query = Objective.query()
+      const query = Objective.query()
         .where('id', resource.objective_id)
         .first()
 

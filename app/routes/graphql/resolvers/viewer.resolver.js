@@ -15,7 +15,7 @@ const resolver = {
 
     objective(viewer, args) {
       if (!args.id) return null
-      let query = Objective.query()
+      const query = Objective.query()
         .where('id', args.id)
         .andWhere('company_id', viewer.companyId)
         .first()
@@ -24,7 +24,7 @@ const resolver = {
     },
 
     objectives(viewer) {
-      let query = Objective.query()
+      const query = Objective.query()
         .where('company_id', viewer.companyId)
         .orderBy('updated_at', 'desc')
 

@@ -17,7 +17,7 @@ const resolver = {
     },
 
     objectives(user) {
-      let query = Objective.query()
+      const query = Objective.query()
         .where('user_id', user.id)
 
       return formattedObjective(query)
