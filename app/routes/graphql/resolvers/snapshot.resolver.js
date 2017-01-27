@@ -1,6 +1,7 @@
 import db from '../../../db'
 import User from '../../../models/User'
 import Objective from '../../../models/Objective'
+import { formattedObjective } from '../../../queries/objective'
 
 /* eslint-disable no-unused-vars */
 const debug = require('debug')('app:debug')
@@ -14,9 +15,11 @@ const resolver = {
     },
 
     objective(snapshot) {
-      return Objective.query()
+      let query = Objective.query()
         .where('id', snapshot.objectiveId)
         .first()
+
+      return formattedObjective(query)
     },
 
     reactions(snapshot) {

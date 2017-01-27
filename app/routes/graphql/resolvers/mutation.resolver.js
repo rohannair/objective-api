@@ -108,7 +108,7 @@ const resolver = {
 
       const objective = await models.Objective.query()
         .insert(insertObject)
-        .returning('*')
+        .returning(['id', 'company_id', 'target_ends_at as ends_at', 'name', 'owner_id', 'user_id', 'created_at', 'updated_at'])
 
       return objective
     },
@@ -145,7 +145,7 @@ const resolver = {
           id,
           company_id: company
         })
-        .returning('*')
+        .returning(['id', 'company_id', 'target_ends_at as ends_at', 'name', 'owner_id', 'user_id', 'created_at', 'updated_at'])
         .first()
 
       return objective
