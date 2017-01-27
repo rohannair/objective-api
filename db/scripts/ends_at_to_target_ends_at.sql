@@ -1,5 +1,6 @@
 UPDATE objectives
-SET target_ends_at = tbl.epoch_unix
-FROM (SELECT id as objective_id, CAST(EXTRACT(EPOCH FROM ends_at) * 1000 as bigint) AS epoch_unix
-	FROM objectives) AS tbl
-WHERE id = tbl.objective_id
+SET target_ends_at = o.epoch_unix
+FROM (SELECT id AS objective_id
+	, CAST(EXTRACT(EPOCH FROM ends_at) * 1000 AS BIGINT) AS epoch_unix
+	  FROM objectives) AS o
+WHERE id = o.objective_id
