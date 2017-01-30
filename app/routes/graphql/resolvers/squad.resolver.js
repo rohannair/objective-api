@@ -1,6 +1,7 @@
 import Company from '../../../models/Company'
 import Objective from '../../../models/Objective'
 import User from '../../../models/User'
+import { formattedObjective } from '../../../queries/objective'
 
 const resolver = {
   Squad: {
@@ -21,9 +22,11 @@ const resolver = {
     },
 
     objectives(squad) {
-      return Objective.query()
+      const query = Objective.query()
         .whereNull('user_id')
         .andWhere('squad_id', squad.id)
+
+      return formattedObjective(query)
     }
   }
 }

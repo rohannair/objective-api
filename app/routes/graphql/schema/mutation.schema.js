@@ -31,10 +31,10 @@ const Mutation = `
     ###
 
     # Create an Objective
-    createObjective(name: String!, endsAt: String): Objective
+    createObjective(name: String!, endsAt: Float): Objective
 
     # Update an Objective
-    editObjective(id: String!, name: String, endsAt: String, owner: String): Objective
+    editObjective(id: String!, name: String, endsAt: Float, owner: String): Objective
 
     ###
     # SnapShots

@@ -7,7 +7,7 @@ const Objective = `
     name: String
     timeline: String
     status: String
-    endsAt: String
+    endsAt: Float
 
     owner: User
     collaborators: [User]
