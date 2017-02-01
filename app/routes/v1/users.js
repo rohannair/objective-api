@@ -1,7 +1,6 @@
 'use strict'
 import User from '../../models/User'
 import Company from '../../models/Company'
-import Snapshot from '../../models/Snapshot'
 import Objective from '../../models/Objective'
 
 import { addId, createRandomToken } from '../../utils'
@@ -15,7 +14,6 @@ const debug = require('debug')('app:debug')
 
 import {
   encryptPassword,
-  checkPassword,
   randomPassword
 } from '../../utils/encryption'
 
