@@ -1,13 +1,12 @@
 import User from '../../../models/User'
 import Snapshot from '../../../models/Snapshot'
+import db from '../../../db'
 
 const resolver = {
   Objective: {
     collaborators(objective) {
-      return User.query()
-        .leftJoin('objectives_users', 'users.id', 'objectives_users.user_id')
-        .where('objectives_users.objective_id', objective.id)
-        .select('users.id', 'users.first_name', 'users.last_name', 'users.img')
+      return db('objectives_users')
+        .where('objective_id', objective.id)
     },
 
     owner(objective) {
