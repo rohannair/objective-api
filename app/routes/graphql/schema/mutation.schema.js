@@ -37,10 +37,10 @@ const Mutation = `
     editObjective(id: String!, name: String, endsAt: Float, owner: String): Objective
 
     # Add a collaborator
-    addCollaborator(user: String!, objective: String!) : Objective
+    addCollaborator(user: String!, objective: String!) : Collaborator
 
     # Remove a collaborator
-    deleteCollaborator(user: String!, objective: String!) : Objective
+    deleteCollaborator(user: String!, objective: String!) : Collaborator
 
     ###
     # SnapShots
