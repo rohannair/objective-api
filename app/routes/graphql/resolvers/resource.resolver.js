@@ -1,5 +1,5 @@
 import Objective from '../../../models/Objective'
-import { formattedObjective } from '../../../queries/objective'
+import { formattedObjective } from '../../../queries/objectives'
 
 const resolver = {
   Resource: {

@@ -1,5 +1,6 @@
 import User from './user.schema'
 import Snapshot from './snapshot.schema'
+import Collaborator from './collaborator.schema'
 
 const Objective = `
   type Objective {
@@ -10,7 +11,7 @@ const Objective = `
     endsAt: Float
 
     owner: User
-    collaborators: [User]
+    collaborators: [Collaborator]
     snapshots: [Snapshot]
   }
 `
@@ -18,5 +19,6 @@ const Objective = `
 export default () => [
   Snapshot,
   Objective,
-  User
+  User,
+  Collaborator
 ]

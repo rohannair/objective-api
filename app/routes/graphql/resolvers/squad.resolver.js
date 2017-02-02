@@ -1,7 +1,7 @@
 import Company from '../../../models/Company'
 import Objective from '../../../models/Objective'
 import User from '../../../models/User'
-import { formattedObjective } from '../../../queries/objective'
+import { formattedObjective } from '../../../queries/objectives'
 
 const resolver = {
   Squad: {
