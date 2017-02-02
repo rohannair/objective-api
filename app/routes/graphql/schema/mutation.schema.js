@@ -27,53 +27,20 @@ const Mutation = `
     deleteUser(id: String!): User
 
     ###
-    # Squads
-    ###
-
-    # Create a squad
-    createSquad(body: String!): Squad
-
-    # Update a squad
-    updateSquad(id: String!): Squad
-
-    # Delete a squad
-    deleteSquad(id: String!): Squad
-
-    ###
     # Objectives
     ###
 
     # Create an Objective
-    createObjective(name: String!, endsAt: String): Objective
+    createObjective(name: String!, endsAt: Float): Objective
 
     # Update an Objective
-    editObjective(id: String!, name: String, endsAt: String): Objective
+    editObjective(id: String!, name: String, endsAt: Float, owner: String): Objective
 
-    ###
-    # Key Results
-    ###
+    # Add a collaborator
+    addCollaborator(user: String!, objective: String!) : Collaborator
 
-    # Create a key result
-    createKeyResult(body: String!): KeyResult
-
-    # Update a key result
-    updateKeyResult(id: String!): KeyResult
-
-    # Delete a key result
-    deleteKeyResult(id: String!): KeyResult
-
-    ###
-    # Resources
-    ###
-
-    # Create a resource
-    createResource(body: String!): Resource
-
-    # Update a resource
-    updateResource(id: Int!): Resource
-
-    # Delete a resource
-    deleteResource(id: Int!): Resource
+    # Remove a collaborator
+    deleteCollaborator(user: String!, objective: String!) : Collaborator
 
     ###
     # SnapShots
@@ -83,7 +50,7 @@ const Mutation = `
     addSnapshot(body: String!, objective: String, blocker: Boolean, img: String): Snapshot
 
     ###
-    # SnapShots
+    # Reactions
     ###
 
     # Add a reaction

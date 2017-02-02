@@ -1,10 +1,10 @@
 'use strict'
 import User from '../../models/User'
 import Company from '../../models/Company'
-import Snapshot from '../../models/Snapshot'
 import Objective from '../../models/Objective'
 
 import { addId, createRandomToken } from '../../utils'
+import { putAvatarImage } from '../../utils/paparazzi'
 import omit from 'lodash/omit'
 
 /* eslint-disable no-unused-vars */
@@ -14,7 +14,6 @@ const debug = require('debug')('app:debug')
 
 import {
   encryptPassword,
-  checkPassword,
   randomPassword
 } from '../../utils/encryption'
 
@@ -225,23 +224,11 @@ const userControllers = User => ({
       return
     }
 
-    if (editingPassword) {
-      const { digest } = await User
-        .query()
-        .select('digest')
-        .where({ id })
-        .first()
-
-      const check = await checkPassword(body.password, digest)
-
-      if (!check) {
-        ctx.throw('Password does not match', 401)
-        return
-      }
-    }
+    const imageUrl = await putAvatarImage(body.img, id)
 
     const updatedBody = {
-      ...omit(body, ['digest', 'password', 'newPassword']),
+      ...omit(body, ['digest', 'password', 'newPassword', 'img']),
+      img: imageUrl,
       digest: editingPassword
         ? await encryptPassword(body.newPassword)
         : null

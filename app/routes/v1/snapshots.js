@@ -1,8 +1,7 @@
 'use strict'
 
 import Snapshot from '../../models/Snapshot'
-
-import { getImageUrl } from '../../utils/paparazzi'
+import { putSnapshotImage } from '../../utils/paparazzi'
 
 /* eslint-disable no-unused-vars */
 import chalk from 'chalk'
@@ -16,8 +15,7 @@ const snapshotControllers = () => ({
 
     try {
       // Pass img to paparazzi service
-      const imageUrl = await getImageUrl(img)
-
+      const imageUrl = await putSnapshotImage(img)
 
       // Create image
       const snapshot = await Snapshot

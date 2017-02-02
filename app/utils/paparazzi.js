@@ -1,32 +1,40 @@
 'use strict'
 
-let request = require('superagent')
-const uuidV4 = require('uuid/v4')
+import request from 'superagent'
 
-const debug = require('debug')('app:debug')
-
-const getImageUrl = async (image_data) => {
+export const putSnapshotImage = async (image_data) => {
   if (!image_data) return undefined
-  const data = `{"filename": "${generateUUID()}.png", "image_data": "${image_data}"}`
+  const data = `{"image_data": "${image_data}"}`
 
-  const response = await request.put(putImageUrl())
+  const response = await request.put(putSnapshotImageUrl())
     .set('Content-Type', 'application/json')
     .send(data)
 
   return response.body.path
 }
 
-const generateUUID = () => {
-  return uuidV4()
+export const putAvatarImage = async (image_data, user_id) => {
+  if (!image_data) return undefined
+  const data = `{"image_data": "${image_data}", "user_id": "${user_id}"}`
+
+  const response = await request.put(putAvatarImageUrl())
+    .set('Content-Type', 'application/json')
+    .send(data)
+
+  return response.body.path
 }
 
-const putImageUrl = () => {
+const putAvatarImageUrl = () => {
+  return `${getPaparazziHost()}/image/avatar`
+}
+
+const putSnapshotImageUrl = () => {
+  return `${getPaparazziHost()}/image/snapshot`
+}
+
+const getPaparazziHost = () => {
   const host = process.env.PAPARAZZI_HOST
   const scheme = process.env.PAPARAZZI_SCHEME
 
-  return `${scheme}://${host}/image`
-}
-
-module.exports = {
-  getImageUrl
+  return `${scheme}://${host}`
 }

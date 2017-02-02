@@ -3,7 +3,8 @@ import db from '../../../db'
 import models from '../../../models'
 import { addId, createRandomToken } from '../../../utils'
 import { randomPassword, encryptPassword } from '../../../utils/encryption'
-import { getImageUrl } from '../../../utils/paparazzi'
+import { putSnapshotImage } from '../../../utils/paparazzi'
+import { addCollaborator } from '../../../queries/collaborators'
 
 import * as emails from '../../v1/emails'
 /* eslint-disable no-unused-vars */
@@ -84,25 +85,6 @@ const resolver = {
     },
 
     /***
-     * Squads
-     ***/
-
-    // Create a squad
-    createSquad: async (root, args, ctx) => {
-
-    },
-
-    // Update a squad
-    updateSquad: async (root, args, ctx) => {
-
-    },
-
-    // Delete a squad
-    deleteSquad: async (root, args, ctx) => {
-
-    },
-
-    /***
      * Objectives
      ***/
 
@@ -110,24 +92,24 @@ const resolver = {
     createObjective: async (root, args, ctx) => {
       const { name } = args
       const { endsAt } = ctx.request.body.variables
-      const { company, user: adminId } = ctx.state
-
+      const { company, user: ownerId } = ctx.state
 
       let insertObject = addId({
         name,
-        companyId: company
+        companyId: company,
+        ownerId
       })
 
-      if (endsAt.length) {
+      if (endsAt) {
         insertObject = {
           ...insertObject,
-          endsAt
+          targetEndsAt: endsAt
         }
       }
 
       const objective = await models.Objective.query()
         .insert(insertObject)
-        .returning('*')
+        .returning(['id', 'company_id', 'target_ends_at as ends_at', 'name', 'owner_id', 'user_id', 'created_at', 'updated_at'])
 
       return objective
     },
@@ -135,18 +117,26 @@ const resolver = {
     // Update an objective
     editObjective: async (root, args, ctx) => {
       const { id, name } = args
-      const { endsAt } = ctx.request.body.variables
-      const { company, user: adminId } = ctx.state
+      const { endsAt, owner } = ctx.request.body.variables
+      const { company, user: userId } = ctx.state
 
       let insertObject = {
         name,
-        companyId: company
+        companyId: company,
+        updatedAt: Date.now()
       }
 
-      if (endsAt && endsAt.length) {
+      if (endsAt) {
         insertObject = {
           ...insertObject,
-          endsAt
+          targetEndsAt: endsAt
+        }
+      }
+
+      if (owner && userId === owner) {
+        insertObject = {
+          ...insertObject,
+          ownerID: owner
         }
       }
 
@@ -156,49 +146,39 @@ const resolver = {
           id,
           company_id: company
         })
-        .returning('*')
+        .returning(['id', 'company_id', 'target_ends_at as ends_at', 'name', 'owner_id', 'user_id', 'created_at', 'updated_at'])
         .first()
-
 
       return objective
     },
 
-    /***
-     * Key Results
-     ***/
+    // Add a collaborator to an objective
+    addCollaborator: async(root, args, ctx) => {
+      const { user, objective } = args
+      // const currentUser = ctx.state.user
 
-    // Create a key result
-    createKeyResult: async (root, args, ctx) => {
+      // Add user as collaborator
+      const collaborator = await addCollaborator(db, user, objective)
 
+      // TODO: create notification email here (or other type of notification)
+
+      return collaborator[0]
     },
 
-    // Update a key result
-    updateKeyResult: async (root, args, ctx) => {
+    deleteCollaborator: async(root, args, ctx) => {
+      const { user, objective } = args
 
-    },
+      const { id } = await db('objectives_users')
+        .where('user_id', user)
+        .andWhere('objective_id', objective)
+        .select('id')
+        .first()
 
-    // Delete a key result
-    deleteKeyResult: async (root, args, ctx) => {
+      await db('objectives_users')
+        .where('id', id)
+        .del()
 
-    },
-
-    /***
-     * Resources
-     ***/
-
-    // Create a resource
-    createResource: async (root, args, ctx) => {
-
-    },
-
-    // Update a resource
-    updateResource: async (root, args, ctx) => {
-
-    },
-
-    // Delete a resource
-    deleteResource: async (root, args, ctx) => {
-
+      return { id }
     },
 
     /// Create a new snapshot
@@ -209,7 +189,7 @@ const resolver = {
 
       try {
         // Pass img to paparazzi service
-        const imageUrl = await getImageUrl(img)
+        const imageUrl = await putSnapshotImage(img)
 
         const snapshot = await models.Snapshot.query()
           .insert({

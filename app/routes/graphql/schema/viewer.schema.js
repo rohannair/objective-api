@@ -19,7 +19,8 @@ const Viewer = `
     squads: [Squad],
     objectives: [Objective],
     objective(id: String): Objective,
-    snapshots: [Snapshot]
+    snapshots(first: Int, offset: Int): [Snapshot],
+    _snapshotsCount: Int!
   }
 `
 

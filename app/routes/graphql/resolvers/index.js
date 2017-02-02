@@ -7,6 +7,7 @@ import ReactionResolver from './reaction.resolver'
 import SquadResolver from './squad.resolver'
 import UserResolver from './user.resolver'
 import ViewerResolver from './viewer.resolver'
+import CollaboratorResolver from './collaborator.resolver'
 
 import MutationResolver from './mutation.resolver'
 
@@ -33,6 +34,7 @@ export default {
   ...ReactionResolver,
   ...SquadResolver,
   ...UserResolver,
+  ...CollaboratorResolver,
 
   // Mutation resolvers:
   ...MutationResolver
