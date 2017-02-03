@@ -5,16 +5,24 @@ export const viewableObjectivesWithQuery = (query, viewer) => {
     .with('viewable_objectives', (qb) => {
       viewableObjectives(viewer, qb.select('objectives.id').from('objectives'))
     })
-    .leftJoin('viewable_objectives', 'objective_id', 'viewable_objectives.id')
+    .rightJoin('viewable_objectives', 'objective_id', 'viewable_objectives.id')
     .distinct()
 }
 
 export const viewableObjectives = (viewer, qb = Objective.query()) => {
   return qb
     .leftJoin('objectives_users', 'objectives.id', 'objectives_users.objective_id')
-    .orWhere('objectives.company_id', viewer.companyId)
+    // objectives owned by viewer
     .orWhere('objectives.owner_id', viewer.id)
-    .orWhere('objectives_users.user_id', viewer.id)
+    // private objectives that viewer is collaborator of
+    .orWhere(q => q.andWhere('objectives_users.user_id', viewer.id)
+      .andWhere('objectives.is_private', true)
+      .andWhere('objectives.company_id', viewer.companyId)
+    )
+    // public company objectives
+    .orWhere(q => q.andWhere('objectives.company_id', viewer.companyId)
+      .andWhere('objectives.is_private', false)
+    )
     .distinct()
 }
 
