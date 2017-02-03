@@ -117,7 +117,7 @@ const resolver = {
     // Update an objective
     editObjective: async (root, args, ctx) => {
       const { id, name } = args
-      const { endsAt, owner } = ctx.request.body.variables
+      const { endsAt, owner, isPrivate } = ctx.request.body.variables
       const { company, user: userId } = ctx.state
 
       let insertObject = {
@@ -133,10 +133,19 @@ const resolver = {
         }
       }
 
+      // changing owner
       if (owner && userId === owner) {
         insertObject = {
           ...insertObject,
           ownerID: owner
+        }
+      }
+
+      // check if owner to allow change
+      if (owner && userId === owner.id) {
+        insertObject = {
+          ...insertObject,
+          isPrivate
         }
       }
 
@@ -146,7 +155,7 @@ const resolver = {
           id,
           company_id: company
         })
-        .returning(['id', 'company_id', 'target_ends_at as ends_at', 'name', 'owner_id', 'user_id', 'created_at', 'updated_at'])
+        .returning(['id', 'company_id', 'target_ends_at as ends_at',  'name', 'owner_id', 'user_id', 'is_private', 'created_at', 'updated_at'])
         .first()
 
       return objective

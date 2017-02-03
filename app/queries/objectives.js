@@ -25,6 +25,7 @@ export const formattedObjective = (query) => {
       'target_ends_at as ends_at',
       'name',
       'owner_id',
+      'is_private',
       'objectives.user_id',
       'objectives.created_at',
       'objectives.updated_at'
