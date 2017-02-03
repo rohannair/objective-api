@@ -208,6 +208,20 @@ const resolver = {
       }
     },
 
+    editSnapshotObjective: async(root, args, ctx) => {
+      const { snapshotId, objectiveId } = args
+
+      const snapshot = await models.Snapshot.query()
+        .where('id', snapshotId)
+        .update({
+          objective_id: objectiveId
+        })
+        .returning('*')
+        .first()
+
+      return snapshot
+    },
+
     // Add a reaction
     // (reactionId: Int!, snapshotId: Int!): Reaction
     addReaction: async(root, args, ctx) => {
