@@ -28,7 +28,6 @@ const resolver = {
       const filteredObjectives = viewableObjectives(viewer)
         .orderBy('updated_at', 'desc')
 
-
       return formattedObjective(filteredObjectives)
     },
 

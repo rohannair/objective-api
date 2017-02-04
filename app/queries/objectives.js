@@ -6,6 +6,7 @@ export const viewableObjectivesWithQuery = (query, viewer) => {
       viewableObjectives(viewer, qb.select('objectives.id').from('objectives'))
     })
     .leftJoin('viewable_objectives', 'objective_id', 'viewable_objectives.id')
+    .distinct()
 }
 
 export const viewableObjectives = (viewer, qb = Objective.query()) => {
@@ -14,6 +15,7 @@ export const viewableObjectives = (viewer, qb = Objective.query()) => {
     .orWhere('objectives.company_id', viewer.companyId)
     .orWhere('objectives.owner_id', viewer.id)
     .orWhere('objectives_users.user_id', viewer.id)
+    .distinct()
 }
 
 export const formattedObjective = (query) => {
