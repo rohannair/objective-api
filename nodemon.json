@@ -1,1 +1,13 @@
-{}
+{
+  "ignore": [
+    ".git",
+    ".vscode",
+    "bin",
+    "db",
+    "node_modules/**/node_modules",
+    "dist"
+  ],
+  "events": {
+    "restart": "osascript -e 'display notification \"App restarted due to:\n'$FILENAME'\" with title \"nodemon\"'"
+  }
+}
