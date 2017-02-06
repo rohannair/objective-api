@@ -9,6 +9,7 @@ const Objective = `
     timeline: String
     status: String
     endsAt: Float
+    isPrivate: Boolean
 
     owner: User
     collaborators: [Collaborator]
