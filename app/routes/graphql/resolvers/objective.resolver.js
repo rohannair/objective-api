@@ -1,5 +1,6 @@
 import User from '../../../models/User'
 import Snapshot from '../../../models/Snapshot'
+import Task from '../../../models/Task'
 import db from '../../../db'
 
 const resolver = {
@@ -17,6 +18,11 @@ const resolver = {
 
     snapshots(objective) {
       return Snapshot.query()
+        .where('objective_id', objective.id)
+    },
+
+    tasks(objective) {
+      return Task.query()
         .where('objective_id', objective.id)
     },
   }
