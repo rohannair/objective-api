@@ -65,6 +65,9 @@ const Mutation = `
 
     # Create a task
     createTask(title: String!, isComplete: Boolean!, objective: String!): Task
+
+    # editTask
+    editTask(id: String!): Task
   }
 `
 
