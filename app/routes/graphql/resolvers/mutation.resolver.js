@@ -273,6 +273,39 @@ const resolver = {
         .returning('*')
 
       return task
+    },
+
+    editTask: async (root, args, ctx) => {
+      const { id } = args
+      const { title, isComplete } = ctx.request.body.variables
+
+      let insertObject = {}
+
+      if (isComplete !== undefined) {
+        insertObject = {
+          isComplete
+        }
+      }
+
+      if (title !== undefined) {
+        insertObject = {
+          ...insertObject,
+          title
+        }
+      }
+
+      debug('editTask', insertObject)
+      debug('editTask.variables', ctx.request.body.variables)
+
+      const task = await models.Task.query()
+        .update(insertObject)
+        .where({
+          id
+        })
+        .returning('*')
+        .first()
+
+      return task
     }
   },
 }
