@@ -252,6 +252,27 @@ const resolver = {
         .del()
 
       return { id: reaction.id }
+    },
+
+    /**
+      Tasks
+    */
+
+    // Create tasks
+    createTask: async (root, args, ctx) => {
+      const { objective, title, isComplete } = args
+
+      const insertObject = addId({
+        title,
+        is_complete: isComplete,
+        objective_id: objective
+      })
+
+      const task = models.Task.query()
+        .insert(insertObject)
+        .returning('*')
+
+      return task
     }
   },
 }
