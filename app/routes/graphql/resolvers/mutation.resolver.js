@@ -218,8 +218,11 @@ const resolver = {
     },
 
     editSnapshotObjective: async(root, args, ctx) => {
-      const { snapshotId, objectiveId } = args
-
+      let { snapshotId, objectiveId } = args
+      if (!objectiveId) {
+        objectiveId = null
+      }
+      
       const snapshot = await models.Snapshot.query()
         .where('id', snapshotId)
         .update({
