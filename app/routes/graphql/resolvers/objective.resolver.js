@@ -24,6 +24,7 @@ const resolver = {
     tasks(objective) {
       return Task.query()
         .where('objective_id', objective.id)
+        .orderBy('created_at', 'desc')
     },
   }
 }

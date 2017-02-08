@@ -294,9 +294,6 @@ const resolver = {
         }
       }
 
-      debug('editTask', insertObject)
-      debug('editTask.variables', ctx.request.body.variables)
-
       const task = await models.Task.query()
         .update(insertObject)
         .where({
