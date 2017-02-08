@@ -11,8 +11,9 @@ exports.up = function(knex) {
         .inTable('objectives')
         .onDelete('cascade')
         .index()
-    })
 
+      t.timestamp('created_at').notNull().defaultTo(knex.raw('now()'))
+    })
 }
 
 exports.down = function(knex) {
