@@ -50,7 +50,7 @@ const Mutation = `
     addSnapshot(body: String!, objective: String, blocker: Boolean, img: String): Snapshot
 
     # Edit SnapShots objective
-    editSnapshotObjective(objectiveId: String, snapshotId: Int!): Snapshot
+    editSnapshotObjective(objectiveId: String, id: Int!): Snapshot
 
     ###
     # Reactions
