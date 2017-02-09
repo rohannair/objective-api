@@ -268,7 +268,7 @@ const resolver = {
         objective_id: objective
       })
 
-      const task = models.Task.query()
+      const task = await models.Task.query()
         .insert(insertObject)
         .returning('*')
 
