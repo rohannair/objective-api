@@ -31,10 +31,10 @@ const Mutation = `
     ###
 
     # Create an Objective
-    createObjective(name: String!, endsAt: Float): Objective
+    createObjective(name: String!, endsAt: Float, isPrivate: Boolean!): Objective
 
     # Update an Objective
-    editObjective(id: String!, name: String, endsAt: Float, owner: String): Objective
+    editObjective(id: String!, name: String, endsAt: Float, owner: String, isPrivate: Boolean!): Objective
 
     # Add a collaborator
     addCollaborator(user: String!, objective: String!) : Collaborator
