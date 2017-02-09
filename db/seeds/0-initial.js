@@ -9,7 +9,6 @@ exports.seed = function(knex, Promise) {
   let userId5 = '49ac9cbe-c496-45a9-b97b-d59115031762';
   let squadId = 'c2defaf1-e79c-4745-8796-f034f20561c4';
   let objectiveId = '1a42e500-306e-4b52-862b-953806f6631d';
-  let taskId = '6f1e007a-3526-4a4a-8c6e-4f4416a175d5';
 
   return knex('companies').insert({
     id: companyId,
@@ -100,7 +99,6 @@ exports.seed = function(knex, Promise) {
 
   .then(() =>
     knex('tasks').insert({
-      id: taskId,
       title: 'Meet with CEO',
       is_complete: false,
       objective_id: objectiveId
