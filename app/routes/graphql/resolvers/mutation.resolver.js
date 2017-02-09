@@ -276,11 +276,11 @@ const resolver = {
     createTask: async (root, args, ctx) => {
       const { objective, title, isComplete } = args
 
-      const insertObject = addId({
+      const insertObject = {
         title,
         is_complete: isComplete,
         objective_id: objective
-      })
+      }
 
       const task = await models.Task.query()
         .insert(insertObject)
