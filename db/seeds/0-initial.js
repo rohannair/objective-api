@@ -98,6 +98,14 @@ exports.seed = function(knex, Promise) {
   )
 
   .then(() =>
+    knex('tasks').insert({
+      title: 'Meet with CEO',
+      is_complete: false,
+      objective_id: objectiveId
+    })
+  )
+
+  .then(() =>
     knex('key_results').insert({
       name: 'Ability to show aggregate performance',
       objective_id: objectiveId

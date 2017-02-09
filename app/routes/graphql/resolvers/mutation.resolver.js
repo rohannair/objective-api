@@ -266,6 +266,57 @@ const resolver = {
         .del()
 
       return { id: reaction.id }
+    },
+
+    /**
+      Tasks
+    */
+
+    // Create tasks
+    createTask: async (root, args, ctx) => {
+      const { objective, title, isComplete } = args
+
+      const insertObject = {
+        title,
+        is_complete: isComplete,
+        objective_id: objective
+      }
+
+      const task = await models.Task.query()
+        .insert(insertObject)
+        .returning('*')
+
+      return task
+    },
+
+    editTask: async (root, args, ctx) => {
+      const { id } = args
+      const { title, isComplete } = ctx.request.body.variables
+
+      let insertObject = {}
+
+      if (isComplete !== undefined) {
+        insertObject = {
+          isComplete
+        }
+      }
+
+      if (title !== undefined) {
+        insertObject = {
+          ...insertObject,
+          title
+        }
+      }
+
+      const task = await models.Task.query()
+        .update(insertObject)
+        .where({
+          id
+        })
+        .returning('*')
+        .first()
+
+      return task
     }
   },
 }

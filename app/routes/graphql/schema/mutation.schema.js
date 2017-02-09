@@ -61,6 +61,16 @@ const Mutation = `
 
     # Remove a reaction
     deleteReaction(reactionId: Int!, snapshotId: Int!): Reaction
+
+    ###
+    # Tasks
+    ###
+
+    # Create a task
+    createTask(title: String!, isComplete: Boolean!, objective: String!): Task
+
+    # editTask
+    editTask(id: String!): Task
   }
 `
 
