@@ -21,10 +21,15 @@ const resolver = {
         .where('objective_id', objective.id)
     },
 
-    tasks(objective) {
-      return Task.query()
-        .where('objective_id', objective.id)
+    tasks(objective, args) {
+      const includeHidden = args.includeHidden ? true : false
+      let query = Task.query()
+        .andWhere('objective_id', objective.id)
         .orderBy('created_at', 'desc')
+
+      if (!includeHidden) query = query.andWhere('hidden', false)
+
+      return query
     },
   }
 }

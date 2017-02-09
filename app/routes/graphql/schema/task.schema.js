@@ -5,6 +5,7 @@ const Task =`
     id: String!
     title: String
     isComplete: Boolean
+    hidden: Boolean
 
     objective: Objective
   }
