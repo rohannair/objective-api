@@ -2,7 +2,7 @@ import Objective from './objective.schema'
 
 const Task =`
   type Task {
-    id: String!
+    id: Int!
     title: String
     isComplete: Boolean
     hidden: Boolean
