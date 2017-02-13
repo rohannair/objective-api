@@ -22,14 +22,10 @@ const resolver = {
     },
 
     tasks(objective, args) {
-      const includeHidden = args.includeHidden ? true : false
-      let query = Task.query()
+      return Task.query()
         .andWhere('objective_id', objective.id)
         .orderBy('created_at', 'desc')
-
-      if (!includeHidden) query = query.andWhere('hidden', false)
-
-      return query
+        .andWhere('hidden', false)
     },
   }
 }
