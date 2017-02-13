@@ -12,7 +12,7 @@ const Objective = `
     endsAt: Float
     isPrivate: Boolean
 
-    tasks: [Task]
+    tasks(includeHidden: Boolean): [Task]
     owner: User
     collaborators: [Collaborator]
     snapshots: [Snapshot]
