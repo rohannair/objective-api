@@ -19,6 +19,7 @@ const resolver = {
     snapshots(objective) {
       return Snapshot.query()
         .where('objective_id', objective.id)
+        .orderBy('created_at', 'desc')
     },
 
     tasks(objective) {
