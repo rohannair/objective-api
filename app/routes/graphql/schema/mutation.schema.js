@@ -70,7 +70,10 @@ const Mutation = `
     createTask(title: String!, isComplete: Boolean!, objective: String!): Task
 
     # editTask
-    editTask(id: String!): Task
+    editTask(id: Int!): Task
+
+    # 'Safe' delete/hide task
+    deleteTask(id: Int!): Int
   }
 `
 

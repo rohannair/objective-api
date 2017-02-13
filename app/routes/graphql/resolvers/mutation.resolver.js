@@ -219,7 +219,7 @@ const resolver = {
 
     editSnapshotObjective: async(root, args, ctx) => {
       let { id, objectiveId } = args
-      
+
       const snapshot = await models.Snapshot.query()
         .where({ id })
         .update({
@@ -317,8 +317,25 @@ const resolver = {
         .first()
 
       return task
+    },
+
+    deleteTask: async (root, args, ctx) => {
+      const { id } = args
+
+      const updateObject = {
+        hidden: true
+      }
+
+      const task = await models.Task.query()
+        .update(updateObject)
+        .where({id})
+        .returning('id')
+        .first()
+
+      return task
     }
   },
+
 }
 
 export default resolver

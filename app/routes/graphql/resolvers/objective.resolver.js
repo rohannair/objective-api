@@ -21,10 +21,11 @@ const resolver = {
         .where('objective_id', objective.id)
     },
 
-    tasks(objective) {
+    tasks(objective, args) {
       return Task.query()
-        .where('objective_id', objective.id)
+        .andWhere('objective_id', objective.id)
         .orderBy('created_at', 'desc')
+        .andWhere('hidden', false)
     },
   }
 }
