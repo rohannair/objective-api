@@ -21,7 +21,7 @@ const resolver = {
         .where('objective_id', objective.id)
     },
 
-    tasks(objective, args) {
+    tasks(objective) {
       return Task.query()
         .andWhere('objective_id', objective.id)
         .orderBy('created_at', 'desc')
