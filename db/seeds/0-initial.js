@@ -8,6 +8,7 @@ exports.seed = function(knex) {
 
   let objectiveId = '1a42e500-306e-4b52-862b-953806f6631d'
   let objectiveId2 = '97e0e448-9f99-4770-9f54-adab5d48cb2b'
+  let objectiveId3 = '46842bee-2852-4991-922b-6ad4aabb5bc6'
 
   return knex('companies').insert({
     id: companyId,
@@ -89,6 +90,14 @@ exports.seed = function(knex) {
         target_ends_at: +new Date('2017-12-31'),
         company_id: companyId,
         owner_id: userId2,
+        is_private: true
+      },
+      {
+        id: objectiveId3,
+        name: 'Test objective #3',
+        target_ends_at: +new Date('2017-12-31'),
+        company_id: companyId,
+        owner_id: userId,
         is_private: true
       }
     ])
