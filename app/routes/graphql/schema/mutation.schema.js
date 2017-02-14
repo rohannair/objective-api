@@ -49,6 +49,9 @@ const Mutation = `
     # Create a new SnapShots
     addSnapshot(body: String!, objective: String, blocker: Boolean, img: String): Snapshot
 
+    # Edit SnapShots objective
+    editSnapshotObjective(objectiveId: String, id: Int!): Snapshot
+
     ###
     # Reactions
     ###
@@ -58,6 +61,19 @@ const Mutation = `
 
     # Remove a reaction
     deleteReaction(reactionId: Int!, snapshotId: Int!): Reaction
+
+    ###
+    # Tasks
+    ###
+
+    # Create a task
+    createTask(title: String!, isComplete: Boolean!, objective: String!): Task
+
+    # editTask
+    editTask(id: Int!): Task
+
+    # 'Safe' delete/hide task
+    deleteTask(id: Int!): Int
   }
 `
 

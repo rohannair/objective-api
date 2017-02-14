@@ -5,6 +5,7 @@ import Objective from './Objective'
 import Resource from './Resource'
 import Squad from './Squad'
 import User from './User'
+import Task from './Task'
 
 export default {
   Snapshot,
@@ -13,5 +14,6 @@ export default {
   Objective,
   Resource,
   Squad,
-  User
+  User,
+  Task
 }

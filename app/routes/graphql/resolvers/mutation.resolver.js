@@ -117,7 +117,7 @@ const resolver = {
     // Update an objective
     editObjective: async (root, args, ctx) => {
       const { id, name } = args
-      const { endsAt, owner } = ctx.request.body.variables
+      const { endsAt, owner, isPrivate } = ctx.request.body.variables
       const { company, user: userId } = ctx.state
 
       let insertObject = {
@@ -133,10 +133,19 @@ const resolver = {
         }
       }
 
+      // changing owner
       if (owner && userId === owner) {
         insertObject = {
           ...insertObject,
           ownerID: owner
+        }
+      }
+
+      // check if owner to allow change
+      if (owner && userId === owner.id) {
+        insertObject = {
+          ...insertObject,
+          isPrivate
         }
       }
 
@@ -146,7 +155,7 @@ const resolver = {
           id,
           company_id: company
         })
-        .returning(['id', 'company_id', 'target_ends_at as ends_at', 'name', 'owner_id', 'user_id', 'created_at', 'updated_at'])
+        .returning(['id', 'company_id', 'target_ends_at as ends_at',  'name', 'owner_id', 'user_id', 'is_private', 'created_at', 'updated_at'])
         .first()
 
       return objective
@@ -208,6 +217,20 @@ const resolver = {
       }
     },
 
+    editSnapshotObjective: async(root, args, ctx) => {
+      let { id, objectiveId } = args
+
+      const snapshot = await models.Snapshot.query()
+        .where({ id })
+        .update({
+          objective_id: objectiveId || null
+        })
+        .returning('*')
+        .first()
+
+      return snapshot
+    },
+
     // Add a reaction
     // (reactionId: Int!, snapshotId: Int!): Reaction
     addReaction: async(root, args, ctx) => {
@@ -243,8 +266,76 @@ const resolver = {
         .del()
 
       return { id: reaction.id }
+    },
+
+    /**
+      Tasks
+    */
+
+    // Create tasks
+    createTask: async (root, args, ctx) => {
+      const { objective, title, isComplete } = args
+
+      const insertObject = {
+        title,
+        is_complete: isComplete,
+        objective_id: objective
+      }
+
+      const task = await models.Task.query()
+        .insert(insertObject)
+        .returning('*')
+
+      return task
+    },
+
+    editTask: async (root, args, ctx) => {
+      const { id } = args
+      const { title, isComplete } = ctx.request.body.variables
+
+      let insertObject = {}
+
+      if (isComplete !== undefined) {
+        insertObject = {
+          isComplete
+        }
+      }
+
+      if (title !== undefined) {
+        insertObject = {
+          ...insertObject,
+          title
+        }
+      }
+
+      const task = await models.Task.query()
+        .update(insertObject)
+        .where({
+          id
+        })
+        .returning('*')
+        .first()
+
+      return task
+    },
+
+    deleteTask: async (root, args, ctx) => {
+      const { id } = args
+
+      const updateObject = {
+        hidden: true
+      }
+
+      const task = await models.Task.query()
+        .update(updateObject)
+        .where({id})
+        .returning('id')
+        .first()
+
+      return task
     }
   },
+
 }
 
 export default resolver

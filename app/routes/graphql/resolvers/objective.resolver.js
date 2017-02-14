@@ -1,5 +1,6 @@
 import User from '../../../models/User'
 import Snapshot from '../../../models/Snapshot'
+import Task from '../../../models/Task'
 import db from '../../../db'
 
 const resolver = {
@@ -18,6 +19,14 @@ const resolver = {
     snapshots(objective) {
       return Snapshot.query()
         .where('objective_id', objective.id)
+        .orderBy('created_at', 'desc')
+    },
+
+    tasks(objective) {
+      return Task.query()
+        .andWhere('objective_id', objective.id)
+        .orderBy('created_at', 'desc')
+        .andWhere('hidden', false)
     },
   }
 }
