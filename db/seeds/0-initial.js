@@ -97,10 +97,16 @@ exports.seed = function(knex) {
         name: 'Test objective #3',
         target_ends_at: +new Date('2017-12-31'),
         company_id: companyId,
-        owner_id: userId,
+        owner_id: userId3,
         is_private: true
       }
     ])
+  )
+  .then(() =>
+    knex('objectives_users').insert({
+      user_id: userId,
+      objective_id: objectiveId3
+    })
   )
 
   .then(() =>
