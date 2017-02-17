@@ -5,6 +5,7 @@ import { addId, createRandomToken } from '../../../utils'
 import { randomPassword, encryptPassword } from '../../../utils/encryption'
 import { putSnapshotImage } from '../../../utils/paparazzi'
 import { addCollaborator } from '../../../queries/collaborators'
+import { mutationFormattedSnapshot } from '../../../queries/snapshots'
 
 import * as emails from '../../v1/emails'
 /* eslint-disable no-unused-vars */
@@ -191,27 +192,29 @@ const resolver = {
     },
 
     /// Create a new snapshot
-    // addSnapshot(body: String!, objective: String): Snapshot
+    // addSnapshot(body: String, objective: String, bodyJson: JSON): Snapshot
     addSnapshot: async (root, args, ctx) => {
-      const { body, objective, blocker, img } = args
+      const { body, objective, blocker, img, bodyJson } = args
       const { company, user: userId } = ctx.state
 
       try {
         // Pass img to paparazzi service
         const imageUrl = await putSnapshotImage(img)
 
-        const snapshot = await models.Snapshot.query()
+        const snapshot = models.Snapshot.query()
           .insert({
             body,
+            bodyJson,
             blocker,
             objective_id: objective,
             company_id: company,
             user_id: userId,
             img: imageUrl
           })
-          .returning('*')
 
-        return snapshot
+        const formattedSnapshot = await mutationFormattedSnapshot(snapshot)
+        
+        return formattedSnapshot
       } catch (e) {
         ctx.throw(422, e)
       }
@@ -220,15 +223,15 @@ const resolver = {
     editSnapshotObjective: async(root, args, ctx) => {
       let { id, objectiveId } = args
 
-      const snapshot = await models.Snapshot.query()
+      const snapshot = models.Snapshot.query()
         .where({ id })
         .update({
           objective_id: objectiveId || null
         })
-        .returning('*')
         .first()
 
-      return snapshot
+      const formattedSnapshot = await mutationFormattedSnapshot(snapshot)
+      return formattedSnapshot
     },
 
     // Add a reaction

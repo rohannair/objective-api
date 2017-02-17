@@ -1,4 +1,5 @@
 import db from '../../../db'
+import { queryFormattedSnapshot } from '../../../queries/snapshots'
 
 /* eslint-disable no-unused-vars */
 const debug = require('debug')('app:index')
@@ -7,9 +8,11 @@ const debug = require('debug')('app:index')
 const resolver = {
   Reaction: {
     snapshot(reaction) {
-      return db('snapshots')
+      const query = db('snapshots')
         .where('id', reaction.snapshot_id)
         .first()
+
+      return queryFormattedSnapshot(query)
     },
 
     user(reaction) {

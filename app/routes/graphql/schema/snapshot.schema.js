@@ -8,6 +8,7 @@ const Snapshot = `
     id: Int!
     name: String
     body: String
+    bodyJson: String
     blocker: Boolean
     completed: Boolean
     createdAt: String
