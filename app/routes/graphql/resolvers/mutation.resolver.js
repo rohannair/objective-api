@@ -192,7 +192,7 @@ const resolver = {
     },
 
     /// Create a new snapshot
-    // addSnapshot(body: String, objective: String, bodyJson: JSON): Snapshot
+    // addSnapshot(body: String, objective: String, bodyJson: String): Snapshot
     addSnapshot: async (root, args, ctx) => {
       const { body, objective, blocker, img, bodyJson } = args
       const { company, user: userId } = ctx.state
