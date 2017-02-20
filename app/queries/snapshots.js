@@ -39,8 +39,7 @@ export const mutationFormattedSnapshot = (query) => {
     .then(data => {
       const snap = Object.keys(data).reduce((acc, val) => {
         if (val === 'bodyJson') {
-          const newVal = JSON.stringify(data[val])
-          acc[val] = newVal
+          acc[val] = JSON.stringify(data[val])
         } else {
           acc[val] = data[val]
         }
