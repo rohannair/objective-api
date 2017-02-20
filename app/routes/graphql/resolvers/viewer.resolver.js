@@ -41,9 +41,9 @@ const resolver = {
         .offset(offset)
         .limit(first)
 
-      const formattedSnapshotQuery = queryFormattedSnapshot(query)
+      const viewableObjectivesQuery = viewableObjectivesWithQuery(query, viewer)
 
-      return viewableObjectivesWithQuery(formattedSnapshotQuery, viewer)
+      return queryFormattedSnapshot(viewableObjectivesQuery)
     },
 
     _snapshotsCount(viewer) {

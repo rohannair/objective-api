@@ -1,4 +1,3 @@
-import db from '../db'
 
 export const queryFormattedSnapshot = (query) => {
   return query
@@ -12,8 +11,15 @@ export const queryFormattedSnapshot = (query) => {
       'snapshots.company_id',
       'snapshots.objective_id',
       'snapshots.user_id',
-      db.raw('CAST(snapshots.body_json as TEXT)')
+      'snapshots.body_json'
     )
+    .then(data => {
+      const snapsArray = [ ...data ]
+      snapsArray.forEach((snap) => {
+        if(snap.bodyJson) { snap.bodyJson = JSON.stringify(snap.bodyJson) }
+      })
+      return snapsArray
+    })
 }
 
 export const mutationFormattedSnapshot = (query) => {
@@ -28,6 +34,18 @@ export const mutationFormattedSnapshot = (query) => {
       'snapshots.company_id',
       'snapshots.objective_id',
       'snapshots.user_id',
-      db.raw('CAST(snapshots.body_json as TEXT)')]
-    )
+      'snapshots.body_json'
+    ])
+    .then(data => {
+      const snap = Object.keys(data).reduce((acc, val) => {
+        if (val === 'bodyJson') {
+          const newVal = JSON.stringify(data[val])
+          acc[val] = newVal
+        } else {
+          acc[val] = data[val]
+        }
+        return acc
+      }, {})
+      return snap
+    })
 }
