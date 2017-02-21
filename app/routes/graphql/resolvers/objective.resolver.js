@@ -2,7 +2,7 @@ import User from '../../../models/User'
 import Snapshot from '../../../models/Snapshot'
 import Task from '../../../models/Task'
 import db from '../../../db'
-import { queryFormattedSnapshot } from '../../../queries/snapshots'
+import { formatSnapshotsQuery } from '../../../utils/graphql_helpers'
 
 const resolver = {
   Objective: {
@@ -18,11 +18,11 @@ const resolver = {
     },
 
     snapshots(objective) {
-      const query = Snapshot.query()
+      return Snapshot.query()
         .where('objective_id', objective.id)
         .orderBy('created_at', 'desc')
-
-      return queryFormattedSnapshot(query)
+        .select('*')
+        .then(formatSnapshotsQuery)
     },
 
     tasks(objective) {

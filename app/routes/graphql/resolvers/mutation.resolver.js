@@ -5,7 +5,7 @@ import { addId, createRandomToken } from '../../../utils'
 import { randomPassword, encryptPassword } from '../../../utils/encryption'
 import { putSnapshotImage } from '../../../utils/paparazzi'
 import { addCollaborator } from '../../../queries/collaborators'
-import { mutationFormattedSnapshot } from '../../../queries/snapshots'
+import { formatSnapshotMutation } from '../../../utils/graphql_helpers'
 
 import * as emails from '../../v1/emails'
 /* eslint-disable no-unused-vars */
@@ -201,7 +201,7 @@ const resolver = {
         // Pass img to paparazzi service
         const imageUrl = await putSnapshotImage(img)
 
-        const snapshot = models.Snapshot.query()
+        const snapshot = await models.Snapshot.query()
           .insert({
             body,
             bodyJson,
@@ -211,10 +211,10 @@ const resolver = {
             user_id: userId,
             img: imageUrl
           })
-
-        const formattedSnapshot = await mutationFormattedSnapshot(snapshot)
+          .returning('*')
+          .then(formatSnapshotMutation)
         
-        return formattedSnapshot
+        return snapshot
       } catch (e) {
         ctx.throw(422, e)
       }
@@ -223,15 +223,16 @@ const resolver = {
     editSnapshotObjective: async(root, args, ctx) => {
       let { id, objectiveId } = args
 
-      const snapshot = models.Snapshot.query()
+      const snapshot = await models.Snapshot.query()
         .where({ id })
         .update({
           objective_id: objectiveId || null
         })
         .first()
+        .returning('*')
+        .then(formatSnapshotMutation)
 
-      const formattedSnapshot = await mutationFormattedSnapshot(snapshot)
-      return formattedSnapshot
+      return snapshot
     },
 
     // Add a reaction
