@@ -3,7 +3,7 @@ import Snapshot from '../../../models/Snapshot'
 import Squad from '../../../models/Squad'
 import Objective from '../../../models/Objective'
 
-import { formatSnapshotsQuery } from '../../../utils/graphql_helpers'
+import { formatSnapshot } from '../../../utils/graphql_helpers'
 import { formattedObjective, viewableObjectives, viewableObjectivesWithQuery } from '../../../queries/objectives'
 
 const resolver = {
@@ -43,7 +43,7 @@ const resolver = {
         .select('snapshots.id', 'snapshots.name', 'snapshots.body', 'blocker', 'completed', 'snapshots.created_at', 'img', 'snapshots.company_id', 'snapshots.objective_id', 'snapshots.user_id', 'snapshots.body_json')
 
       return viewableObjectivesWithQuery(query, viewer)
-        .then(formatSnapshotsQuery)
+        .then(data => data.map(formatSnapshot))
     },
 
     _snapshotsCount(viewer) {

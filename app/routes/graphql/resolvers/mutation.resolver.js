@@ -5,7 +5,7 @@ import { addId, createRandomToken } from '../../../utils'
 import { randomPassword, encryptPassword } from '../../../utils/encryption'
 import { putSnapshotImage } from '../../../utils/paparazzi'
 import { addCollaborator } from '../../../queries/collaborators'
-import { formatSnapshotMutation } from '../../../utils/graphql_helpers'
+import { formatSnapshot } from '../../../utils/graphql_helpers'
 
 import * as emails from '../../v1/emails'
 /* eslint-disable no-unused-vars */
@@ -212,7 +212,7 @@ const resolver = {
             img: imageUrl
           })
           .returning('*')
-          .then(formatSnapshotMutation)
+          .then(formatSnapshot)
         
         return snapshot
       } catch (e) {
@@ -230,7 +230,7 @@ const resolver = {
         })
         .first()
         .returning('*')
-        .then(formatSnapshotMutation)
+        .then(formatSnapshot)
 
       return snapshot
     },

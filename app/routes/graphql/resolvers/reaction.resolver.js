@@ -1,5 +1,5 @@
 import db from '../../../db'
-import { formatSnapshotsQuery } from '../../../utils/graphql_helpers'
+import { formatSnapshot } from '../../../utils/graphql_helpers'
 
 /* eslint-disable no-unused-vars */
 const debug = require('debug')('app:index')
@@ -12,7 +12,7 @@ const resolver = {
         .where('id', reaction.snapshot_id)
         .first()
         .select('*')
-        .then(formatSnapshotsQuery)
+        .then(data => data.map(formatSnapshot))
     },
 
     user(reaction) {
