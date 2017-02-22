@@ -5,6 +5,7 @@ import { addId, createRandomToken } from '../../../utils'
 import { randomPassword, encryptPassword } from '../../../utils/encryption'
 import { putSnapshotImage } from '../../../utils/paparazzi'
 import { addCollaborator } from '../../../queries/collaborators'
+import { formatSnapshot } from '../../../utils/graphql_helpers'
 
 import * as emails from '../../v1/emails'
 /* eslint-disable no-unused-vars */
@@ -191,9 +192,9 @@ const resolver = {
     },
 
     /// Create a new snapshot
-    // addSnapshot(body: String!, objective: String): Snapshot
+    // addSnapshot(body: String, objective: String, bodyJson: String): Snapshot
     addSnapshot: async (root, args, ctx) => {
-      const { body, objective, blocker, img } = args
+      const { body, objective, blocker, img, bodyJson } = args
       const { company, user: userId } = ctx.state
 
       try {
@@ -203,6 +204,7 @@ const resolver = {
         const snapshot = await models.Snapshot.query()
           .insert({
             body,
+            bodyJson,
             blocker,
             objective_id: objective,
             company_id: company,
@@ -210,7 +212,8 @@ const resolver = {
             img: imageUrl
           })
           .returning('*')
-
+          .then(formatSnapshot)
+        
         return snapshot
       } catch (e) {
         ctx.throw(422, e)
@@ -225,8 +228,9 @@ const resolver = {
         .update({
           objective_id: objectiveId || null
         })
-        .returning('*')
         .first()
+        .returning('*')
+        .then(formatSnapshot)
 
       return snapshot
     },

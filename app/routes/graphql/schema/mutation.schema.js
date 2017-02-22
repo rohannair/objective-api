@@ -47,7 +47,7 @@ const Mutation = `
     ###
 
     # Create a new SnapShots
-    addSnapshot(body: String!, objective: String, blocker: Boolean, img: String): Snapshot
+    addSnapshot(body: String, bodyJson: String, objective: String, blocker: Boolean, img: String): Snapshot
 
     # Edit SnapShots objective
     editSnapshotObjective(objectiveId: String, id: Int!): Snapshot
