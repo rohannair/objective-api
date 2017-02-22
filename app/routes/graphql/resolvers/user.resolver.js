@@ -1,6 +1,7 @@
 import Company from '../../../models/Company'
 import Squad from '../../../models/Squad'
 import Objective from '../../../models/Objective'
+import Snapshot from '../../../models/Snapshot'
 import { formattedObjective } from '../../../queries/objectives'
 
 const resolver = {
@@ -21,6 +22,11 @@ const resolver = {
         .where('user_id', user.id)
 
       return formattedObjective(query)
+    },
+
+    snapshots(user) {
+      return Snapshot.query()
+        .where('user_id', user.id)
     }
   }
 }
