@@ -8,6 +8,15 @@ const resolver = {
         .where('company_id', company.id)
     },
 
+    user(company, args) {
+      if (!args.id) return null
+
+      return User.query()
+        .where('company_id', company.id)
+        .andWhere('id', args.id)
+        .first()
+    },
+
     squads(company) {
       return Squad.query()
         .where('company_id', company.id)

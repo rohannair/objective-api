@@ -7,6 +7,7 @@ const Company = `
     name: String
     domain: String
 
+    user(id: String): User
     users: [User]
     squads: [Squad]
   }

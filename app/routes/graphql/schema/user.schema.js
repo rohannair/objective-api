@@ -1,6 +1,7 @@
 import Objective from './objective.schema'
 import Company from './company.schema'
 import Squad from './squad.schema'
+import Snapshot from './snapshot.schema'
 
 export const UserStatus = `
   enum UserStatus {
@@ -29,7 +30,8 @@ const User = `
     company: Company,
     squads: [Squad],
     objectives: [Objective]
+    snapshots: [Snapshot]
   }
 `
 
-export default () => [User, UserStatus, Company, Squad, Objective]
+export default () => [User, UserStatus, Company, Squad, Snapshot, Objective]
