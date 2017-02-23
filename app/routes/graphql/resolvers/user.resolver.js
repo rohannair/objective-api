@@ -3,6 +3,7 @@ import Squad from '../../../models/Squad'
 import Objective from '../../../models/Objective'
 import Snapshot from '../../../models/Snapshot'
 import { formattedObjective } from '../../../queries/objectives'
+import { formatSnapshot } from '../../../utils/graphql_helpers'
 
 const resolver = {
   User: {
@@ -27,6 +28,7 @@ const resolver = {
     snapshots(user) {
       return Snapshot.query()
         .where('user_id', user.id)
+        .then(data => data.map(formatSnapshot))
     }
   }
 }
