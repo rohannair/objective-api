@@ -118,6 +118,10 @@
     "jest-cli": "^19.0.2"
   },
   "jest": {
-    "testEnvironment": "node"
+    "testEnvironment": "node",
+    "testPathIgnorePatterns": [
+      "/node_modules/",
+      "/codemods/"
+    ]
   }
 }
